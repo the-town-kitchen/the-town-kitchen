@@ -8,7 +8,7 @@ An Android app for [The Town Kitchen](http://thetownkitchen.com) that processes 
 
 ## Acknowledgements
 
-This app was made by [Paulina Ramos](https://github.com/paulinar), [Marina Murashev](https://github.com/marinamurashev), and Xiangli Dai
+This app was made by [Paulina Ramos](https://github.com/paulinar), [Marina Murashev](https://github.com/marinamurashev), and [Xiangli Dai](https://github.com/XiangliDai).
 
 It uses open source libraries, such as:
 
