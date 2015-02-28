@@ -1,7 +1,10 @@
+WORK-IN-PROGRESS
+
+## The Town Kitchen
+
 ![The Town Kitchen](images/logo.png)
 
 An Android app for [The Town Kitchen](http://thetownkitchen.com) that processes meal orders, estimates meal deliveries, and reviews meals.
-
 
 ## Acknowledgements
 
