@@ -4,7 +4,9 @@ WORK-IN-PROGRESS
 
 ![The Town Kitchen](images/logo.png)
 
-An Android app for [The Town Kitchen](http://thetownkitchen.com) that:
+The Town Kitchen is a community-driven food business. They source, craft, and deliver locally-sourced lunch through a community of growers, food makers, chefs and youth. 
+
+This is an Android app for [The Town Kitchen](http://thetownkitchen.com) that:
 
 1. Takes and processes meal orders (currently available via website only), including verification within pre-defined geographic area and disseminating orders to other individuals.
 2. Estimates and tracks meal deliveries based on driver's location
