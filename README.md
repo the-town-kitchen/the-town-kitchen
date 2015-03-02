@@ -4,13 +4,13 @@ WORK-IN-PROGRESS
 
 ![The Town Kitchen](images/logo.png)
 
-The Town Kitchen is a community-driven food business. They source, craft, and deliver locally-sourced lunch through a community of growers, food makers, chefs and youth. 
+[The Town Kitchen](http://thetownkitchen.com) is a community-driven food company that connects chefs, youth, educators, growers, and artisans to corporate and individual consumers. The Town Kitchen community addresses a need within the Oakland and San Francisco area for locally-sourced lunches, as well as fair-wage jobs and job training programs for local youth.
 
-This is an Android app for [The Town Kitchen](http://thetownkitchen.com) that:
+This Android app will:
 
-1. Takes and processes meal orders (currently available via website only), including verification within pre-defined geographic area and disseminating orders to other individuals.
-2. Estimates and tracks meal deliveries based on driver's location
-3. Reviews meals (gives feedback) and contact support
+1. Take and process meal orders (currently available via website only), including verification within pre-defined geographic area and disseminating orders to other individuals.
+2. Estimate and track meal deliveries based on driver's location
+3. Review meals (give feedback) and contact support
 
 ## User Stories
 
