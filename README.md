@@ -14,7 +14,16 @@ This Android app will:
 
 ## User Stories
 
-TO-DO
+* Required: Login with Twitter via OAuth
+* Optional: Login with username/password and/or google+ and/or facebook
+* Required: Display list of available food items to the user. The user can tap an item and see its details.
+* Required: User can select quantities of each meal they want. There should be an indication on the screen to let the user know how many meals are in their cart.
+* Required: User can select delivery location. Defaults to user's current location using gps, but user can change it.
+* Required: User can see the order summary before submitting the order.
+* Required: User can enter in credit card information, and it is saved after the 1st time so the user never has to enter it again.
+* Optional: User can take a picture of their credit card and that information is used as the payment.
+* Required: User can track their delivery via a map (like Uber displays your arriving driver's location)
+* Required: User can submit feedback once their order has arrived.
 
 ## Acknowledgements
 
