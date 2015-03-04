@@ -14,25 +14,26 @@ This Android app will:
 
 ## User Stories
 
- * [] Login with Google+ account via OAuth
-  	* [] *Optional:* Login with username/password and/or facebook
- * [] User can see list of available meals for a particular day. 
-  	* [] User can tap a meal to see its details.
-  	* [] User can open a calendar modal and select other days to view meals.
- * [] User can select quantities of each meal they want. 
-   	* [] User can see how many meals are in their cart by the cart icon on the top-righthand corner of the actionbar.
- * [] User can select delivery location. (Defaults to user's current location using gps)
-    * [] User can change delivery location by dragging the location pin.
- * [] User can see the order summary before submitting the order.
-   	* [] *Optional: User can enter a coupon code for their order.
- * [] User can enter their credit card information.
-   	* [] User is given option to save their credit card information so they won't have to enter it again.
-   	* [] *Optional: User can see their past orders (via "Order History" menu option on the nav drawer)
-   	* [] *Advanced:* User can take a picture of their credit card and that information is used as the payment.
- * [] User sees a "Your order's on its way!" message and graphic for a short duration after submitting order.
- * [] User can track their delivery via Google Maps (like Uber displays your arriving driver's location).
- * [] User can submit feedback once their order has arrived.
- * [] *Optional*: User can favorite a purchased meal that will be added to the "My Favorites" menu option on the nav drawer
+ * [ ] Login with Google+ account via OAuth
+  	* [ ] *Optional:* Login with username/password and/or facebook
+ * [ ] User can see list of available meals for a particular day. 
+  	* [ ] User can tap a meal to see its details.
+  	* [ ] User can open a calendar modal and select other days to view meals.
+ * [ ] User can select quantities of each meal they want. 
+   	* [ ] User can see how many meals are in their cart by the cart icon on the top-righthand corner of the actionbar.
+ * [ ] User can select delivery location. (Defaults to user's current location using gps)
+    * [ ] User can change delivery location by dragging the location pin.
+ * [ ] User can see the order summary before submitting the order.
+    * User can go back and edit their order.
+   	* [] *Optional:* User can enter a coupon code for their order.
+ * [ ] User can enter their credit card information.
+   	* [ ] User is given option to save their credit card information so they won't have to enter it again.
+   	* [ ] *Optional:* User can see their past orders (via "Order History" menu option on the nav drawer)
+   	* [ ] *Advanced:* User can take a picture of their credit card and that information is used as the payment.
+ * [ ] User sees a "Your order's on its way!" message and graphic for a short duration after submitting order.
+ * [ ] User can track their delivery via Google Maps (like Uber displays your arriving driver's location).
+ * [ ] User can submit feedback once their order has arrived.
+ * [ ] *Optional*: User can favorite a purchased meal that will be added to the "My Favorites" menu option on the nav drawer
 
 ## Acknowledgements
 
