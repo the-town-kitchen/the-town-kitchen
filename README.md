@@ -25,7 +25,7 @@ This Android app will:
     * [ ] User can change delivery location by dragging the location pin.
  * [ ] User can see the order summary before submitting the order.
     * User can go back and edit their order.
-   	* [] *Optional:* User can enter a coupon code for their order.
+   	* *Optional:* User can enter a coupon code for their order.
  * [ ] User can enter their credit card information.
    	* [ ] User is given option to save their credit card information so they won't have to enter it again.
    	* [ ] *Optional:* User can see their past orders (via "Order History" menu option on the nav drawer)
