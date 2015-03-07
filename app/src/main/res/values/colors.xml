@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#fff</color>
+    <color name="twitter_blue">#55acee</color>
+    <color name="secondary_darkest">#333</color>
+    <color name="secondary_darker">#666</color>
+    <color name="secondary_dark">#767676</color>
+    <color name="neutral">#999</color>
+    <color name="secondary_light">#c8c8c8</color>
+    <color name="secondary_lighter">#eaeaea</color>
+    <color name="secondary_lightest">#f4f4f4</color>
+</resources>
