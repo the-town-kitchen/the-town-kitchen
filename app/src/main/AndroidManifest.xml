@@ -2,20 +2,50 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.codepath.the_town_kitchen" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
     <application
+        android:name=".TheTownKitchenApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+        <meta-data
+            android:name="AA_DB_NAME"
+            android:value="TheTownKitchen.db" />
+        <meta-data
+            android:name="AA_DB_VERSION"
+            android:value="1" />
+        <meta-data
+            android:name="AA_MODELS"
+            android:value="com.codepath.the_town_kitchen.models.User, com.codepath.the_town_kitchen.models.Menu" />
+
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:name=".activities.LoginActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+
+            </intent-filter>
         </activity>
+        <activity
+            android:name=".activities.MenuListActivity"
+            android:label="@string/title_activity_menu_list" >
+        </activity>
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
     </application>
 
 </manifest>
