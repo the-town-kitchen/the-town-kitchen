@@ -121,7 +121,7 @@ public class Order extends Model implements Parcelable {
             order.cost = jsonObject.has("cost") ? jsonObject.getDouble("cost") : 0.0;
             order.deliveryLocation = jsonObject.has("deliveryLocation") ? jsonObject.getString("deliveryLocation") : "";
             // TODO: get Google Person object?
-            order.user = jsonObject.has("user") ? User.fromJson(jsonObject.getJSONObject("user")): null;
+//            order.user = jsonObject.has("user") ? User.fromJson(jsonObject.getJSONObject("user")): null;
             order.date = jsonObject.has("date") ? jsonObject.getString("date") : "";
             order.time = jsonObject.has("time") ? jsonObject.getString("time") : "";
             order.feedback = jsonObject.has("feedback") ? Feedback.fromJson(jsonObject.getJSONObject("feedback")): null;
