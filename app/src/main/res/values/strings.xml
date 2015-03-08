@@ -11,11 +11,11 @@
     <string name="btn_revoke_access">Revoke Access</string>
     <string name="photo">photo</string>
     <string name="title_activity_test">TestActivity</string>
-
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_delivery_location">Choose Delivery Location</string>
     <string name="FACEBOOK_APP_ID">1621411151403659</string>
-
-
+    <string name="title_activity_payment_info">PaymentInfoActivity</string>
+    <string name="save_credit_card_info">Save my credit card info for future use</string>
+    <string name="save_payment">Save Payment Info</string>
 
 </resources>

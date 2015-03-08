@@ -2,9 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.codepath.the_town_kitchen" >
 
-    <permission android:name="com.codepath.the_town_kitchen.permission.MAPS_RECEIVE" android:protectionLevel="signature"/>
-    <uses-permission android:name="com.codepath.the_town_kitchen.permission.MAPS_RECEIVE"/>
+    <permission
+        android:name="com.codepath.the_town_kitchen.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
 
+    <uses-permission android:name="com.codepath.the_town_kitchen.permission.MAPS_RECEIVE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="com.codepath.the_town_kitchen.permission.MAPS_RECEIVE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -62,8 +64,10 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
+        <uses-library
+            android:name="com.google.android.maps"
+            android:required="true" />
 
-        <uses-library android:required="true" android:name="com.google.android.maps" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyDxEvw03ZteVUd55h57jOTJhR8BaxloheA" />
@@ -74,9 +78,12 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.PaymentInfoActivity"
+            android:label="@string/title_activity_payment_info" >
         </activity>
     </application>
 

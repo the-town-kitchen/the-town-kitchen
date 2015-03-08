@@ -7,13 +7,9 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Delete;
-import com.activeandroid.query.Select;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 @Table(name = "user")
 
