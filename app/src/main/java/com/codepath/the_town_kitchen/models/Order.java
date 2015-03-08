@@ -11,6 +11,8 @@ import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Delete;
+import com.activeandroid.query.Select;
 import com.codepath.the_town_kitchen.models.Feedback;
 
 import org.json.JSONArray;
@@ -18,6 +20,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "order")
 
@@ -117,6 +120,14 @@ public class Order extends Model implements Parcelable {
     public static Order fromJson(JSONObject jsonObject) {
         Order order = new Order();
         try {
+            Long currentOrderId = jsonObject.getLong("uid");
+            Order existingOrder = new Select().from(Order.class)
+                    .where("uid = ?", currentOrderId)
+                    .executeSingle();
+            if (existingOrder != null) {
+                order = existingOrder;
+            }
+            order.uid = currentOrderId;
             order.uid = jsonObject.has("uid") ? jsonObject.getLong("uid") : 0;
             order.cost = jsonObject.has("cost") ? jsonObject.getDouble("cost") : 0.0;
             order.deliveryLocation = jsonObject.has("deliveryLocation") ? jsonObject.getString("deliveryLocation") : "";
@@ -161,4 +172,17 @@ public class Order extends Model implements Parcelable {
             return new Order[size];
         }
     };
+
+    public static ArrayList<Order> fromCache() {
+        ArrayList<Order> alOrders = new ArrayList<>();
+        List<Order> orders = new Select()
+                .from(Order.class)
+                .execute();
+        alOrders.addAll(orders);
+        return alOrders;
+    }
+
+    public static void deleteAll() {
+        new Delete().from(Order.class).execute();
+    }
 }

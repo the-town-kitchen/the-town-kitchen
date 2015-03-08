@@ -11,16 +11,22 @@ import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Delete;
+import com.activeandroid.query.Select;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Table(name = "meal")
 
 public class Meal extends Model implements Parcelable {
+
+    @Column(name = "uid", index = true, unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
+    private Long uid;
 
     @Column(name = "name")
     private String name;
@@ -43,39 +49,28 @@ public class Meal extends Model implements Parcelable {
     @Column(name = "date")
     private String date;
 
-    public String getName() {
-        return name;
-    }
+    public Long getUid() { return uid; }
 
-    public String getDescription() {
-        return description;
-    }
+    public String getName() { return name; }
 
-    public Order getOrder() {
-        return order;
-    }
+    public String getDescription() { return description; }
 
-    public double getPrice() {
-        return price;
-    }
+    public Order getOrder() { return order; }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
+    public double getPrice() { return price; }
 
-    public int getQuantity() {
-        return quantity;
-    }
+    public String getImageUrl() { return imageUrl; }
 
-    public String getDate() {
-        return date;
-    }
+    public int getQuantity() { return quantity; }
+
+    public String getDate() { return date; }
 
     public Meal() {
         super();
     }
 
     public Meal(Parcel in) {
+        uid = in.readLong();
         name = in.readString();
         description = in.readString();
         order = in.readParcelable(Order.class.getClassLoader());
@@ -115,6 +110,14 @@ public class Meal extends Model implements Parcelable {
     public static Meal fromJson(JSONObject jsonObject) {
         Meal meal = new Meal();
         try {
+            Long currentMealId = jsonObject.getLong("uid");
+            Meal existingMeal = new Select().from(Meal.class)
+                    .where("uid = ?", currentMealId)
+                    .executeSingle();
+            if (existingMeal != null) {
+                meal = existingMeal;
+            }
+            meal.uid = currentMealId;
             meal.name = jsonObject.has("name") ? jsonObject.getString("name") : "";
             meal.description = jsonObject.has("description") ? jsonObject.getString("description") : "";
             meal.order = jsonObject.has("order") ? Order.fromJson(jsonObject.getJSONObject("order")): null;
@@ -137,6 +140,7 @@ public class Meal extends Model implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int i) {
+        dest.writeLong(uid);
         dest.writeString(name);
         dest.writeString(description);
         dest.writeParcelable(order, i);
@@ -158,5 +162,18 @@ public class Meal extends Model implements Parcelable {
             return new Meal[size];
         }
     };
+
+    public static ArrayList<Meal> fromCache() {
+        ArrayList<Meal> alMeals = new ArrayList<>();
+        List<Meal> meals = new Select()
+                .from(Meal.class)
+                .execute();
+        alMeals.addAll(meals);
+        return alMeals;
+    }
+
+    public static void deleteAll() {
+        new Delete().from(Meal.class).execute();
+    }
 }
 

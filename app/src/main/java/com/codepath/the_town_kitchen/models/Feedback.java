@@ -11,6 +11,7 @@ import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Delete;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -107,4 +108,8 @@ public class Feedback extends Model implements Parcelable {
             return new Feedback[size];
         }
     };
+
+    public static void deleteAll() {
+        new Delete().from(Feedback.class).execute();
+    }
 }
