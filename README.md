@@ -35,13 +35,22 @@ This Android app will:
  * [ ] User can submit feedback once their order has arrived.
  * [ ] *Optional*: User can favorite a purchased meal that will be added to the "My Favorites" menu option on the nav drawer
 
+## Mockups
+
+View mockups [here](https://moqups.com/jemoonette/6pPEZtek/p:ad592cb44).
+
 ## Acknowledgements
 
 This app was made by [Paulina Ramos](https://github.com/paulinar), [Marina Murashev](https://github.com/marinamurashev), and [Xiangli Dai](https://github.com/XiangliDai).
 
-It uses open source libraries, such as:
+It uses the following open source libraries:
 
- * xx
+* [scribe-java](https://github.com/fernandezpablo85/scribe-java) - Simple OAuth library for handling the authentication flow.
+* [Android Async HTTP](https://github.com/loopj/android-async-http) - Simple asynchronous HTTP requests with JSON parsing
+* [codepath-oauth](https://github.com/thecodepath/android-oauth-handler) - Custom-built library for managing OAuth authentication and signing of requests
+* [Picasso](https://github.com/square/picasso) - Used for async image loading and caching them in memory and on disk.
+* [ActiveAndroid](https://github.com/pardom/ActiveAndroid) - Simple ORM for persisting a local SQLite database on the Android device
+* [Google Play Services](http://developer.android.com/google/play-services/maps.html) - Contains the interfaces to the individual Google services
 
 ## Contributing
 

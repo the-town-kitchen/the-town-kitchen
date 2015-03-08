@@ -10,5 +10,9 @@
     <string name="btn_logout_from_google">Logout from Google</string>
     <string name="btn_revoke_access">Revoke Access</string>
     <string name="photo">photo</string>
+    <string name="title_activity_test">TestActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_delivery_location">DeliveryLocationActivity</string>
 
 </resources>
