@@ -13,6 +13,6 @@
     <string name="title_activity_test">TestActivity</string>
 
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_delivery_location">DeliveryLocationActivity</string>
+    <string name="title_activity_delivery_location">Choose Delivery Location</string>
 
 </resources>

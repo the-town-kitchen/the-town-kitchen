@@ -19,6 +19,11 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+}
+
 dependencies {
     compile fileTree(dir: 'libs', include: '*.jar')
     compile 'com.android.support:appcompat-v7:21.0.0+'
@@ -26,4 +31,6 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.4.0'
     compile 'com.loopj.android:android-async-http:1.4.6'
     compile 'com.google.android.gms:play-services:6.5.87'
+    // ActiveAndroid for simple persistence with an ORM
+    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
 }

@@ -40,6 +40,7 @@ public class DeliveryLocationActivity extends FragmentActivity implements
     private LocationRequest mLocationRequest;
     private long UPDATE_INTERVAL = 60000;  /* 60 secs */
     private long FASTEST_INTERVAL = 5000; /* 5 secs */
+    private String TAG_DELIVERY_LOCATION_ACTIVITY = "TAG_DELIVERY_LOCATION_ACTIVITY";
 
     /*
      * Define a request code to send to Google Play services This code is
@@ -61,7 +62,8 @@ public class DeliveryLocationActivity extends FragmentActivity implements
                 }
             });
         } else {
-            Toast.makeText(this, "Error - Map Fragment was null!!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Error - Map Fragment was null!", Toast.LENGTH_SHORT).show();
+            Log.e(TAG_DELIVERY_LOCATION_ACTIVITY, "Map Fragment was null!");
         }
 
     }
@@ -70,7 +72,8 @@ public class DeliveryLocationActivity extends FragmentActivity implements
         map = googleMap;
         if (map != null) {
             // Map is ready
-            Toast.makeText(this, "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
+            Log.d(TAG_DELIVERY_LOCATION_ACTIVITY, "Map Fragment was loaded properly!");
             map.setMyLocationEnabled(true);
 
             // Now that map has loaded, let's get our location!
@@ -81,7 +84,8 @@ public class DeliveryLocationActivity extends FragmentActivity implements
 
             connectClient();
         } else {
-            Toast.makeText(this, "Error - Map was null!!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "Error - Map was null!!", Toast.LENGTH_SHORT).show();
+            Log.e(TAG_DELIVERY_LOCATION_ACTIVITY, "Error - Map was null!");
         }
     }
 
@@ -169,13 +173,15 @@ public class DeliveryLocationActivity extends FragmentActivity implements
         // Display the connection status
         Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (location != null) {
-            Toast.makeText(this, "GPS location was found!", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "GPS location was found!", Toast.LENGTH_SHORT).show();
+            Log.d(TAG_DELIVERY_LOCATION_ACTIVITY, "GPS location was found!");
             LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(latLng, 17);
             map.animateCamera(cameraUpdate);
             startLocationUpdates();
         } else {
-            Toast.makeText(this, "Current location was null, enable GPS on emulator!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Current location could not be found. Please enable GPS on your device.", Toast.LENGTH_SHORT).show();
+            Log.e(TAG_DELIVERY_LOCATION_ACTIVITY, "Current location was null, enable GPS on emulator!");
         }
     }
 
@@ -193,7 +199,8 @@ public class DeliveryLocationActivity extends FragmentActivity implements
         String msg = "Updated Location: " +
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        Log.d(TAG_DELIVERY_LOCATION_ACTIVITY, msg);
 
     }
 
@@ -204,9 +211,9 @@ public class DeliveryLocationActivity extends FragmentActivity implements
     @Override
     public void onConnectionSuspended(int i) {
         if (i == CAUSE_SERVICE_DISCONNECTED) {
-            Toast.makeText(this, "Disconnected. Please re-connect.", Toast.LENGTH_SHORT).show();
+            Log.e(TAG_DELIVERY_LOCATION_ACTIVITY, "Disconnected. Please re-connect.");
         } else if (i == CAUSE_NETWORK_LOST) {
-            Toast.makeText(this, "Network lost. Please re-connect.", Toast.LENGTH_SHORT).show();
+            Log.e(TAG_DELIVERY_LOCATION_ACTIVITY, "Network lost. Please re-connect.");
         }
     }
 

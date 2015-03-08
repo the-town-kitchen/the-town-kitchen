@@ -6,22 +6,24 @@ import android.os.Parcelable;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Select;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 @Table(name = "user")
 
 public class User extends Model implements Parcelable {
+
     @Column(name = "name")
     private String name;
 
-    public String getEmail() {
-        return email;
-    }
-
     @Column(name = "email")
     private String email;
+
     @Column(name = "profile_image_url")
     private String profileImageUrl;
 
@@ -42,6 +44,8 @@ public class User extends Model implements Parcelable {
         return name;
     }
 
+    public String getEmail() { return email; }
+
     public String getProfileImageUrl() {
         return profileImageUrl;
     }
@@ -57,6 +61,7 @@ public class User extends Model implements Parcelable {
         user.save();
         return user;
     }
+
     @Override
     public int describeContents() {
         return 0;
