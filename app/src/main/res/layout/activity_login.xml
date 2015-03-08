@@ -1,41 +1,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:facebook="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
     tools:context=".LoginActivity">
+
     <ImageView
         android:id="@+id/ivLogo"
         android:layout_width="80dp"
         android:layout_height="wrap_content"
-        android:src="@drawable/townkitchen"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:src="@drawable/townkitchen" />
 
     <com.google.android.gms.common.SignInButton
-        android:id="@+id/btn_sign_in"
+        android:id="@+id/google_login_button"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"/>
+        android:layout_marginBottom="20dp" />
 
+    <com.facebook.widget.LoginButton
+        android:id="@+id/fb_login_button"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        facebook:confirm_logout="false"
+        facebook:fetch_user_info="true" />
 
-
-
-        <com.facebook.widget.LoginButton
-            android:id="@+id/fb_login_button"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            facebook:confirm_logout="false"
-            facebook:fetch_user_info="true" />
-
-
-
-
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content" 
-    android:id="@+id/tvName"/>
 
 </LinearLayout>

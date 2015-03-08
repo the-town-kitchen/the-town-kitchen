@@ -85,16 +85,18 @@
     </content>
     <orderEntry type="jdk" jdkName="Android API 21 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="play-services-6.5.87" level="project" />
-    <orderEntry type="library" exported="" name="support-annotations-21.0.3" level="project" />
-    <orderEntry type="library" exported="" name="activeandroid-3.1.0-SNAPSHOT" level="project" />
     <orderEntry type="library" exported="" name="scribe-codepath-0.0.3" level="project" />
+    <orderEntry type="library" exported="" name="commons-io-2.4" level="project" />
     <orderEntry type="library" exported="" name="support-v4-21.0.3" level="project" />
+    <orderEntry type="library" exported="" name="picasso-2.4.0" level="project" />
+    <orderEntry type="library" exported="" name="facebook-android-sdk-3.21.1" level="project" />
+    <orderEntry type="library" exported="" name="activeandroid-3.1.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" exported="" name="play-services-6.5.87" level="project" />
     <orderEntry type="library" exported="" name="codepath-oauth-0.4.1" level="project" />
     <orderEntry type="library" exported="" name="codepath-utils" level="project" />
-    <orderEntry type="library" exported="" name="commons-io-2.4" level="project" />
-    <orderEntry type="library" exported="" name="picasso-2.4.0" level="project" />
     <orderEntry type="library" exported="" name="android-async-http-1.4.6" level="project" />
+    <orderEntry type="library" exported="" name="support-annotations-21.0.3" level="project" />
+    <orderEntry type="library" exported="" name="bolts-android-1.1.2" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-21.0.0" level="project" />
   </component>
 </module>

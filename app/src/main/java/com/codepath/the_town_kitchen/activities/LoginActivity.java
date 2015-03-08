@@ -75,7 +75,7 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener,
         facebookLoginBtn.setUserInfoChangedCallback(TheTownKitchenApplication.getFaceBookApi()
                         .getUserInfoChangedCallback(facebookApiHandler));
 
-        googleLoginBtn = (SignInButton) findViewById(R.id.btn_sign_in);
+        googleLoginBtn = (SignInButton) findViewById(R.id.google_login_button);
         googleLoginBtn.setOnClickListener(this);
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
