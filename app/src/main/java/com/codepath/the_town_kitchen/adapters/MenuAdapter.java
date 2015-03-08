@@ -10,12 +10,12 @@ import android.widget.TextView;
 
 import com.codepath.the_town_kitchen.DeviceDimensionsHelper;
 import com.codepath.the_town_kitchen.R;
-import com.codepath.the_town_kitchen.models.Menu;
+import com.codepath.the_town_kitchen.models.Meal;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class MenuAdapter extends ArrayAdapter<Menu> {
+public class MenuAdapter extends ArrayAdapter<Meal> {
 
 private Context context;
 
@@ -30,7 +30,7 @@ private Context context;
         public TextView tvDescription;
     }
 
-    public MenuAdapter(Context context, List<Menu> menus, IActionClickListener actionClickListener) {
+    public MenuAdapter(Context context, List<Meal> menus, IActionClickListener actionClickListener) {
         super(context, 0, menus);
         this.context = context;
         this.actionClickListener = actionClickListener;
@@ -39,7 +39,7 @@ private Context context;
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        final Menu menu = getItem(position);
+        final Meal menu = getItem(position);
         ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();

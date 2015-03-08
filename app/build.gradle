@@ -18,6 +18,7 @@ android {
         }
     }
 }
+repositories { mavenCentral() }
 
 repositories {
     mavenCentral()
@@ -33,4 +34,5 @@ dependencies {
     compile 'com.google.android.gms:play-services:6.5.87'
     // ActiveAndroid for simple persistence with an ORM
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
+    compile 'com.facebook.android:facebook-android-sdk:3.21.1'
 }

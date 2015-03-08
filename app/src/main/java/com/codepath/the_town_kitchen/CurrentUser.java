@@ -28,7 +28,7 @@ public class CurrentUser {
         
     }
 
-    public void requestCurrentUser(GoogleApiClient googleApiClient) {
+    public void requestCurrentUserFromGoogle(GoogleApiClient googleApiClient) {
         if (Plus.PeopleApi.getCurrentPerson(googleApiClient) != null) {
             Person person = Plus.PeopleApi
                     .getCurrentPerson(googleApiClient);
@@ -39,4 +39,5 @@ public class CurrentUser {
         }
 
     }
+
 }

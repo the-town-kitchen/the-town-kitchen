@@ -3,6 +3,7 @@ package com.codepath.the_town_kitchen;
 import android.content.Context;
 
 import com.activeandroid.ActiveAndroid;
+import com.codepath.the_town_kitchen.net.FacebookApi;
 
 /*
  * This is the Android application itself and is used to configure various settings
@@ -24,6 +25,9 @@ public class TheTownKitchenApplication extends com.activeandroid.app.Application
 	}
 
 
+    public static FacebookApi getFaceBookApi() {
+        return (FacebookApi) FacebookApi.getInstance();
+    }
     public static CurrentUser getCurrentUser() {
         return (CurrentUser) CurrentUser.getInstance();
     }

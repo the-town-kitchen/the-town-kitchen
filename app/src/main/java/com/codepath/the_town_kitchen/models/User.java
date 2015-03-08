@@ -20,13 +20,13 @@ public class User extends Model implements Parcelable {
 
     @Column(name = "name")
     private String name;
-
     @Column(name = "email")
     private String email;
 
     @Column(name = "profile_image_url")
     private String profileImageUrl;
-
+    @Column(name = "facebook_id")
+    private String facebookId;
     // Profile pic image size in pixels
     private static final int PROFILE_PIC_SIZE = 40;
 
@@ -38,18 +38,25 @@ public class User extends Model implements Parcelable {
         name = in.readString();
         email = in.readString();
         profileImageUrl = in.readString();
+        facebookId = in.readString();
       }
 
     public String getName() {
         return name;
     }
 
-    public String getEmail() { return email; }
-
     public String getProfileImageUrl() {
         return profileImageUrl;
     }
 
+    public String getFacebookId() {
+        return facebookId;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+    
     public static User fromGooglePerson(Person person, GoogleApiClient mGoogleApiClient) {
         User user = new User();
         user.name = person.getDisplayName();
@@ -62,6 +69,20 @@ public class User extends Model implements Parcelable {
         return user;
     }
 
+
+    public static User fromJson(JSONObject json) {
+        User user = new User();
+        try {
+            user.email = json.getString("email");
+            user.name = json.getString("name");
+            user.facebookId = json.getString("id");
+            user.save();
+            return user;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     @Override
     public int describeContents() {
         return 0;
@@ -72,6 +93,7 @@ public class User extends Model implements Parcelable {
         dest.writeString(name);
         dest.writeString(email);
         dest.writeString(profileImageUrl);
+        dest.writeString(facebookId);
 
     }
     
@@ -83,4 +105,5 @@ public class User extends Model implements Parcelable {
             return new User[size];
         }
     };
+
 }

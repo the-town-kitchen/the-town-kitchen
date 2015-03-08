@@ -22,6 +22,12 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/activity_large_margin"
         android:layout_below="@id/toolbar">
+
+        <com.facebook.widget.ProfilePictureView
+            android:id="@+id/ivFacebookProfile"
+            android:layout_width="@dimen/avatar_size"
+            android:layout_height="@dimen/avatar_size"
+            android:layout_marginRight="@dimen/activity_normal_margin"/>
         <ImageView
             android:id="@+id/ivProfile"
             android:layout_width="@dimen/avatar_size"

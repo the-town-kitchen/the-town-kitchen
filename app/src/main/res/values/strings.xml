@@ -14,5 +14,8 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_delivery_location">Choose Delivery Location</string>
+    <string name="FACEBOOK_APP_ID">1621411151403659</string>
+
+
 
 </resources>

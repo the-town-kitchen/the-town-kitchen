@@ -3,16 +3,23 @@ package com.codepath.the_town_kitchen.activities;
 
 //facebook
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.codepath.the_town_kitchen.R;
 import com.codepath.the_town_kitchen.TheTownKitchenApplication;
+import com.codepath.the_town_kitchen.models.User;
+import com.codepath.the_town_kitchen.net.FacebookApi;
+import com.facebook.Session;
+import com.facebook.SessionState;
+import com.facebook.UiLifecycleHelper;
+import com.facebook.widget.LoginButton;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.SignInButton;
@@ -21,12 +28,17 @@ import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.plus.Plus;
 
-public class LoginActivity extends Activity implements OnClickListener,
+import org.json.JSONObject;
+
+import java.util.Arrays;
+
+public class LoginActivity extends ActionBarActivity implements OnClickListener,
         ConnectionCallbacks, OnConnectionFailedListener {
 
     private static final int RC_SIGN_IN = 0;
     private static final String TAG = LoginActivity.class.getSimpleName();
 
+    private UiLifecycleHelper uiHelper;
     // Google client to interact with Google API
     private GoogleApiClient mGoogleApiClient;
 
@@ -40,16 +52,32 @@ public class LoginActivity extends Activity implements OnClickListener,
     private boolean mLoggedIn;
     private ConnectionResult mConnectionResult;
 
-    private SignInButton btnSignIn;
+    private SignInButton googleLoginBtn;
 
+    LoginButton facebookLoginBtn;
+    private boolean isResumed = false;
+   
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        uiHelper = new UiLifecycleHelper(this, callback);
+        uiHelper.onCreate(savedInstanceState);
 
-        btnSignIn = (SignInButton) findViewById(R.id.btn_sign_in);
-        btnSignIn.setOnClickListener(this);
-       
+
+        setContentView(R.layout.activity_login);
+
+
+        facebookLoginBtn = (LoginButton) findViewById(R.id.fb_login_button);
+        facebookLoginBtn.setApplicationId(getResources().getString(R.string.FACEBOOK_APP_ID));
+        facebookLoginBtn.setReadPermissions(Arrays.asList("email", "public_profile"));
+
+        facebookLoginBtn.setUserInfoChangedCallback(TheTownKitchenApplication.getFaceBookApi()
+                        .getUserInfoChangedCallback(facebookApiHandler));
+
+        googleLoginBtn = (SignInButton) findViewById(R.id.btn_sign_in);
+        googleLoginBtn.setOnClickListener(this);
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
@@ -57,7 +85,39 @@ public class LoginActivity extends Activity implements OnClickListener,
                 .addScope(Plus.SCOPE_PLUS_LOGIN)
                 .build();
     }
+    
+    private FacebookApi.IResponseHandler facebookApiHandler = new FacebookApi.IResponseHandler() {
+        @Override
+        public void handle(JSONObject json) {
+            setCurrentUser(json);
+        }
+    };
+    @Override
+    protected void onResume() {
+        super.onResume();
+        uiHelper.onResume();
+        isResumed = true;
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        uiHelper.onPause();
+        isResumed = false;
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        uiHelper.onDestroy();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        uiHelper.onSaveInstanceState(outState);
+    }
     protected void onStart() {
         super.onStart();
         mGoogleApiClient.connect();
@@ -69,7 +129,6 @@ public class LoginActivity extends Activity implements OnClickListener,
             mGoogleApiClient.disconnect();
         }
     }
-
     private void resolveSignInError() {
         if (mConnectionResult != null && mConnectionResult.hasResolution()) {
             try {
@@ -104,6 +163,8 @@ public class LoginActivity extends Activity implements OnClickListener,
     @Override
     protected void onActivityResult(int requestCode, int responseCode,
                                     Intent intent) {
+        super.onActivityResult(requestCode, requestCode, intent);
+        uiHelper.onActivityResult(requestCode, responseCode, intent);
         if (requestCode == RC_SIGN_IN) {
             if (responseCode != RESULT_OK) {
                 mSignInClicked = false;
@@ -114,6 +175,8 @@ public class LoginActivity extends Activity implements OnClickListener,
             if (!mGoogleApiClient.isConnecting()) {
                 mGoogleApiClient.connect();
             }
+
+           
         }
     }
 
@@ -122,7 +185,7 @@ public class LoginActivity extends Activity implements OnClickListener,
         mSignInClicked = false;
         mLoggedIn = true;
         // Get user's information
-        TheTownKitchenApplication.getCurrentUser().requestCurrentUser(mGoogleApiClient);
+        TheTownKitchenApplication.getCurrentUser().requestCurrentUserFromGoogle(mGoogleApiClient);
 
     }
 
@@ -164,5 +227,39 @@ public class LoginActivity extends Activity implements OnClickListener,
             }
         }
     }
+
+    private void onSessionStateChange(Session session, SessionState state, Exception exception) {
+        // Only make changes if the activity is visible
+        if (isResumed) {
+            // If the session state is open:
+            if (state.isOpened()) {
+                Log.i(TAG, "state opended");
+                if (TheTownKitchenApplication.getCurrentUser().getUser() == null) {
+                    TheTownKitchenApplication.getFaceBookApi().getUser(session, facebookApiHandler);
+                }
+            }
+            else if (state.isClosed()) {
+                // If the session state is closed:
+                Log.i(TAG, "state closed");
+            }
+        }
+    }
+
+    private void setCurrentUser(JSONObject response) {
+        JSONObject json = response;
+        User user = User.fromJson(json);
+        TheTownKitchenApplication.getCurrentUser().setUser(user);
+        Intent intent = new Intent(this, MenuListActivity.class);
+        startActivity(intent);
+    }
+
+
+    private Session.StatusCallback callback =  new Session.StatusCallback() {
+        @Override
+        public void call(Session session, SessionState state, Exception exception) {
+            onSessionStateChange(session, state, exception);
+        }
+    };
+
 
 }

@@ -6,6 +6,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ import com.codepath.the_town_kitchen.R;
 import com.codepath.the_town_kitchen.TheTownKitchenApplication;
 import com.codepath.the_town_kitchen.adapters.MenuAdapter;
 import com.codepath.the_town_kitchen.models.User;
+import com.facebook.widget.ProfilePictureView;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -24,11 +26,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 public class MenuListActivity extends ActionBarActivity {
+    private ProfilePictureView profilePictureView;
     private ImageView ivProfile;
     private TextView tvUserName, tvEmail;
     private ListView lvList;
     private MenuAdapter menuAdapter;
-    private ArrayList<com.codepath.the_town_kitchen.models.Menu> menus;
+    private ArrayList<com.codepath.the_town_kitchen.models.Meal> menus;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,18 +47,26 @@ public class MenuListActivity extends ActionBarActivity {
         tvUserName = (TextView) findViewById(R.id.tvUserName);
         tvEmail = (TextView) findViewById(R.id.tvEmail);
         lvList = (ListView) findViewById(R.id.lvList);
+        profilePictureView = (ProfilePictureView) findViewById(R.id.ivFacebookProfile);
         //Mock data here;
         readFile();
         if(menus == null) {
             menus = new ArrayList<>();
         }
-        
         menuAdapter = new MenuAdapter(this, menus, null);
         lvList.setAdapter(menuAdapter);
         User currentUser = TheTownKitchenApplication.getCurrentUser().getUser();
         if(currentUser!= null) {
-            Picasso.with(this).load(currentUser.getProfileImageUrl()).into(ivProfile);
+            if(currentUser.getProfileImageUrl() != null && !currentUser.getProfileImageUrl().isEmpty()) {
+                Picasso.with(this).load(currentUser.getProfileImageUrl()).into(ivProfile);
+            }
+            else if(currentUser.getFacebookId()!= null && !currentUser.getFacebookId().isEmpty()){
+            
+                profilePictureView.setCropped(true);
+                profilePictureView.setProfileId(currentUser.getFacebookId());
+                profilePictureView.setVisibility(View.VISIBLE);
 
+            }
             tvUserName.setText(currentUser.getName());
             tvEmail.setText(currentUser.getEmail());
         }
@@ -94,7 +105,7 @@ public class MenuListActivity extends ActionBarActivity {
             JSONObject jsonObject  = new JSONObject(json);
             JSONArray jsonArray = jsonObject.getJSONArray("menu");
             if (jsonArray != null && jsonArray.length() > 0) {
-                menus = com.codepath.the_town_kitchen.models.Menu.fromJsonArray(jsonArray);
+                menus = com.codepath.the_town_kitchen.models.Meal.fromJsonArray(jsonArray);
             }
             Log.d("MenuListActivity", "menu list " + menus.size());
         } 
