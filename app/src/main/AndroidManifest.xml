@@ -36,7 +36,8 @@
             android:value="1" />
         <meta-data
             android:name="AA_MODELS"
-            android:value="com.codepath.the_town_kitchen.models.User, com.codepath.the_town_kitchen.models.Meal,com.codepath.the_town_kitchen.models.Order" />
+            android:value="com.codepath.the_town_kitchen.models.User, com.codepath.the_town_kitchen.models.Meal,
+            com.codepath.the_town_kitchen.models.Feedback, com.codepath.the_town_kitchen.models.Bill" />
 
         <activity
             android:name=".activities.LoginActivity"
