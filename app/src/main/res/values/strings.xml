@@ -17,5 +17,10 @@
     <string name="title_activity_payment_info">PaymentInfoActivity</string>
     <string name="save_credit_card_info">Save my credit card info for future use</string>
     <string name="save_payment">Save Payment Info</string>
+    <string name="title_activity_order_summary">OrderSummaryActivity</string>
+    <string name="submit_coupon">Submit</string>
+    <string name="order_total">Total</string>
+    <string name="delivering_to">Delivering to</string>
+    <string name="submit_order">Submit Order</string>
 
 </resources>

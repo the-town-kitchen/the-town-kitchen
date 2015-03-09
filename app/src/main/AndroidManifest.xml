@@ -85,6 +85,10 @@
             android:name=".activities.PaymentInfoActivity"
             android:label="@string/title_activity_payment_info" >
         </activity>
+        <activity
+            android:name=".activities.OrderSummaryActivity"
+            android:label="@string/title_activity_order_summary" >
+        </activity>
     </application>
 
 </manifest>

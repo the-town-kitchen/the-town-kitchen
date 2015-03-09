@@ -1,0 +1,79 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.codepath.the_town_kitchen.activities.OrderSummaryActivity">
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="200dp"
+        android:id="@+id/lvOrderItems"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/etCouponCode"
+        android:layout_below="@+id/lvOrderItems"
+        android:layout_centerHorizontal="true"
+        android:hint="coupon code"
+        android:layout_alignBottom="@id/bSubmitCoupon"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/submit_coupon"
+        android:id="@+id/bSubmitCoupon"
+        android:layout_below="@+id/lvOrderItems"
+        android:layout_toRightOf="@+id/etCouponCode"
+        android:layout_toEndOf="@+id/etCouponCode"
+        android:layout_marginLeft="37dp"
+        android:layout_marginStart="37dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/order_total"
+        android:id="@+id/textView"
+        android:layout_below="@+id/etCouponCode"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView2"
+        android:layout_alignBottom="@+id/textView"
+        android:layout_alignRight="@+id/bSubmitCoupon"
+        android:layout_alignEnd="@+id/bSubmitCoupon" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/delivering_to"
+        android:id="@+id/tvDeliveringTo"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="39dp"
+        android:drawableLeft="@drawable/ic_place"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvAddress"
+        android:layout_alignBottom="@+id/tvDeliveringTo"
+        android:layout_alignRight="@+id/bSubmitCoupon"
+        android:layout_alignEnd="@+id/bSubmitCoupon" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/submit_order"
+        android:id="@+id/bSubmitOrder"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>
