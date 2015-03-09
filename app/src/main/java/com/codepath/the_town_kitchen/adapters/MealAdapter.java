@@ -36,8 +36,8 @@ private Context context;
                 
     }
 
-    public MealAdapter(Context context, List<Meal> menus, IActionClickListener actionClickListener) {
-        super(context, 0, menus);
+    public MealAdapter(Context context, List<Meal> meals, IActionClickListener actionClickListener) {
+        super(context, 0, meals);
         this.context = context;
         this.actionClickListener = actionClickListener;
 
@@ -45,7 +45,7 @@ private Context context;
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        final Meal menu = getItem(position);
+        final Meal meal = getItem(position);
         final ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
@@ -64,9 +64,9 @@ private Context context;
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.tvName.setText(menu.getName());
-        viewHolder.tvDescription.setText(menu.getDescription());
-        viewHolder.tvPrice.setText("$" + menu.getPrice());
+        viewHolder.tvName.setText(meal.getName());
+        viewHolder.tvDescription.setText(meal.getDescription());
+        viewHolder.tvPrice.setText("$" + meal.getPrice());
                 
         viewHolder.ibMinus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,7 +90,7 @@ private Context context;
         viewHolder.ivImage.setImageResource(0);
 
         int deviceWidth = DeviceDimensionsHelper.getDisplayWidth(getContext());
-        Picasso.with(getContext()).load(menu.getImageUrl()).resize(deviceWidth, 0).into(viewHolder.ivImage);
+        Picasso.with(getContext()).load(meal.getImageUrl()).resize(deviceWidth, 0).into(viewHolder.ivImage);
         return convertView;
     }
 
