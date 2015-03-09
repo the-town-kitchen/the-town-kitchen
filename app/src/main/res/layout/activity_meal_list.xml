@@ -14,7 +14,15 @@
         android:layout_alignParentTop="true"
         android:background="@color/white"
         app:popupTheme="@style/Theme.AppCompat.Light"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/today"
+        android:textColor="@color/neutral"
+        android:layout_gravity="right|center"
+        android:id="@+id/toolbar_text" />
+    </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
         android:id="@+id/rlProfile"

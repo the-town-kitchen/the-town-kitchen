@@ -1,5 +1,6 @@
 package com.codepath.the_town_kitchen.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,12 +11,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.codepath.the_town_kitchen.R;
 import com.codepath.the_town_kitchen.TheTownKitchenApplication;
 import com.codepath.the_town_kitchen.adapters.MealAdapter;
 import com.codepath.the_town_kitchen.models.User;
 import com.facebook.widget.ProfilePictureView;
+import com.fourmob.datetimepicker.date.DatePickerDialog;
+import com.sleepbot.datetimepicker.time.RadialPickerLayout;
+import com.sleepbot.datetimepicker.time.TimePickerDialog;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -25,7 +30,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-public class MealListActivity extends ActionBarActivity {
+import java.util.Calendar;
+
+public class MealListActivity extends ActionBarActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
     private ProfilePictureView profilePictureView;
     private ImageView ivProfile;
     private TextView tvUserName, tvEmail;
@@ -33,17 +40,42 @@ public class MealListActivity extends ActionBarActivity {
     private MealAdapter mealAdapter;
     private ArrayList<com.codepath.the_town_kitchen.models.Meal> meals;
     private static String TAG = MealListActivity.class.getSimpleName();
+
+    private Calendar calendar;
+
+    public static final String DATEPICKER_TAG = "datepicker";
+    public static final String TIMEPICKER_TAG = "timepicker";
+    private DatePickerDialog datePickerDialog;
+    private TimePickerDialog timePickerDialog;
+
+    TextView toolbar_text;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meal_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
+        toolbar_text = (TextView)toolbar.findViewById(R.id.toolbar_text);
+        toolbar_text.setText(getString(R.string.today));
         setSupportActionBar(toolbar);
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 
         toolbar.setLogo(R.mipmap.ic_launcher);
         actionBar.setTitle("");
+        setupProfile();
+        
+        //Mock data here;
+        meals = new ArrayList<>();
+        mealAdapter = new MealAdapter(this, meals, null);
+        lvList.setAdapter(mealAdapter);
+        readFile("meal.json");
+        
+        calendar = Calendar.getInstance();
+        datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
+        timePickerDialog = TimePickerDialog.newInstance(this, calendar.get(Calendar.HOUR_OF_DAY) ,calendar.get(Calendar.MINUTE), false, false);
+
+    }
+
+    private void setupProfile() {
         ivProfile = (ImageView) findViewById(R.id.ivProfile);
         tvUserName = (TextView) findViewById(R.id.tvUserName);
         tvEmail = (TextView) findViewById(R.id.tvEmail);
@@ -65,14 +97,6 @@ public class MealListActivity extends ActionBarActivity {
             tvUserName.setText(currentUser.getName());
             tvEmail.setText(currentUser.getEmail());
         }
-        //Mock data here;
-        readFile();
-        if(meals == null) {
-            meals = new ArrayList<>();
-        }
-        mealAdapter = new MealAdapter(this, meals, null);
-        lvList.setAdapter(mealAdapter);
-
     }
 
 
@@ -92,6 +116,14 @@ public class MealListActivity extends ActionBarActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent i = new Intent(MealListActivity.this, OrderSummaryActivity.class);
+            startActivity(i);
+            return true;
+        }else if (id == R.id.action_date) {
+            datePickerDialog.setVibrate(false);
+            datePickerDialog.setYearRange(calendar.get(Calendar.YEAR), 2028);
+            datePickerDialog.setCloseOnSingleTapDay(true);
+            datePickerDialog.show(getSupportFragmentManager(), DATEPICKER_TAG);
             return true;
         }
 
@@ -99,14 +131,27 @@ public class MealListActivity extends ActionBarActivity {
     }
 
 
-    private void readFile(){
-            String json = loadJSONFromAsset();
+    @Override
+    public void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int day) {
+        toolbar_text.setText( year + "-" + month + "-" + day);
+        readFile("meal2.json");
+    }
+
+    @Override
+    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
+        Toast.makeText(this, "new time:" + hourOfDay + "-" + minute, Toast.LENGTH_LONG).show();
+    }
+
+    private void readFile(String fileName){
+            String json = loadJSONFromAsset(fileName);
       
         try {
             JSONObject jsonObject  = new JSONObject(json);
             JSONArray jsonArray = jsonObject.getJSONArray("meal");
             if (jsonArray != null && jsonArray.length() > 0) {
-                meals = com.codepath.the_town_kitchen.models.Meal.fromJsonArray(jsonArray);
+                meals.clear();
+                meals.addAll(com.codepath.the_town_kitchen.models.Meal.fromJsonArray(jsonArray));
+                mealAdapter.notifyDataSetChanged();
             }
             Log.d(TAG, "meal list " + meals.size());
         } 
@@ -115,10 +160,10 @@ public class MealListActivity extends ActionBarActivity {
         }
     }
     
-    public String loadJSONFromAsset() {
+    public String loadJSONFromAsset(String fileName) {
         String json = null;
         try {
-            InputStream is = getAssets().open("meal.json");
+            InputStream is = getAssets().open(fileName);
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -131,4 +176,5 @@ public class MealListActivity extends ActionBarActivity {
         }
         return json;
     }
+
 }

@@ -24,5 +24,7 @@
     <string name="submit_order">Submit Order</string>
     <string name="title_activity_feedback">FeedbackActivity</string>
     <string name="feedback_question">Did you enjoy your order?</string>
+    <string name="action_date">action_date</string>
+    <string name="today">Today</string>
 
 </resources>

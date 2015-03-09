@@ -35,4 +35,5 @@ dependencies {
     // ActiveAndroid for simple persistence with an ORM
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     compile 'com.facebook.android:facebook-android-sdk:3.21.1'
+    compile 'com.github.flavienlaurent.datetimepicker:library:0.0.2'
 }
