@@ -22,5 +22,7 @@
     <string name="order_total">Total</string>
     <string name="delivering_to">Delivering to</string>
     <string name="submit_order">Submit Order</string>
+    <string name="title_activity_feedback">FeedbackActivity</string>
+    <string name="feedback_question">Did you enjoy your order?</string>
 
 </resources>
