@@ -1,8 +1,6 @@
 package com.codepath.the_town_kitchen.activities;
 
 
-//facebook
-
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.os.Bundle;
@@ -165,6 +163,7 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener,
                                     Intent intent) {
         super.onActivityResult(requestCode, requestCode, intent);
         uiHelper.onActivityResult(requestCode, responseCode, intent);
+        
         if (requestCode == RC_SIGN_IN) {
             if (responseCode != RESULT_OK) {
                 mSignInClicked = false;
