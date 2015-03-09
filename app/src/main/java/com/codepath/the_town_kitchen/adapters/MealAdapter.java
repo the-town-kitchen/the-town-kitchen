@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,6 +29,11 @@ private Context context;
         public ImageView ivImage;
         public TextView tvName;
         public TextView tvDescription;
+        public TextView tvPrice;
+        public ImageButton ibMinus;
+        public ImageButton ibPlus;
+        public TextView tvCounts;
+                
     }
 
     public MealAdapter(Context context, List<Meal> menus, IActionClickListener actionClickListener) {
@@ -40,7 +46,7 @@ private Context context;
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final Meal menu = getItem(position);
-        ViewHolder viewHolder;
+        final ViewHolder viewHolder;
         if (convertView == null) {
             viewHolder = new ViewHolder();
             LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -48,6 +54,10 @@ private Context context;
             viewHolder.ivImage = (ImageView)convertView.findViewById(R.id.ivImage);
             viewHolder.tvName = (TextView)convertView.findViewById(R.id.tvName);
             viewHolder.tvDescription = (TextView)convertView.findViewById(R.id.tvDescription);
+            viewHolder.tvPrice =  (TextView)convertView.findViewById(R.id.tvPrice);
+            viewHolder.ibMinus = (ImageButton) convertView.findViewById(R.id.ibMinus);
+            viewHolder.ibPlus = (ImageButton) convertView.findViewById(R.id.ibPlus);
+            viewHolder.tvCounts = (TextView) convertView.findViewById(R.id.tvCounts);
             convertView.setTag(viewHolder);
             
         } else {
@@ -56,7 +66,27 @@ private Context context;
 
         viewHolder.tvName.setText(menu.getName());
         viewHolder.tvDescription.setText(menu.getDescription());
+        viewHolder.tvPrice.setText("$" + menu.getPrice());
+                
+        viewHolder.ibMinus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int counts = Integer.parseInt(viewHolder.tvCounts.getText().toString());
+                if(counts > 0){
+                    viewHolder.tvCounts.setText((counts -1) + "");
+                }
+            }
+        });
 
+        viewHolder.ibPlus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int counts = Integer.parseInt(viewHolder.tvCounts.getText().toString());
+
+                viewHolder.tvCounts.setText((counts + 1)+"" );
+
+            }
+        });
         viewHolder.ivImage.setImageResource(0);
 
         int deviceWidth = DeviceDimensionsHelper.getDisplayWidth(getContext());

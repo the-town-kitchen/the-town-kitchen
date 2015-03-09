@@ -12,16 +12,33 @@
         android:scaleType="fitXY"
         android:contentDescription="@string/photo"
        />
+
     <RelativeLayout
         android:id="@+id/rlContent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"  
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_alignBottom="@+id/ivImage"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:background="#8888">
-
         <TextView
+            android:id="@+id/tvDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/secondary_darker"
+            android:textSize="14sp" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/rlContent"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/llName"
+        android:layout_marginTop="@dimen/activity_horizontal_margin">
+
+    <TextView
             android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -32,26 +49,45 @@
             android:layout_marginRight="@dimen/activity_small_margin"/>
 
         <TextView
-            android:id="@+id/tvDescription"
+            android:id="@+id/tvPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvName"
+            android:layout_toRightOf="@+id/tvName"
             android:fontFamily="sans-serif"
             android:textColor="@color/secondary_darker"
-            android:textSize="14sp" />
-
-
-    </RelativeLayout>
-    <LinearLayout
-        android:id="@+id/icons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rlContent"
-        android:orientation="horizontal">
-       <TextView
-           android:layout_width="match_parent"
-           android:layout_height="wrap_content" 
-           android:text="Shopping"/>
-            
+            android:textSize="14sp" 
+           />
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/llName"
+            android:layout_centerHorizontal="true"
+
+            android:layout_marginBottom="@dimen/activity_horizontal_margin">
+            
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" 
+                android:id="@+id/ibMinus"
+                android:src="@drawable/minus24"
+                android:layout_marginRight="@dimen/padding_big"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvCounts"
+                android:layout_alignBaseline = "@+id/ibMinus"
+                android:text="0"
+                android:layout_marginRight="@dimen/padding_big"
+                android:layout_gravity="center_vertical" />
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ibPlus"
+                android:src="@drawable/plus24"
+                />
+            </LinearLayout>
+
 </RelativeLayout>
