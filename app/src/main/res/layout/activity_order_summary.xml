@@ -20,7 +20,7 @@
         android:layout_below="@+id/lvOrderItems"
         android:layout_centerHorizontal="true"
         android:hint="coupon code"
-        android:layout_alignBottom="@id/bSubmitCoupon"/>
+        android:layout_alignBottom="@+id/bSubmitCoupon"/>
 
     <Button
         android:layout_width="wrap_content"

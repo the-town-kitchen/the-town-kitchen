@@ -15,7 +15,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-public class MenuAdapter extends ArrayAdapter<Meal> {
+public class MealAdapter extends ArrayAdapter<Meal> {
 
 private Context context;
 
@@ -30,7 +30,7 @@ private Context context;
         public TextView tvDescription;
     }
 
-    public MenuAdapter(Context context, List<Meal> menus, IActionClickListener actionClickListener) {
+    public MealAdapter(Context context, List<Meal> menus, IActionClickListener actionClickListener) {
         super(context, 0, menus);
         this.context = context;
         this.actionClickListener = actionClickListener;
@@ -44,7 +44,7 @@ private Context context;
         if (convertView == null) {
             viewHolder = new ViewHolder();
             LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.item_menu, parent, false);
+            convertView = inflater.inflate(R.layout.item_meal, parent, false);
             viewHolder.ivImage = (ImageView)convertView.findViewById(R.id.ivImage);
             viewHolder.tvName = (TextView)convertView.findViewById(R.id.tvName);
             viewHolder.tvDescription = (TextView)convertView.findViewById(R.id.tvDescription);

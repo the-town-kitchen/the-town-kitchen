@@ -13,7 +13,6 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
-import com.codepath.the_town_kitchen.models.Feedback;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,9 +21,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = "order")
+@Table(name = "bill")
 
-public class Order extends Model implements Parcelable {
+public class Bill extends Model implements Parcelable {
 
     @Column(name = "uid", index = true, unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private Long uid; // unique id for an order
@@ -75,12 +74,12 @@ public class Order extends Model implements Parcelable {
         return feedback;
     }
 
-    public Order() {
+    public Bill() {
         super();
 
     }
 
-    public Order(Parcel in) {
+    public Bill(Parcel in) {
         uid = in.readLong();
         cost = in.readDouble();
         deliveryLocation = in.readString();
@@ -90,9 +89,9 @@ public class Order extends Model implements Parcelable {
         feedback = in.readParcelable(Feedback.class.getClassLoader());
     }
 
-    public static ArrayList<Order> fromJsonArray(JSONArray jsonArray) {
+    public static ArrayList<Bill> fromJsonArray(JSONArray jsonArray) {
         if (jsonArray == null || jsonArray.length() < 1) return null;
-        ArrayList<Order> orders = new ArrayList<>(jsonArray.length());
+        ArrayList<Bill> orders = new ArrayList<>(jsonArray.length());
         ActiveAndroid.beginTransaction();
         try {
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -103,7 +102,7 @@ public class Order extends Model implements Parcelable {
                     e.printStackTrace();
                     continue;
                 }
-                Order order = Order.fromJson(resultJson);
+                Bill order = Bill.fromJson(resultJson);
 
                 if (order != null) {
                     orders.add(order);
@@ -117,11 +116,11 @@ public class Order extends Model implements Parcelable {
         }
     }
 
-    public static Order fromJson(JSONObject jsonObject) {
-        Order order = new Order();
+    public static Bill fromJson(JSONObject jsonObject) {
+        Bill order = new Bill();
         try {
             Long currentOrderId = jsonObject.getLong("uid");
-            Order existingOrder = new Select().from(Order.class)
+            Bill existingOrder = new Select().from(Bill.class)
                     .where("uid = ?", currentOrderId)
                     .executeSingle();
             if (existingOrder != null) {
@@ -160,29 +159,29 @@ public class Order extends Model implements Parcelable {
         dest.writeParcelable(feedback, i);
     }
 
-    public static final Parcelable.Creator<Order> CREATOR
-            = new Parcelable.Creator<Order>() {
+    public static final Parcelable.Creator<Bill> CREATOR
+            = new Parcelable.Creator<Bill>() {
         @Override
-        public Order createFromParcel(Parcel in) {
-            return new Order(in);
+        public Bill createFromParcel(Parcel in) {
+            return new Bill(in);
         }
 
         @Override
-        public Order[] newArray(int size) {
-            return new Order[size];
+        public Bill[] newArray(int size) {
+            return new Bill[size];
         }
     };
 
-    public static ArrayList<Order> fromCache() {
-        ArrayList<Order> alOrders = new ArrayList<>();
-        List<Order> orders = new Select()
-                .from(Order.class)
+    public static ArrayList<Bill> fromCache() {
+        ArrayList<Bill> alOrders = new ArrayList<>();
+        List<Bill> orders = new Select()
+                .from(Bill.class)
                 .execute();
         alOrders.addAll(orders);
         return alOrders;
     }
 
     public static void deleteAll() {
-        new Delete().from(Order.class).execute();
+        new Delete().from(Bill.class).execute();
     }
 }

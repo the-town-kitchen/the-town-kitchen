@@ -36,12 +36,17 @@
             android:value="1" />
         <meta-data
             android:name="AA_MODELS"
-            android:value="com.codepath.the_town_kitchen.models.User, com.codepath.the_town_kitchen.models.Meal" />
+            android:value="com.codepath.the_town_kitchen.models.User, com.codepath.the_town_kitchen.models.Meal,com.codepath.the_town_kitchen.models.Order" />
 
         <activity
             android:name=".activities.LoginActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -50,7 +55,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.MenuListActivity"
+            android:name=".activities.MealListActivity"
             android:label="@string/title_activity_menu_list" >
         </activity>
         <activity
@@ -75,11 +80,7 @@
         <activity
             android:name=".activities.DeliveryLocationActivity"
             android:label="@string/title_activity_delivery_location" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+           
         </activity>
         <activity
             android:name=".activities.PaymentInfoActivity"

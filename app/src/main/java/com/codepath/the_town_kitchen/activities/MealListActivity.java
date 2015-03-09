@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.codepath.the_town_kitchen.R;
 import com.codepath.the_town_kitchen.TheTownKitchenApplication;
-import com.codepath.the_town_kitchen.adapters.MenuAdapter;
+import com.codepath.the_town_kitchen.adapters.MealAdapter;
 import com.codepath.the_town_kitchen.models.User;
 import com.facebook.widget.ProfilePictureView;
 import com.squareup.picasso.Picasso;
@@ -25,17 +25,18 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-public class MenuListActivity extends ActionBarActivity {
+public class MealListActivity extends ActionBarActivity {
     private ProfilePictureView profilePictureView;
     private ImageView ivProfile;
     private TextView tvUserName, tvEmail;
     private ListView lvList;
-    private MenuAdapter menuAdapter;
-    private ArrayList<com.codepath.the_town_kitchen.models.Meal> menus;
+    private MealAdapter mealAdapter;
+    private ArrayList<com.codepath.the_town_kitchen.models.Meal> meals;
+    private static String TAG = MealListActivity.class.getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu_list);
+        setContentView(R.layout.activity_meal_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
@@ -48,13 +49,7 @@ public class MenuListActivity extends ActionBarActivity {
         tvEmail = (TextView) findViewById(R.id.tvEmail);
         lvList = (ListView) findViewById(R.id.lvList);
         profilePictureView = (ProfilePictureView) findViewById(R.id.ivFacebookProfile);
-        //Mock data here;
-        readFile();
-        if(menus == null) {
-            menus = new ArrayList<>();
-        }
-        menuAdapter = new MenuAdapter(this, menus, null);
-        lvList.setAdapter(menuAdapter);
+
         User currentUser = TheTownKitchenApplication.getCurrentUser().getUser();
         if(currentUser!= null) {
             if(currentUser.getProfileImageUrl() != null && !currentUser.getProfileImageUrl().isEmpty()) {
@@ -70,7 +65,13 @@ public class MenuListActivity extends ActionBarActivity {
             tvUserName.setText(currentUser.getName());
             tvEmail.setText(currentUser.getEmail());
         }
-
+        //Mock data here;
+        readFile();
+        if(meals == null) {
+            meals = new ArrayList<>();
+        }
+        mealAdapter = new MealAdapter(this, meals, null);
+        lvList.setAdapter(mealAdapter);
 
     }
 
@@ -78,7 +79,7 @@ public class MenuListActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_menu_list, menu);
+        getMenuInflater().inflate(R.menu.menu_meal_list, menu);
         return true;
     }
 
@@ -103,11 +104,11 @@ public class MenuListActivity extends ActionBarActivity {
       
         try {
             JSONObject jsonObject  = new JSONObject(json);
-            JSONArray jsonArray = jsonObject.getJSONArray("menu");
+            JSONArray jsonArray = jsonObject.getJSONArray("meal");
             if (jsonArray != null && jsonArray.length() > 0) {
-                menus = com.codepath.the_town_kitchen.models.Meal.fromJsonArray(jsonArray);
+                meals = com.codepath.the_town_kitchen.models.Meal.fromJsonArray(jsonArray);
             }
-            Log.d("MenuListActivity", "menu list " + menus.size());
+            Log.d(TAG, "meal list " + meals.size());
         } 
         catch (JSONException e) {
             e.printStackTrace();
@@ -117,7 +118,7 @@ public class MenuListActivity extends ActionBarActivity {
     public String loadJSONFromAsset() {
         String json = null;
         try {
-            InputStream is = getAssets().open("menu.json");
+            InputStream is = getAssets().open("meal.json");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);

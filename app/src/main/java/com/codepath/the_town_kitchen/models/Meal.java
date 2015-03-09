@@ -33,10 +33,6 @@ public class Meal extends Model implements Parcelable {
 
     @Column(name = "description")
     private String description;
-
-    @Column(name = "order", onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE)
-    private Order order;
-
     @Column(name = "price")
     private double price;
 
@@ -55,8 +51,6 @@ public class Meal extends Model implements Parcelable {
 
     public String getDescription() { return description; }
 
-    public Order getOrder() { return order; }
-
     public double getPrice() { return price; }
 
     public String getImageUrl() { return imageUrl; }
@@ -73,7 +67,6 @@ public class Meal extends Model implements Parcelable {
         uid = in.readLong();
         name = in.readString();
         description = in.readString();
-        order = in.readParcelable(Order.class.getClassLoader());
         price = in.readDouble();
         imageUrl = in.readString();
         quantity = in.readInt();
@@ -120,7 +113,6 @@ public class Meal extends Model implements Parcelable {
             meal.uid = currentMealId;
             meal.name = jsonObject.has("name") ? jsonObject.getString("name") : "";
             meal.description = jsonObject.has("description") ? jsonObject.getString("description") : "";
-            meal.order = jsonObject.has("order") ? Order.fromJson(jsonObject.getJSONObject("order")): null;
             meal.price = jsonObject.has("cost") ? jsonObject.getDouble("cost") : 0.0;
             meal.imageUrl = jsonObject.has("imageUrl") ? jsonObject.getString("imageUrl") : "";
             meal.quantity = jsonObject.has("quantity") ? jsonObject.getInt("quantity") : 0;
@@ -143,7 +135,6 @@ public class Meal extends Model implements Parcelable {
         dest.writeLong(uid);
         dest.writeString(name);
         dest.writeString(description);
-        dest.writeParcelable(order, i);
         dest.writeDouble(price);
         dest.writeString(imageUrl);
         dest.writeInt(quantity);

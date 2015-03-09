@@ -222,7 +222,7 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener,
         
         if(mLoggedIn){
             if(TheTownKitchenApplication.getCurrentUser().getUser() != null){
-                Intent intent = new Intent(this, MenuListActivity.class);
+                Intent intent = new Intent(this, MealListActivity.class);
                 startActivity(intent);
             }
         }
@@ -249,7 +249,7 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener,
         JSONObject json = response;
         User user = User.fromJson(json);
         TheTownKitchenApplication.getCurrentUser().setUser(user);
-        Intent intent = new Intent(this, MenuListActivity.class);
+        Intent intent = new Intent(this, MealListActivity.class);
         startActivity(intent);
     }
 
