@@ -1,18 +1,32 @@
 package com.codepath.the_town_kitchen.activities;
 
-import android.support.v7.app.ActionBarActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.RatingBar;
 
 import com.codepath.the_town_kitchen.R;
 
 public class FeedbackActivity extends ActionBarActivity {
+    RatingBar rbFeedback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
+        
+        rbFeedback = (RatingBar) findViewById(R.id.rbFeedback);
+        rbFeedback.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+
+
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                Intent i = new Intent(FeedbackActivity.this, MealListActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
 
