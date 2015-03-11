@@ -26,5 +26,6 @@
     <string name="feedback_question">Did you enjoy your order?</string>
     <string name="action_date">action_date</string>
     <string name="today">Today</string>
+    <string name="edit_payment_info">Edit Payment Info</string>
 
 </resources>

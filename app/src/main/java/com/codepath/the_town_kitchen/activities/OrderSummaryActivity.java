@@ -12,6 +12,7 @@ import com.codepath.the_town_kitchen.R;
 
 public class OrderSummaryActivity extends ActionBarActivity {
     Button bSubmitOrder;
+    Button bPaymentInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +25,15 @@ public class OrderSummaryActivity extends ActionBarActivity {
             public void onClick(View v) {
             Intent i = new Intent(OrderSummaryActivity.this, FeedbackActivity.class);
             startActivity(i);
+            }
+        });
+
+        bPaymentInfo = (Button) findViewById(R.id.bPaymentInfo);
+        bPaymentInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(OrderSummaryActivity.this, PaymentInfoActivity.class);
+                startActivity(i);
             }
         });
     }
