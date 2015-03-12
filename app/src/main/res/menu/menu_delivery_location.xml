@@ -5,6 +5,6 @@
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
 
-    <item android:id="@+id/action_view_order_summary" android:title="@string/action_next"
+    <item android:id="@+id/action_view_order_summary" android:title="@string/action_view_order_summary"
         android:orderInCategory="100" app:showAsAction="never" />
 </menu>

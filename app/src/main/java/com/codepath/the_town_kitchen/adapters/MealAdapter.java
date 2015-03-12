@@ -18,8 +18,6 @@ import java.util.List;
 
 public class MealAdapter extends ArrayAdapter<Meal> {
 
-private Context context;
-
     public interface IActionClickListener{
         void onActionClicked(int position, String action);
     }
@@ -38,7 +36,6 @@ private Context context;
 
     public MealAdapter(Context context, List<Meal> meals, IActionClickListener actionClickListener) {
         super(context, 0, meals);
-        this.context = context;
         this.actionClickListener = actionClickListener;
 
     }
