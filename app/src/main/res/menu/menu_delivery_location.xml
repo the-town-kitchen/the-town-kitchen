@@ -4,4 +4,7 @@
     tools:context="com.codepath.the_town_kitchen.activities.DeliveryLocationActivity">
     <item android:id="@+id/action_settings" android:title="@string/action_settings"
         android:orderInCategory="100" app:showAsAction="never" />
+
+    <item android:id="@+id/action_view_order_summary" android:title="@string/action_next"
+        android:orderInCategory="100" app:showAsAction="never" />
 </menu>

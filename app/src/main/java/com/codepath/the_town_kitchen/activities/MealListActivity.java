@@ -116,7 +116,7 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent i = new Intent(MealListActivity.this, OrderSummaryActivity.class);
+            Intent i = new Intent(MealListActivity.this, DeliveryLocationActivity.class);
             startActivity(i);
             return true;
         }else if (id == R.id.action_date) {

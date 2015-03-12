@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.codepath.the_town_kitchen.R;
@@ -268,6 +269,25 @@ public class DeliveryLocationActivity extends FragmentActivity implements
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             return mDialog;
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
+        } else if (id == R.id.action_view_order_summary) {
+            Intent i = new Intent(DeliveryLocationActivity.this, OrderSummaryActivity.class);
+            startActivity(i);
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }
