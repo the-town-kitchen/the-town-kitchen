@@ -16,6 +16,9 @@ import android.widget.Toast;
 import com.codepath.the_town_kitchen.R;
 import com.codepath.the_town_kitchen.TheTownKitchenApplication;
 import com.codepath.the_town_kitchen.adapters.MealAdapter;
+import com.codepath.the_town_kitchen.models.Meal;
+import com.codepath.the_town_kitchen.models.Order;
+import com.codepath.the_town_kitchen.models.OrderItem;
 import com.codepath.the_town_kitchen.models.User;
 import com.facebook.widget.ProfilePictureView;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
@@ -32,7 +35,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class MealListActivity extends ActionBarActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+public class MealListActivity extends ActionBarActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, MealAdapter.IActionClickListener {
     private ProfilePictureView profilePictureView;
     private ImageView ivProfile;
     private TextView tvUserName, tvEmail;
@@ -65,7 +68,7 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         
         //Mock data here;
         meals = new ArrayList<>();
-        mealAdapter = new MealAdapter(this, meals, null);
+        mealAdapter = new MealAdapter(this, meals, this);
         lvList.setAdapter(mealAdapter);
         readFile("meal.json");
         
@@ -117,6 +120,7 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent i = new Intent(MealListActivity.this, OrderSummaryActivity.class);
+            i.putExtra("date", toolbar_text.getText().toString());
             startActivity(i);
             return true;
         }else if (id == R.id.action_date) {
@@ -177,4 +181,55 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         return json;
     }
 
+    @Override
+    public void onActionClicked(int position, int count) {
+        Meal meal = meals.get(position);
+        String date = toolbar_text.getText().toString();
+        Order order = Order.fromCacheByDate(date);
+        ArrayList<OrderItem> orderItems;
+        boolean isMealInCart = false;
+        double totalCost = 0;
+        if(order == null){
+            order = new Order();
+            orderItems = new ArrayList<>();
+        } else {
+            orderItems = order.getOrderItems();
+        }
+        
+        
+      
+        if(orderItems == null || orderItems.size() == 0) {
+            orderItems = new ArrayList<>();
+
+            orderItems.add(OrderItem.orderItemFromClick(meal, count));
+            totalCost = meal.getPrice() * count;
+        }
+        else{
+            for(OrderItem orderItem : orderItems){
+                if(orderItem.getMeal().getUid()== meal.getUid()){
+                    orderItem.setQuantity(count);
+                    orderItem.save();
+                    
+                    isMealInCart= true;
+                   
+                    //break;
+                }
+                totalCost = totalCost + orderItem.getQuantity() * orderItem.getMeal().getPrice();
+            }
+            if(!isMealInCart){
+                orderItems.add(OrderItem.orderItemFromClick(meal, count));
+                totalCost += meal.getPrice() * count;
+            }
+        }
+        order.setOrderItems(orderItems);
+        
+        order.setDate(date);
+        order.setUser(TheTownKitchenApplication.getCurrentUser().getUser());
+
+            order.setCost(totalCost);
+
+       
+        order.save();
+        
+    }
 }

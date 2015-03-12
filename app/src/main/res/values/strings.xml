@@ -28,5 +28,6 @@
     <string name="today">Today</string>
     <string name="edit_payment_info">Edit Payment Info</string>
     <string name="action_view_order_summary">View Order Summary</string>
+    <string name="order_summary">Order Summary</string>
 
 </resources>

@@ -32,4 +32,5 @@ public class TheTownKitchenApplication extends com.activeandroid.app.Application
         return (CurrentUser) CurrentUser.getInstance();
     }
 
+
 }

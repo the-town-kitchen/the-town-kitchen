@@ -19,7 +19,7 @@ import java.util.List;
 public class MealAdapter extends ArrayAdapter<Meal> {
 
     public interface IActionClickListener{
-        void onActionClicked(int position, String action);
+        void onActionClicked(int position, int count);
     }
     
     private IActionClickListener actionClickListener;
@@ -70,7 +70,9 @@ public class MealAdapter extends ArrayAdapter<Meal> {
             public void onClick(View view) {
                 int counts = Integer.parseInt(viewHolder.tvCounts.getText().toString());
                 if(counts > 0){
-                    viewHolder.tvCounts.setText((counts -1) + "");
+                     counts = counts -1;
+                    viewHolder.tvCounts.setText(counts + "");
+                    actionClickListener.onActionClicked(position, counts);
                 }
             }
         });
@@ -79,8 +81,9 @@ public class MealAdapter extends ArrayAdapter<Meal> {
             @Override
             public void onClick(View view) {
                 int counts = Integer.parseInt(viewHolder.tvCounts.getText().toString());
-
-                viewHolder.tvCounts.setText((counts + 1)+"" );
+                counts = counts + 1;
+                viewHolder.tvCounts.setText(counts +"" );
+                actionClickListener.onActionClicked(position, counts);
 
             }
         });
@@ -90,6 +93,7 @@ public class MealAdapter extends ArrayAdapter<Meal> {
         Picasso.with(getContext()).load(meal.getImageUrl()).resize(deviceWidth, 0).into(viewHolder.ivImage);
         return convertView;
     }
+
 
 
 }

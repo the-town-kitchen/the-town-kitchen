@@ -7,13 +7,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.codepath.the_town_kitchen.R;
+import com.codepath.the_town_kitchen.adapters.OrderItemAdapter;
+import com.codepath.the_town_kitchen.models.Order;
+import com.codepath.the_town_kitchen.models.OrderItem;
+
+import java.util.ArrayList;
 
 public class OrderSummaryActivity extends ActionBarActivity {
     Button bSubmitOrder;
     Button bPaymentInfo;
-
+    private ListView lvOrderItems;
+    private OrderItemAdapter orderItemAdapter;
+    private ArrayList<OrderItem> orderItems;
+    TextView tvOrderTotal;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +46,23 @@ public class OrderSummaryActivity extends ActionBarActivity {
                 startActivity(i);
             }
         });
+
+        
+      //order items
+        lvOrderItems =(ListView) findViewById(R.id.lvOrderItems);
+        String date = getIntent().getStringExtra("date");
+        Order order = Order.fromCacheByDate(date);
+        if(order != null) {
+            orderItems = order.getOrderItems();
+           if(orderItems == null)
+               orderItems = new ArrayList<>();
+            orderItemAdapter = new OrderItemAdapter(this, orderItems, null);
+            lvOrderItems.setAdapter(orderItemAdapter);
+
+        
+            tvOrderTotal = (TextView)findViewById(R.id.tvOrderTotal);
+            tvOrderTotal.setText("$" + order.getCost()+"");
+        }
     }
 
 

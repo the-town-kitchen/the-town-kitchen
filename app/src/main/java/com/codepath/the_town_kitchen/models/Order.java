@@ -18,12 +18,36 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = "bill")
+@Table(name = "orders")
 
-public class Bill extends Model {
+public class Order extends Model {
 
     @Column(name = "uid", index = true, unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private Long uid; // unique id for an order
+
+    public void setCost(double cost) {
+        this.cost = cost;
+    }
+
+    public void setDeliveryLocation(String deliveryLocation) {
+        this.deliveryLocation = deliveryLocation;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public void setFeedback(Feedback feedback) {
+        this.feedback = feedback;
+    }
 
     @Column(name = "cost")
     private double cost;
@@ -43,6 +67,7 @@ public class Bill extends Model {
     @Column(name = "feedback", onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE)
     private Feedback feedback;
 
+    private ArrayList<OrderItem> orderItems;
     public Long getUid() {
         return uid;
     }
@@ -71,14 +96,22 @@ public class Bill extends Model {
         return feedback;
     }
 
-    public Bill() {
+    public ArrayList<OrderItem> getOrderItems() {
+        return orderItems;
+    }
+
+    public void setOrderItems(ArrayList<OrderItem> orderItems) {
+        this.orderItems = orderItems;
+    }
+
+    public Order() {
         super();
 
     }
 
-    public static ArrayList<Bill> fromJsonArray(JSONArray jsonArray) {
+    public static ArrayList<Order> fromJsonArray(JSONArray jsonArray) {
         if (jsonArray == null || jsonArray.length() < 1) return null;
-        ArrayList<Bill> orders = new ArrayList<>(jsonArray.length());
+        ArrayList<Order> orders = new ArrayList<>(jsonArray.length());
         ActiveAndroid.beginTransaction();
         try {
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -89,7 +122,7 @@ public class Bill extends Model {
                     e.printStackTrace();
                     continue;
                 }
-                Bill order = Bill.fromJson(resultJson);
+                Order order = Order.fromJson(resultJson);
 
                 if (order != null) {
                     orders.add(order);
@@ -103,11 +136,11 @@ public class Bill extends Model {
         }
     }
 
-    public static Bill fromJson(JSONObject jsonObject) {
-        Bill order = new Bill();
+    public static Order fromJson(JSONObject jsonObject) {
+        Order order = new Order();
         try {
             Long currentOrderId = jsonObject.getLong("uid");
-            Bill existingOrder = new Select().from(Bill.class)
+            Order existingOrder = new Select().from(Order.class)
                     .where("uid = ?", currentOrderId)
                     .executeSingle();
             if (existingOrder != null) {
@@ -130,16 +163,27 @@ public class Bill extends Model {
         return order;
     }
 
-    public static ArrayList<Bill> fromCache() {
-        ArrayList<Bill> alOrders = new ArrayList<>();
-        List<Bill> orders = new Select()
-                .from(Bill.class)
+    public static ArrayList<Order> fromCache() {
+        ArrayList<Order> alOrders = new ArrayList<>();
+        List<Order> orders = new Select()
+                .from(Order.class)
                 .execute();
         alOrders.addAll(orders);
         return alOrders;
     }
 
+
+    public static Order fromCacheByDate(String date) {
+        
+        Order order = (Order) new Select()
+                .from(Order.class)
+                .where("Date = ?", date)
+                .executeSingle();
+       
+        return order;
+    }
+
     public static void deleteAll() {
-        new Delete().from(Bill.class).execute();
+        new Delete().from(Order.class).execute();
     }
 }
