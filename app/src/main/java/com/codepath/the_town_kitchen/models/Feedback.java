@@ -1,12 +1,5 @@
 package com.codepath.the_town_kitchen.models;
 
-/**
- * Created by paulina on 3/7/15.
- */
-
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
@@ -19,9 +12,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+/**
+ * Created by paulina on 3/7/15.
+ */
+
 @Table(name = "feedback")
 
-public class Feedback extends Model implements Parcelable {
+public class Feedback extends Model {
 
     @Column(name = "rating")
     private int rating;
@@ -39,11 +36,6 @@ public class Feedback extends Model implements Parcelable {
 
     public Feedback() {
         super();
-    }
-
-    public Feedback(Parcel in) {
-        rating = in.readInt();
-        comment = in.readString();
     }
 
     public static ArrayList<Feedback> fromJsonArray(JSONArray jsonArray) {
@@ -84,30 +76,6 @@ public class Feedback extends Model implements Parcelable {
         }
         return feedback;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int i) {
-        dest.writeInt(rating);
-        dest.writeString(comment);
-    }
-
-    public static final Creator<Feedback> CREATOR
-            = new Creator<Feedback>() {
-        @Override
-        public Feedback createFromParcel(Parcel in) {
-            return new Feedback(in);
-        }
-
-        @Override
-        public Feedback[] newArray(int size) {
-            return new Feedback[size];
-        }
-    };
 
     public static void deleteAll() {
         new Delete().from(Feedback.class).execute();

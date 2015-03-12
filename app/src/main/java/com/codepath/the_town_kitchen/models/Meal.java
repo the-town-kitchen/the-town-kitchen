@@ -1,12 +1,5 @@
 package com.codepath.the_town_kitchen.models;
 
-/**
- * Created by paulina on 3/7/15.
- */
-
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
@@ -21,9 +14,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Created by paulina on 3/7/15.
+ */
+
 @Table(name = "meal")
 
-public class Meal extends Model implements Parcelable {
+public class Meal extends Model {
 
     @Column(name = "uid", index = true, unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private Long uid;
@@ -61,16 +58,6 @@ public class Meal extends Model implements Parcelable {
 
     public Meal() {
         super();
-    }
-
-    public Meal(Parcel in) {
-        uid = in.readLong();
-        name = in.readString();
-        description = in.readString();
-        price = in.readDouble();
-        imageUrl = in.readString();
-        quantity = in.readInt();
-        date = in.readString();
     }
 
     public static ArrayList<Meal> fromJsonArray(JSONArray jsonArray) {
@@ -124,35 +111,6 @@ public class Meal extends Model implements Parcelable {
         }
         return meal;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int i) {
-        dest.writeLong(uid);
-        dest.writeString(name);
-        dest.writeString(description);
-        dest.writeDouble(price);
-        dest.writeString(imageUrl);
-        dest.writeInt(quantity);
-        dest.writeString(date);
-    }
-
-    public static final Parcelable.Creator<Meal> CREATOR
-            = new Parcelable.Creator<Meal>() {
-        @Override
-        public Meal createFromParcel(Parcel in) {
-            return new Meal(in);
-        }
-
-        @Override
-        public Meal[] newArray(int size) {
-            return new Meal[size];
-        }
-    };
 
     public static ArrayList<Meal> fromCache() {
         ArrayList<Meal> alMeals = new ArrayList<>();

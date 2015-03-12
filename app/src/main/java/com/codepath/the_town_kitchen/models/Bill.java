@@ -4,9 +4,6 @@ package com.codepath.the_town_kitchen.models;
  * Created by paulina on 3/7/15.
  */
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
@@ -23,7 +20,7 @@ import java.util.List;
 
 @Table(name = "bill")
 
-public class Bill extends Model implements Parcelable {
+public class Bill extends Model {
 
     @Column(name = "uid", index = true, unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private Long uid; // unique id for an order
@@ -79,16 +76,6 @@ public class Bill extends Model implements Parcelable {
 
     }
 
-    public Bill(Parcel in) {
-        uid = in.readLong();
-        cost = in.readDouble();
-        deliveryLocation = in.readString();
-        user = in.readParcelable(User.class.getClassLoader());
-        date = in.readString();
-        time = in.readString();
-        feedback = in.readParcelable(Feedback.class.getClassLoader());
-    }
-
     public static ArrayList<Bill> fromJsonArray(JSONArray jsonArray) {
         if (jsonArray == null || jsonArray.length() < 1) return null;
         ArrayList<Bill> orders = new ArrayList<>(jsonArray.length());
@@ -142,35 +129,6 @@ public class Bill extends Model implements Parcelable {
         }
         return order;
     }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int i) {
-        dest.writeLong(uid);
-        dest.writeDouble(cost);
-        dest.writeString(deliveryLocation);
-        dest.writeParcelable(user, i);
-        dest.writeString(date);
-        dest.writeString(time);
-        dest.writeParcelable(feedback, i);
-    }
-
-    public static final Parcelable.Creator<Bill> CREATOR
-            = new Parcelable.Creator<Bill>() {
-        @Override
-        public Bill createFromParcel(Parcel in) {
-            return new Bill(in);
-        }
-
-        @Override
-        public Bill[] newArray(int size) {
-            return new Bill[size];
-        }
-    };
 
     public static ArrayList<Bill> fromCache() {
         ArrayList<Bill> alOrders = new ArrayList<>();

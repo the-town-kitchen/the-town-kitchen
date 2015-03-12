@@ -1,8 +1,5 @@
 package com.codepath.the_town_kitchen.models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
@@ -16,7 +13,7 @@ import org.json.JSONObject;
 
 @Table(name = "user")
 
-public class User extends Model implements Parcelable {
+public class User extends Model {
 
     @Column(name = "name")
     private String name;
@@ -36,12 +33,6 @@ public class User extends Model implements Parcelable {
     public User(){
         super();
 
-    }
-    public User(Parcel in) {
-        name = in.readString();
-        email = in.readString();
-        profileImageUrl = in.readString();
-        facebookId = in.readString();
     }
 
     public String getName() {
@@ -82,28 +73,6 @@ public class User extends Model implements Parcelable {
         }
         return null;
     }
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int i) {
-        dest.writeString(name);
-        dest.writeString(email);
-        dest.writeString(profileImageUrl);
-        dest.writeString(facebookId);
-
-    }
-
-    public static final Creator CREATOR = new Creator() {
-        public User createFromParcel(Parcel in) {
-            return new User(in);
-        }
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
 
     public static void deleteAll() {
         new Delete().from(User.class).execute();
