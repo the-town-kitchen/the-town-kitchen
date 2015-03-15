@@ -22,6 +22,7 @@ import com.codepath.the_town_kitchen.models.OrderItem;
 import com.codepath.the_town_kitchen.models.User;
 import com.facebook.widget.ProfilePictureView;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
+import com.parse.ParseException;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
 import com.squareup.picasso.Picasso;
@@ -102,7 +103,7 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         imgCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Order order = TheTownKitchenApplication.getOrder().getOrderByDate(tvCalendar.getText().toString());
+                Order order = TheTownKitchenApplication.getOrder();
 
                 if (order != null) {
                     if (order.getTime() == null || order.getTime().isEmpty()) {
@@ -171,12 +172,16 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
 
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
-        Order order = TheTownKitchenApplication.getOrder().getOrderByDate(tvCalendar.getText().toString());
+        Order order = TheTownKitchenApplication.getOrder();
 
         if (order != null) {
             if (order.getTime() == null || order.getTime().isEmpty()) {
                 order.setTime(hourOfDay + "-" + minute);
-                order.save(); 
+                try {
+                    order.save();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
                 startOrderSummaryActivity();
             }
 
@@ -235,7 +240,7 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         int orderCount = 0;
         TheTownKitchenApplication.orderDate = date;
         //User singleton of Order
-        order = TheTownKitchenApplication.getOrder().getOrderByDate(date);
+        order = TheTownKitchenApplication.getOrder();
         if (order == null) {
             order = new Order();
             orderItems = new ArrayList<>();
@@ -253,7 +258,11 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
             for (OrderItem orderItem : orderItems) {
                 if (orderItem.getMeal().getUid() == meal.getUid()) {
                     orderItem.setQuantity(count);
-                    orderItem.save();
+                    try {
+                        orderItem.save();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
 
                     isMealInCart = true;
 
@@ -275,8 +284,11 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
 
         order.setCost(totalCost);
 
-
-        order.save();
+        try {
+            order.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         tvCount.setText(orderCount + "");
     }
 }

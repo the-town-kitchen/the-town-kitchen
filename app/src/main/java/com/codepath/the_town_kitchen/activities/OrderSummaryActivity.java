@@ -55,7 +55,7 @@ public class OrderSummaryActivity extends ActionBarActivity {
         //order items
         lvOrderItems = (ListView) findViewById(R.id.lvOrderItems);
         tvDeliveryTime = (TextView) findViewById(R.id.tvDeliveryTime);
-        Order order = TheTownKitchenApplication.getOrder().getOrderByDate(TheTownKitchenApplication.orderDate);
+        Order order = TheTownKitchenApplication.getOrder();
         //  Order.fromCacheByDate(date);
         if (order != null) {
             tvDeliveryTime.setText(order.getDate() + " " + order.getTime());

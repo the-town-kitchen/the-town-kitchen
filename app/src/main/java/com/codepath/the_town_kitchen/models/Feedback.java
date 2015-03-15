@@ -5,6 +5,9 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Delete;
+import com.parse.ParseClassName;
+import com.parse.ParseException;
+import com.parse.ParseObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,14 +19,11 @@ import java.util.ArrayList;
  * Created by paulina on 3/7/15.
  */
 
-@Table(name = "feedback")
+@ParseClassName("Feedback")
+public class Feedback extends ParseObject {
 
-public class Feedback extends Model {
-
-    @Column(name = "rating")
     private int rating;
 
-    @Column(name = "comment")
     private String comment;
 
     public int getRating() {
@@ -70,14 +70,13 @@ public class Feedback extends Model {
         try {
             feedback.rating = jsonObject.has("rating") ? jsonObject.getInt("rating") : 0;
             feedback.comment = jsonObject.has("comment") ? jsonObject.getString("comment") : "";
+            feedback.save();
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
         return feedback;
-    }
-
-    public static void deleteAll() {
-        new Delete().from(Feedback.class).execute();
     }
 }

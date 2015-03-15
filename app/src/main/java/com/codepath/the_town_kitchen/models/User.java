@@ -1,9 +1,9 @@
 package com.codepath.the_town_kitchen.models;
 
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
-import com.activeandroid.query.Delete;
+import com.parse.ParseClassName;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.google.android.gms.plus.model.people.Person;
@@ -11,28 +11,21 @@ import com.google.android.gms.plus.model.people.Person;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-@Table(name = "user")
+@ParseClassName("User")
+public class User extends ParseObject {
 
-public class User extends Model {
-
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "email")
     private String email;
 
-    @Column(name = "profile_image_url")
     private String profileImageUrl;
 
-
-    @Column(name = "facebook_id")
     private String facebookId;
     // Profile pic image size in pixels
     private static final int PROFILE_PIC_SIZE = 40;
 
     public User(){
         super();
-
     }
 
     public String getName() {
@@ -56,7 +49,11 @@ public class User extends Model {
                 user.profileImageUrl.length() - 2)
                 + PROFILE_PIC_SIZE;
         user.email = Plus.AccountApi.getAccountName(mGoogleApiClient);
-        user.save();
+        try {
+            user.save();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return user;
     }
 
@@ -70,11 +67,9 @@ public class User extends Model {
             return user;
         } catch (JSONException e) {
             e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
         return null;
-    }
-
-    public static void deleteAll() {
-        new Delete().from(User.class).execute();
     }
 }

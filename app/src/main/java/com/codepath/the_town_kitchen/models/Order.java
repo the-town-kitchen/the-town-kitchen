@@ -10,6 +10,9 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
+import com.parse.ParseClassName;
+import com.parse.ParseException;
+import com.parse.ParseObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,11 +21,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-@Table(name = "orders")
+@ParseClassName("Order")
+public class Order extends ParseObject {
 
-public class Order extends Model {
-
-    @Column(name = "uid", index = true, unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private Long uid; // unique id for an order
 
     public void setCost(double cost) {
@@ -49,25 +50,20 @@ public class Order extends Model {
         this.feedback = feedback;
     }
 
-    @Column(name = "cost")
     private double cost;
 
-    @Column(name = "delivery_location")
     private String deliveryLocation;
 
-    @Column(name = "user", onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE)
     private User user;
 
-    @Column(name = "date")
     private String date;
 
-    @Column(name = "time")
     private String time;
 
-    @Column(name = "feedback", onUpdate = Column.ForeignKeyAction.CASCADE, onDelete = Column.ForeignKeyAction.CASCADE)
     private Feedback feedback;
 
     private ArrayList<OrderItem> orderItems;
+
     public Long getUid() {
         return uid;
     }
@@ -139,14 +135,7 @@ public class Order extends Model {
     public static Order fromJson(JSONObject jsonObject) {
         Order order = new Order();
         try {
-            Long currentOrderId = jsonObject.getLong("uid");
-            Order existingOrder = new Select().from(Order.class)
-                    .where("uid = ?", currentOrderId)
-                    .executeSingle();
-            if (existingOrder != null) {
-                order = existingOrder;
-            }
-            order.uid = currentOrderId;
+            order.uid = jsonObject.getLong("uid");
             order.uid = jsonObject.has("uid") ? jsonObject.getLong("uid") : 0;
             order.cost = jsonObject.has("cost") ? jsonObject.getDouble("cost") : 0.0;
             order.deliveryLocation = jsonObject.has("deliveryLocation") ? jsonObject.getString("deliveryLocation") : "";
@@ -159,46 +148,19 @@ public class Order extends Model {
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
         return order;
     }
 
-    public static ArrayList<Order> fromCache() {
-        ArrayList<Order> alOrders = new ArrayList<>();
-        List<Order> orders = new Select()
-                .from(Order.class)
-                .execute();
-        alOrders.addAll(orders);
-        return alOrders;
-    }
-
-
-    public static Order fromCacheByDate(String date) {
-        
-        Order order = (Order) new Select()
-                .from(Order.class)
-                .where("Date = ?", date)
-                .executeSingle();
-       
-        return order;
-    }
-
-
-
-    public static void deleteAll() {
-        new Delete().from(Order.class).execute();
-    }
-    private   static  Order instance;
+    private static Order instance;
     public static Order getInstance() {
         if(instance== null){
-           instance = new Order();
-            
+            instance = new Order();
+
         }
         return instance;
-        
-    }
 
-    public Order getOrderByDate(String date) {
-       return Order.fromCacheByDate(date);
     }
 }

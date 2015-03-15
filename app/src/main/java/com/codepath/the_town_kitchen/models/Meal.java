@@ -6,6 +6,9 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
+import com.parse.ParseClassName;
+import com.parse.ParseException;
+import com.parse.ParseObject;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,28 +21,21 @@ import java.util.List;
  * Created by paulina on 3/7/15.
  */
 
-@Table(name = "meal")
+@ParseClassName("Meal")
+public class Meal extends ParseObject {
 
-public class Meal extends Model {
-
-    @Column(name = "uid", index = true, unique = true, onUniqueConflict = Column.ConflictAction.REPLACE)
     private Long uid;
 
-    @Column(name = "name")
     private String name;
 
-    @Column(name = "description")
     private String description;
-    @Column(name = "price")
+
     private double price;
 
-    @Column(name = "image_url")
     private String imageUrl;
 
-    @Column(name = "quantity")
     private int quantity;
 
-    @Column(name = "date")
     private String date;
 
     public Long getUid() { return uid; }
@@ -90,14 +86,7 @@ public class Meal extends Model {
     public static Meal fromJson(JSONObject jsonObject) {
         Meal meal = new Meal();
         try {
-            Long currentMealId = jsonObject.getLong("uid");
-            Meal existingMeal = new Select().from(Meal.class)
-                    .where("uid = ?", currentMealId)
-                    .executeSingle();
-            if (existingMeal != null) {
-                meal = existingMeal;
-            }
-            meal.uid = currentMealId;
+            meal.uid = jsonObject.getLong("uid");
             meal.name = jsonObject.has("name") ? jsonObject.getString("name") : "";
             meal.description = jsonObject.has("description") ? jsonObject.getString("description") : "";
             meal.price = jsonObject.has("cost") ? jsonObject.getDouble("cost") : 0.0;
@@ -108,21 +97,10 @@ public class Meal extends Model {
         } catch (JSONException e) {
             e.printStackTrace();
             return null;
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
         return meal;
-    }
-
-    public static ArrayList<Meal> fromCache() {
-        ArrayList<Meal> alMeals = new ArrayList<>();
-        List<Meal> meals = new Select()
-                .from(Meal.class)
-                .execute();
-        alMeals.addAll(meals);
-        return alMeals;
-    }
-
-    public static void deleteAll() {
-        new Delete().from(Meal.class).execute();
     }
 }
 

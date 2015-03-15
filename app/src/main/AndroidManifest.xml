@@ -23,7 +23,7 @@
     <uses-permission android:name="android.permission.USE_CREDENTIALS" />
 
     <application
-        android:name="com.activeandroid.app.Application"
+        android:name=".activities.ChatApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -36,8 +36,7 @@
             android:value="1" />
         <meta-data
             android:name="AA_MODELS"
-            android:value="com.codepath.the_town_kitchen.models.User, com.codepath.the_town_kitchen.models.Meal,
-            com.codepath.the_town_kitchen.models.Feedback,com.codepath.the_town_kitchen.models.OrderItem, com.codepath.the_town_kitchen.models.Order" />
+            android:value="com.codepath.the_town_kitchen.models.User, com.codepath.the_town_kitchen.models.Meal,             com.codepath.the_town_kitchen.models.Feedback,com.codepath.the_town_kitchen.models.OrderItem, com.codepath.the_town_kitchen.models.Order" />
 
         <activity
             android:name=".activities.LoginActivity"
@@ -81,7 +80,6 @@
         <activity
             android:name=".activities.DeliveryLocationActivity"
             android:label="@string/title_activity_delivery_location" >
-           
         </activity>
         <activity
             android:name=".activities.PaymentInfoActivity"
@@ -95,6 +93,15 @@
             android:name=".activities.FeedbackActivity"
             android:label="@string/title_activity_feedback" >
         </activity>
+        <!--<activity-->
+            <!--android:name=".activities.ChatActivity"-->
+            <!--android:label="@string/title_activity_chat" >-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
     </application>
 
 </manifest>
