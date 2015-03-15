@@ -11,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.codepath.the_town_kitchen.R;
+import com.codepath.the_town_kitchen.TheTownKitchenApplication;
 import com.codepath.the_town_kitchen.adapters.OrderItemAdapter;
 import com.codepath.the_town_kitchen.models.Order;
 import com.codepath.the_town_kitchen.models.OrderItem;
@@ -20,21 +21,24 @@ import java.util.ArrayList;
 public class OrderSummaryActivity extends ActionBarActivity {
     Button bSubmitOrder;
     Button bPaymentInfo;
+
     private ListView lvOrderItems;
     private OrderItemAdapter orderItemAdapter;
     private ArrayList<OrderItem> orderItems;
-    TextView tvOrderTotal;
+    private TextView tvOrderTotal;
+    private TextView tvDeliveryTime;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_summary);
-        
+
         bSubmitOrder = (Button) findViewById(R.id.bSubmitOrder);
         bSubmitOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            Intent i = new Intent(OrderSummaryActivity.this, FeedbackActivity.class);
-            startActivity(i);
+                Intent i = new Intent(OrderSummaryActivity.this, FeedbackActivity.class);
+                startActivity(i);
             }
         });
 
@@ -47,21 +51,21 @@ public class OrderSummaryActivity extends ActionBarActivity {
             }
         });
 
-        
-      //order items
-        lvOrderItems =(ListView) findViewById(R.id.lvOrderItems);
-        String date = getIntent().getStringExtra("date");
-        Order order = Order.fromCacheByDate(date);
-        if(order != null) {
+
+        //order items
+        lvOrderItems = (ListView) findViewById(R.id.lvOrderItems);
+        tvDeliveryTime = (TextView) findViewById(R.id.tvDeliveryTime);
+        Order order = TheTownKitchenApplication.getOrder().getOrderByDate(TheTownKitchenApplication.orderDate);
+        //  Order.fromCacheByDate(date);
+        if (order != null) {
+            tvDeliveryTime.setText(order.getDate() + " " + order.getTime());
             orderItems = order.getOrderItems();
-           if(orderItems == null)
-               orderItems = new ArrayList<>();
+            if (orderItems == null)
+                orderItems = new ArrayList<>();
             orderItemAdapter = new OrderItemAdapter(this, orderItems, null);
             lvOrderItems.setAdapter(orderItemAdapter);
-
-        
-            tvOrderTotal = (TextView)findViewById(R.id.tvOrderTotal);
-            tvOrderTotal.setText("$" + order.getCost()+"");
+            tvOrderTotal = (TextView) findViewById(R.id.tvOrderTotal);
+            tvOrderTotal.setText("$" + order.getCost() + "");
         }
     }
 

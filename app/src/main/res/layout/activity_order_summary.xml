@@ -17,12 +17,32 @@
         android:layout_centerHorizontal="true"
 
         android:layout_marginBottom="@dimen/activity_large_margin"/>
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Deliverty Time:"
+        android:id="@+id/tvDeliveryTimeLabel"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/secondary_darker"
+        android:textSize="16sp"
+        android:layout_below="@+id/topLabel"
+        android:layout_marginBottom="@dimen/activity_large_margin"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/order_summary"
+        android:id="@+id/tvDeliveryTime"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/secondary_darker"
+        android:textSize="16sp"
+        android:layout_below="@+id/topLabel"
+        android:layout_toRightOf="@+id/tvDeliveryTimeLabel"
+        android:layout_marginBottom="@dimen/activity_large_margin"/>
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/lvOrderItems"
-        android:layout_below="@+id/topLabel"/>
+        android:layout_below="@+id/tvDeliveryTime"/>
 
     <EditText
         android:layout_width="wrap_content"

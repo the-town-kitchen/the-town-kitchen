@@ -3,6 +3,7 @@ package com.codepath.the_town_kitchen;
 import android.content.Context;
 
 import com.activeandroid.ActiveAndroid;
+import com.codepath.the_town_kitchen.models.Order;
 import com.codepath.the_town_kitchen.net.FacebookApi;
 
 /*
@@ -16,7 +17,7 @@ import com.codepath.the_town_kitchen.net.FacebookApi;
  */
 public class TheTownKitchenApplication extends com.activeandroid.app.Application {
 	private static Context context;
-
+    public static String orderDate;
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -32,5 +33,9 @@ public class TheTownKitchenApplication extends com.activeandroid.app.Application
         return (CurrentUser) CurrentUser.getInstance();
     }
 
+
+    public static Order getOrder() {
+        return (Order) Order.getInstance();
+    }
 
 }

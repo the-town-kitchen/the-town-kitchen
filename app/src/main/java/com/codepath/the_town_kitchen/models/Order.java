@@ -183,7 +183,22 @@ public class Order extends Model {
         return order;
     }
 
+
+
     public static void deleteAll() {
         new Delete().from(Order.class).execute();
+    }
+    private   static  Order instance;
+    public static Order getInstance() {
+        if(instance== null){
+           instance = new Order();
+            
+        }
+        return instance;
+        
+    }
+
+    public Order getOrderByDate(String date) {
+       return Order.fromCacheByDate(date);
     }
 }
