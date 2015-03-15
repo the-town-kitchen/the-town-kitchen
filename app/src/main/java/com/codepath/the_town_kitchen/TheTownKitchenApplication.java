@@ -3,8 +3,14 @@ package com.codepath.the_town_kitchen;
 import android.content.Context;
 
 import com.activeandroid.ActiveAndroid;
+import com.codepath.the_town_kitchen.models.Feedback;
+import com.codepath.the_town_kitchen.models.Meal;
 import com.codepath.the_town_kitchen.models.Order;
+import com.codepath.the_town_kitchen.models.OrderItem;
+import com.codepath.the_town_kitchen.models.User;
 import com.codepath.the_town_kitchen.net.FacebookApi;
+import com.parse.Parse;
+import com.parse.ParseObject;
 
 /*
  * This is the Android application itself and is used to configure various settings
@@ -16,15 +22,29 @@ import com.codepath.the_town_kitchen.net.FacebookApi;
  *
  */
 public class TheTownKitchenApplication extends com.activeandroid.app.Application {
-	private static Context context;
+
+    public static final String YOUR_APPLICATION_ID = "i2RZZvSfSfdxhCQkLY8CDa5IzqyLy10kMA3m6yDh";
+    public static final String YOUR_CLIENT_KEY = "9kUiDfwDw6toVN7Wgw0PjmfnlhhLjzEuG5Vp1q8V";
+
+    private static Context context;
     public static String orderDate;
-	@Override
-	public void onCreate() {
-		super.onCreate();
 
-        ActiveAndroid.initialize(this);
-	}
+    @Override
+    public void onCreate() {
+        super.onCreate();
 
+        // Register parse models
+        ParseObject.registerSubclass(Order.class);
+        ParseObject.registerSubclass(OrderItem.class);
+        ParseObject.registerSubclass(Meal.class);
+        ParseObject.registerSubclass(User.class);
+        ParseObject.registerSubclass(Feedback.class);
+
+        Parse.enableLocalDatastore(this);
+        Parse.initialize(this, YOUR_APPLICATION_ID, YOUR_CLIENT_KEY);
+
+//        ActiveAndroid.initialize(this);
+    }
 
     public static FacebookApi getFaceBookApi() {
         return (FacebookApi) FacebookApi.getInstance();
@@ -32,7 +52,6 @@ public class TheTownKitchenApplication extends com.activeandroid.app.Application
     public static CurrentUser getCurrentUser() {
         return (CurrentUser) CurrentUser.getInstance();
     }
-
 
     public static Order getOrder() {
         return (Order) Order.getInstance();
