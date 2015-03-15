@@ -37,5 +37,6 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:3.21.1'
     compile 'com.github.flavienlaurent.datetimepicker:library:0.0.2'
     compile 'com.parse.bolts:bolts-android:1.+'
+    compile 'com.github.johnkil.android-robototextview:robototextview:2.3.0'
     compile fileTree(dir: 'libs', include: 'Parse-*.jar')
 }

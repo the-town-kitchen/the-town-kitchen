@@ -1,57 +1,99 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.codepath.the_town_kitchen.activities.MealListActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
-        android:minHeight="@dimen/toolbar_height"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/toolbar_height"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:background="@color/white"
+        android:minHeight="@dimen/toolbar_height"
         app:popupTheme="@style/Theme.AppCompat.Light"
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/today"
-        android:textColor="@color/neutral"
-        android:layout_gravity="right|center"
-        android:id="@+id/toolbar_text" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left|center"
+            android:layout_marginLeft="5dp">
+
+            <ImageView
+                android:id="@+id/icon_calendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/calendar24" />
+
+            <com.devspark.robototextview.widget.RobotoTextView
+                android:id="@+id/tvCalendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/icon_calendar"
+                android:text="@string/today"
+                android:textColor="@color/secondary_dark"
+                android:textSize="16sp"
+                app:typeface="roboto_medium" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right|center">
+
+            <ImageView
+                android:id="@+id/icon_cart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight='true'
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/shoppingcart48" />
+
+            <com.devspark.robototextview.widget.RobotoTextView
+                android:id="@+id/tvCount"
+                style="@style/toolbar_badge_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="12" />
+
+        </RelativeLayout>
+
     </android.support.v7.widget.Toolbar>
 
     <RelativeLayout
         android:id="@+id/rlProfile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_large_margin"
-        android:layout_below="@id/toolbar">
+        android:layout_below="@id/toolbar"
+        android:layout_margin="@dimen/activity_large_margin">
 
         <com.facebook.widget.ProfilePictureView
             android:id="@+id/ivFacebookProfile"
             android:layout_width="@dimen/avatar_size"
             android:layout_height="@dimen/avatar_size"
-            android:layout_marginRight="@dimen/activity_normal_margin"/>
+            android:layout_marginRight="@dimen/activity_normal_margin" />
+
         <ImageView
             android:id="@+id/ivProfile"
             android:layout_width="@dimen/avatar_size"
             android:layout_height="@dimen/avatar_size"
-            android:layout_marginRight="@dimen/activity_normal_margin"/>
+            android:layout_marginRight="@dimen/activity_normal_margin" />
 
         <TextView
             android:id="@+id/tvUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/ivProfile"
+            android:layout_toRightOf="@+id/ivProfile"
             android:fontFamily="sans-serif"
             android:textColor="@color/secondary_darkest"
             android:textSize="14sp"
-            android:textStyle="bold"
-            android:layout_toRightOf="@+id/ivProfile"
-            android:layout_alignTop="@+id/ivProfile"/>
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvEmail"
@@ -68,6 +110,6 @@
         android:id="@+id/lvList"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/rlProfile"/>
+        android:layout_below="@+id/rlProfile" />
 
 </RelativeLayout>

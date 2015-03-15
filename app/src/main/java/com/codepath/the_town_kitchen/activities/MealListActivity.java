@@ -41,6 +41,11 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
     private TextView tvUserName, tvEmail;
     private ListView lvList;
     private MealAdapter mealAdapter;
+    private TextView tvCount;
+
+    private TextView tvCalendar;
+    private ImageView imgCalendar;
+    private ImageView imgCart;
     private ArrayList<com.codepath.the_town_kitchen.models.Meal> meals;
     private static String TAG = MealListActivity.class.getSimpleName();
 
@@ -51,31 +56,68 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
 
-    TextView toolbar_text;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meal_list);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar_text = (TextView)toolbar.findViewById(R.id.toolbar_text);
-        toolbar_text.setText(getString(R.string.today));
-        setSupportActionBar(toolbar);
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-
-        toolbar.setLogo(R.mipmap.ic_launcher);
-        actionBar.setTitle("");
+        setupToolbar();
         setupProfile();
-        
+
         //Mock data here;
         meals = new ArrayList<>();
         mealAdapter = new MealAdapter(this, meals, this);
         lvList.setAdapter(mealAdapter);
         readFile("meal.json");
-        
+
         calendar = Calendar.getInstance();
         datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
-        timePickerDialog = TimePickerDialog.newInstance(this, calendar.get(Calendar.HOUR_OF_DAY) ,calendar.get(Calendar.MINUTE), false, false);
+        timePickerDialog = TimePickerDialog.newInstance(this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false, false);
 
+    }
+
+    private void setupToolbar() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        tvCalendar = (TextView) toolbar.findViewById(R.id.tvCalendar);
+        tvCalendar.setText(getString(R.string.today));
+        setSupportActionBar(toolbar);
+
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+
+        toolbar.setLogo(R.mipmap.ic_launcher);
+        actionBar.setTitle("");
+        tvCount = (TextView) toolbar.findViewById(R.id.tvCount);
+        imgCalendar = (ImageView) toolbar.findViewById(R.id.icon_calendar);
+        imgCart = (ImageView) toolbar.findViewById(R.id.icon_cart);
+        imgCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                datePickerDialog.setVibrate(false);
+                datePickerDialog.setYearRange(calendar.get(Calendar.YEAR), 2028);
+                datePickerDialog.setCloseOnSingleTapDay(true);
+                datePickerDialog.show(getSupportFragmentManager(), DATEPICKER_TAG);
+
+            }
+        });
+
+        imgCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Order order = TheTownKitchenApplication.getOrder().getOrderByDate(tvCalendar.getText().toString());
+
+                if (order != null) {
+                    if (order.getTime() == null || order.getTime().isEmpty()) {
+
+                        timePickerDialog.setVibrate(false);
+                        timePickerDialog.setCloseOnSingleTapMinute(true);
+                        timePickerDialog.show(getSupportFragmentManager(), TIMEPICKER_TAG);
+
+                    } else {
+                        startOrderSummaryActivity();
+                    }
+                }
+
+            }
+        });
     }
 
     private void setupProfile() {
@@ -86,12 +128,11 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         profilePictureView = (ProfilePictureView) findViewById(R.id.ivFacebookProfile);
 
         User currentUser = TheTownKitchenApplication.getCurrentUser().getUser();
-        if(currentUser!= null) {
-            if(currentUser.getProfileImageUrl() != null && !currentUser.getProfileImageUrl().isEmpty()) {
+        if (currentUser != null) {
+            if (currentUser.getProfileImageUrl() != null && !currentUser.getProfileImageUrl().isEmpty()) {
                 Picasso.with(this).load(currentUser.getProfileImageUrl()).into(ivProfile);
-            }
-            else if(currentUser.getFacebookId()!= null && !currentUser.getFacebookId().isEmpty()){
-            
+            } else if (currentUser.getFacebookId() != null && !currentUser.getFacebookId().isEmpty()) {
+
                 profilePictureView.setCropped(true);
                 profilePictureView.setProfileId(currentUser.getFacebookId());
                 profilePictureView.setVisibility(View.VISIBLE);
@@ -117,19 +158,6 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Intent i = new Intent(MealListActivity.this, OrderSummaryActivity.class);
-            i.putExtra("date", toolbar_text.getText().toString());
-            startActivity(i);
-            return true;
-        }else if (id == R.id.action_date) {
-            datePickerDialog.setVibrate(false);
-            datePickerDialog.setYearRange(calendar.get(Calendar.YEAR), 2028);
-            datePickerDialog.setCloseOnSingleTapDay(true);
-            datePickerDialog.show(getSupportFragmentManager(), DATEPICKER_TAG);
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -137,20 +165,35 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
 
     @Override
     public void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int day) {
-        toolbar_text.setText( year + "-" + month + "-" + day);
+        tvCalendar.setText(year + "-" + (month + 1) + "-" + day);
         readFile("meal2.json");
     }
 
     @Override
     public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
-        Toast.makeText(this, "new time:" + hourOfDay + "-" + minute, Toast.LENGTH_LONG).show();
+        Order order = TheTownKitchenApplication.getOrder().getOrderByDate(tvCalendar.getText().toString());
+
+        if (order != null) {
+            if (order.getTime() == null || order.getTime().isEmpty()) {
+                order.setTime(hourOfDay + "-" + minute);
+                order.save(); 
+                startOrderSummaryActivity();
+            }
+
+        } else
+            Toast.makeText(this, "new time:" + hourOfDay + "-" + minute, Toast.LENGTH_LONG).show();
     }
 
-    private void readFile(String fileName){
-            String json = loadJSONFromAsset(fileName);
-      
+    private void startOrderSummaryActivity() {
+        Intent i = new Intent(MealListActivity.this, OrderSummaryActivity.class);
+        startActivity(i);
+    }
+
+    private void readFile(String fileName) {
+        String json = loadJSONFromAsset(fileName);
+
         try {
-            JSONObject jsonObject  = new JSONObject(json);
+            JSONObject jsonObject = new JSONObject(json);
             JSONArray jsonArray = jsonObject.getJSONArray("meal");
             if (jsonArray != null && jsonArray.length() > 0) {
                 meals.clear();
@@ -158,12 +201,11 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
                 mealAdapter.notifyDataSetChanged();
             }
             Log.d(TAG, "meal list " + meals.size());
-        } 
-        catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-    
+
     public String loadJSONFromAsset(String fileName) {
         String json = null;
         try {
@@ -184,52 +226,57 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
     @Override
     public void onActionClicked(int position, int count) {
         Meal meal = meals.get(position);
-        String date = toolbar_text.getText().toString();
-        Order order = Order.fromCacheByDate(date);
+        String date = tvCalendar.getText().toString();
+
+        Order order = null; //Order.fromCacheByDate(date);
         ArrayList<OrderItem> orderItems;
         boolean isMealInCart = false;
         double totalCost = 0;
-        if(order == null){
+        int orderCount = 0;
+        TheTownKitchenApplication.orderDate = date;
+        //User singleton of Order
+        order = TheTownKitchenApplication.getOrder().getOrderByDate(date);
+        if (order == null) {
             order = new Order();
             orderItems = new ArrayList<>();
         } else {
             orderItems = order.getOrderItems();
         }
-        
-        
-      
-        if(orderItems == null || orderItems.size() == 0) {
+
+        if (orderItems == null || orderItems.size() == 0) {
             orderItems = new ArrayList<>();
 
             orderItems.add(OrderItem.orderItemFromClick(meal, count));
             totalCost = meal.getPrice() * count;
-        }
-        else{
-            for(OrderItem orderItem : orderItems){
-                if(orderItem.getMeal().getUid()== meal.getUid()){
+            orderCount = count;
+        } else {
+            for (OrderItem orderItem : orderItems) {
+                if (orderItem.getMeal().getUid() == meal.getUid()) {
                     orderItem.setQuantity(count);
                     orderItem.save();
-                    
-                    isMealInCart= true;
-                   
+
+                    isMealInCart = true;
+
                     //break;
                 }
-                totalCost = totalCost + orderItem.getQuantity() * orderItem.getMeal().getPrice();
+                totalCost += orderItem.getQuantity() * orderItem.getMeal().getPrice();
+                orderCount += orderItem.getQuantity();
             }
-            if(!isMealInCart){
+            if (!isMealInCart) {
                 orderItems.add(OrderItem.orderItemFromClick(meal, count));
                 totalCost += meal.getPrice() * count;
+                orderCount += count;
             }
         }
         order.setOrderItems(orderItems);
-        
+
         order.setDate(date);
         order.setUser(TheTownKitchenApplication.getCurrentUser().getUser());
 
-            order.setCost(totalCost);
+        order.setCost(totalCost);
 
-       
+
         order.save();
-        
+        tvCount.setText(orderCount + "");
     }
 }

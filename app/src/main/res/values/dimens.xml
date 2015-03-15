@@ -11,4 +11,24 @@
     <dimen name="padding_big">55dp</dimen>
     <dimen name="avatar_medium">50dp</dimen>
 
+
+    <dimen name="text_size_super_large">38sp</dimen>
+    <dimen name="text_size_extra_large">34sp</dimen>
+    <dimen name="text_size_large">22sp</dimen>
+    <dimen name="text_size_medium">18sp</dimen>
+    <dimen name="text_size_normal">16sp</dimen>
+    <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_micro">12sp</dimen>
+    <dimen name="text_size_micro_mini">8sp</dimen>
+
+    <!-- Common spaces guide -->
+    <dimen name="space_pico">3dip</dimen>
+    <dimen name="space_nano">5dip</dimen>
+    <dimen name="space_micro">8dip</dimen>
+    <dimen name="space_small">10dip</dimen>
+    <dimen name="space_medium">16dip</dimen>
+    <dimen name="space_large">20dip</dimen>
+    <dimen name="space_larger">26dip</dimen>
+    <dimen name="space_double">32dip</dimen>
+    <dimen name="space_extra_large">48dip</dimen>
 </resources>
