@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="black">#000</color>
     <color name="white">#fff</color>
     <color name="twitter_blue">#55acee</color>
     <color name="secondary_darkest">#333</color>
@@ -9,4 +10,5 @@
     <color name="secondary_light">#c8c8c8</color>
     <color name="secondary_lighter">#eaeaea</color>
     <color name="secondary_lightest">#f4f4f4</color>
+    <color name="the_town_kitchen_red">#AE222C</color>
 </resources>

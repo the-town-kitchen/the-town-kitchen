@@ -4,43 +4,19 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
-    <RelativeLayout
-        android:id="@+id/rlHeader"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true">
-
-        <ImageView
-            android:id="@+id/ivUserProfileImage"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="10dp" />
-        <TextView
-            android:id="@+id/tvUserProfileName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/ivUserProfileImage"
-            android:text="Name"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/tvUserProfileTagline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/tvUserProfileName"
-            android:layout_below="@+id/tvUserProfileName"
-            android:text="Tagline"
-            android:textSize="12sp" />
-
-    </RelativeLayout>
-
     <fragment
         android:id="@+id/map"
         class="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
+
+    <!--<EditText-->
+            <!--android:id="@+id/etDeliveryLocation"-->
+            <!--android:hint="input location"-->
+            <!--android:layout_below="@+id/map"-->
+            <!--android:background="@color/white"-->
+            <!--android:textColor="@color/black"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"/>-->
 
 </RelativeLayout>

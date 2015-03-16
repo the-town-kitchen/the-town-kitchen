@@ -79,7 +79,8 @@
 
         <activity
             android:name=".activities.DeliveryLocationActivity"
-            android:label="@string/title_activity_delivery_location" >
+            android:label="@string/title_activity_delivery_location"
+            android:theme="@android:style/Theme.Holo.Light.DarkActionBar">
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN" />-->
 

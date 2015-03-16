@@ -1,18 +1,28 @@
 package com.codepath.the_town_kitchen.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.view.animation.BounceInterpolator;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.codepath.the_town_kitchen.R;
+import com.codepath.the_town_kitchen.adapters.DeliveryPinAdapter;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -24,7 +34,11 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 /**
  * Created by paulina on 3/7/15.
@@ -33,7 +47,8 @@ import com.google.android.gms.maps.model.LatLng;
 public class DeliveryLocationActivity extends FragmentActivity implements
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+        LocationListener,
+        GoogleMap.OnMapLongClickListener {
 
     private SupportMapFragment mapFragment;
     private GoogleMap map;
@@ -42,6 +57,7 @@ public class DeliveryLocationActivity extends FragmentActivity implements
     private long UPDATE_INTERVAL = 60000;  /* 60 secs */
     private long FASTEST_INTERVAL = 5000; /* 5 secs */
     private String TAG_DELIVERY_LOCATION_ACTIVITY = "TAG_DELIVERY_LOCATION_ACTIVITY";
+    private boolean pinDisplayed = false;
 
     /*
      * Define a request code to send to Google Play services This code is
@@ -52,7 +68,7 @@ public class DeliveryLocationActivity extends FragmentActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_delivery_location);
+        setContentView(R.layout.activity_delivery_location);;
 
         mapFragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
         if (mapFragment != null) {
@@ -60,6 +76,7 @@ public class DeliveryLocationActivity extends FragmentActivity implements
                 @Override
                 public void onMapReady(GoogleMap map) {
                     loadMap(map);
+                    map.setInfoWindowAdapter(new DeliveryPinAdapter(getLayoutInflater()));
                 }
             });
         } else {
@@ -82,6 +99,8 @@ public class DeliveryLocationActivity extends FragmentActivity implements
                     .addApi(LocationServices.API)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this).build();
+
+            map.setOnMapLongClickListener(this);
 
             connectClient();
         } else {
@@ -290,5 +309,62 @@ public class DeliveryLocationActivity extends FragmentActivity implements
         return super.onOptionsItemSelected(item);
     }
 
+
+    // Fires when a long press happens on the map
+    @Override
+    public void onMapLongClick(final LatLng point) {
+//        Toast.makeText(this, "Long Press", Toast.LENGTH_LONG).show();
+
+        if (pinDisplayed) {
+            map.clear();
+            pinDisplayed = false;
+        }
+
+        // Define color of marker icon
+        BitmapDescriptor defaultMarker =
+                BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED);
+
+        // Creates and adds marker to the map
+        Marker marker = map.addMarker(new MarkerOptions()
+                .position(point)
+                .title(getResources().getString(R.string.deliver_here))
+                .icon(defaultMarker));
+
+        pinDisplayed = true;
+
+        dropPinEffect(marker);
+    }
+
+    private void dropPinEffect(final Marker marker) {
+        // Handler allows us to repeat a code block after a specified delay
+        final android.os.Handler handler = new android.os.Handler();
+        final long start = SystemClock.uptimeMillis();
+        final long duration = 1500;
+
+        // Use the bounce interpolator
+        final android.view.animation.Interpolator interpolator =
+                new BounceInterpolator();
+
+        // Animate marker with a bounce updating its position every 15ms
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                long elapsed = SystemClock.uptimeMillis() - start;
+                // Calculate t for bounce based on elapsed time
+                float t = Math.max(
+                        1 - interpolator.getInterpolation((float) elapsed
+                                / duration), 0);
+                // Set the anchor
+                marker.setAnchor(0.5f, 1.0f + 14 * t);
+
+                if (t > 0.0) {
+                    // Post this event again 15ms from now.
+                    handler.postDelayed(this, 15);
+                } else { // done elapsing, show window
+                    marker.showInfoWindow();
+                }
+            }
+        });
+    }
 }
 
