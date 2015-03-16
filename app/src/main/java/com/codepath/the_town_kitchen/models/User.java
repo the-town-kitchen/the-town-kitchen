@@ -21,6 +21,7 @@ public class User extends ParseObject {
     private String profileImageUrl;
 
     private String facebookId;
+
     // Profile pic image size in pixels
     private static final int PROFILE_PIC_SIZE = 40;
 
@@ -28,19 +29,22 @@ public class User extends ParseObject {
         super();
     }
 
-    public String getName() {
-        return name;
-    }
+    public String getName() { return getString("name"); }
 
-    public String getEmail() { return email; }
+    public String getEmail() { return getString("email"); }
 
-    public String getProfileImageUrl() {
-        return profileImageUrl;
-    }
+    public String getProfileImageUrl() { return getString("profileImageUrl"); }
 
-    public String getFacebookId() {
-        return facebookId;
-    }
+    public String getFacebookId() { return getString("facebookId"); }
+
+    public void setName(String name) { put("name", name); }
+
+    public void setEmail(String email) { put("email", email); }
+
+    public void setProfileImageUrl(String profileImageUrl) { put("profileImageUrl", profileImageUrl); }
+
+    public void setFacebookId(String facebookId) { put("facebookId", facebookId); }
+
     public static User fromGooglePerson(Person person, GoogleApiClient mGoogleApiClient) {
         User user = new User();
         user.name = person.getDisplayName();

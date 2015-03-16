@@ -1,11 +1,6 @@
 package com.codepath.the_town_kitchen.models;
 
 import com.activeandroid.ActiveAndroid;
-import com.activeandroid.Model;
-import com.activeandroid.annotation.Column;
-import com.activeandroid.annotation.Table;
-import com.activeandroid.query.Delete;
-import com.activeandroid.query.Select;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
@@ -15,7 +10,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by paulina on 3/7/15.
@@ -38,23 +32,33 @@ public class Meal extends ParseObject {
 
     private String date;
 
-    public Long getUid() { return uid; }
+    public Long getUid() { return getLong("uid"); }
 
-    public String getName() { return name; }
+    public String getName() { return getString("name"); }
 
-    public String getDescription() { return description; }
+    public String getDescription() { return getString("description"); }
 
-    public double getPrice() { return price; }
+    public double getPrice() { return getDouble("price"); }
 
-    public String getImageUrl() { return imageUrl; }
+    public String getImageUrl() { return getString("imageUrl"); }
 
-    public int getQuantity() { return quantity; }
+    public int getQuantity() { return getInt("quantity"); }
 
-    public String getDate() { return date; }
+    public String getDate() { return getString("date"); }
 
-    public Meal() {
-        super();
-    }
+    public void setUid(Long uid) { put("uid", uid); }
+
+    public void setName(String name) { put("name", name); }
+
+    public void setDescription(String description) { put("description", description); }
+
+    public void setPrice(double price) { put("price", price); }
+
+    public void setImageUrl(String imageUrl) { put("imageUrl", imageUrl); }
+
+    public void setQuantity(int quantity) { put("quantity", quantity); }
+
+    public void setDate(String date) { put("date", date); }
 
     public static ArrayList<Meal> fromJsonArray(JSONArray jsonArray) {
         if (jsonArray == null || jsonArray.length() < 1) return null;
@@ -102,5 +106,6 @@ public class Meal extends ParseObject {
         }
         return meal;
     }
+
 }
 
