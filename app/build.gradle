@@ -39,4 +39,5 @@ dependencies {
     compile 'com.parse.bolts:bolts-android:1.+'
     compile 'com.github.johnkil.android-robototextview:robototextview:2.3.0'
     compile fileTree(dir: 'libs', include: 'Parse-*.jar')
+    compile 'com.stripe:stripe-android:+'
 }
