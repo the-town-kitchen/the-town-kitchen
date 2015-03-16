@@ -33,27 +33,21 @@ public class Order extends ParseObject {
 
     public String getDeliveryLocation() { return getString("deliveryLocation"); }
 
-//    public User getUser() { return getParseObject("user"); }
+    public User getUser() { return (User) getParseObject("user"); }
 
     public String getDate() { return getString("date"); }
 
     public String getTime() { return getString("time"); }
 
-//    public Feedback getFeedback() {
-//        return getParseObject("feedback");
-//    }
+    public Feedback getFeedback() { return (Feedback) getParseObject("feedback"); }
 
-    public ArrayList<OrderItem> getOrderItems() {
-        return orderItems;
-    }
+    public ArrayList<OrderItem> getOrderItems() { return orderItems; }
 
-    public void setCost(double cost) {
-        this.cost = cost;
-    }
+    public void setUid(Long uid) { put("uid", uid); }
 
-    public void setDeliveryLocation(String deliveryLocation) {
-        this.deliveryLocation = deliveryLocation;
-    }
+    public void setCost(double cost) { put("cost", cost); }
+
+    public void setDeliveryLocation(String deliveryLocation) { put("deliveryLocation", deliveryLocation); }
 
     public void setUser(User user) { put("user", user); }
 
@@ -63,13 +57,9 @@ public class Order extends ParseObject {
 
     public void setFeedback(Feedback feedback) { put("feedback", feedback); }
 
-    public void setOrderItems(ArrayList<OrderItem> orderItems) {
-        this.orderItems = orderItems;
-    }
+    public void setOrderItems(ArrayList<OrderItem> orderItems) { this.orderItems = orderItems; }
 
-    public Order() {
-        super();
-    }
+    public Order() { super(); }
 
     private static Order instance;
     public static Order getInstance() {

@@ -19,7 +19,7 @@ public class OrderItem extends ParseObject {
 
     public double getCost() { return getDouble("cost"); }
 
-    public Meal getMeal() { return getMeal(); }
+    public Meal getMeal() { return (Meal) getParseObject("meal"); }
 
     public int getQuantity() { return getInt("quantity"); }
 
