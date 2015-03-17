@@ -80,6 +80,7 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener,
     private GoogleApi.IResponseHandler googleApiHandler = new GoogleApi.IResponseHandler() {
         @Override
         public void handle(User user) {
+            Log.d(TAG, "google user " + user);
             setCurrentUser(user);
         }
     };
@@ -88,7 +89,7 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener,
     private FacebookApi.IResponseHandler facebookApiHandler = new FacebookApi.IResponseHandler() {
         @Override
         public void handle(User user) {
-
+            Log.d(TAG, "facebook user " + user);
             setCurrentUser(user);
         }
     };
@@ -184,7 +185,7 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener,
     @Override
     public void onConnected(Bundle arg0) {
         mSignInClicked = false;
-        //Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
+       Log.d(TAG, "Google User is connected!");
 
         // Get user's information
         if (TheTownKitchenApplication.getCurrentUser().getUser() == null) {
