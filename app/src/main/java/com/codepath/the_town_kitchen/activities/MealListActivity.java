@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,14 +26,9 @@ import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class MealListActivity extends ActionBarActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, MealAdapter.IActionClickListener {
     private ProfilePictureView profilePictureView;
@@ -64,17 +58,26 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         setupToolbar();
         setupProfile();
 
-        //Mock data here;
+
         meals = new ArrayList<>();
         mealAdapter = new MealAdapter(this, meals, this);
         lvList.setAdapter(mealAdapter);
-        //readFile("meal.json");
-
+        Meal.fromParse(mealsReceived);
         calendar = Calendar.getInstance();
         datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
         timePickerDialog = TimePickerDialog.newInstance(this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false, false);
 
     }
+
+    private Meal.IMealsReceivedListener mealsReceived = new Meal.IMealsReceivedListener() {
+        @Override
+        public void handle(List<Meal> parseMeals) {
+            meals.clear();
+            meals.addAll(parseMeals);
+            mealAdapter.notifyDataSetChanged();
+
+        }
+    };
 
     private void setupToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -167,7 +170,7 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
     @Override
     public void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int day) {
         tvCalendar.setText(year + "-" + (month + 1) + "-" + day);
-        readFile("meal2.json");
+
     }
 
     @Override
@@ -192,40 +195,6 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
     private void startOrderSummaryActivity() {
         Intent i = new Intent(MealListActivity.this, OrderSummaryActivity.class);
         startActivity(i);
-    }
-
-    private void readFile(String fileName) {
-        String json = loadJSONFromAsset(fileName);
-
-        try {
-            JSONObject jsonObject = new JSONObject(json);
-            JSONArray jsonArray = jsonObject.getJSONArray("meal");
-            if (jsonArray != null && jsonArray.length() > 0) {
-                meals.clear();
-                meals.addAll(com.codepath.the_town_kitchen.models.Meal.fromJsonArray(jsonArray));
-                mealAdapter.notifyDataSetChanged();
-            }
-            Log.d(TAG, "meal list " + meals.size());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public String loadJSONFromAsset(String fileName) {
-        String json = null;
-        try {
-            InputStream is = getAssets().open(fileName);
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return null;
-        }
-        return json;
     }
 
     @Override

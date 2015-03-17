@@ -1,22 +1,24 @@
 package com.codepath.the_town_kitchen.models;
 
+import android.util.Log;
+
 import com.activeandroid.ActiveAndroid;
+import com.parse.FindCallback;
 import com.parse.ParseClassName;
 import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-/**
- * Created by paulina on 3/7/15.
- */
+import java.util.List;
 
 @ParseClassName("Meal")
 public class Meal extends ParseObject {
+    private static final int MAX_MEALS_TO_SHOW = 4;
 
     private Long uid;
 
@@ -106,6 +108,28 @@ public class Meal extends ParseObject {
         }
         return meal;
     }
+    // Query messages from Parse so we can load them into the chat adapter
+    public static void fromParse(final IMealsReceivedListener mealsReceived) {
+        // Construct query to execute
+        final List<Meal> meals = null;
+        ParseQuery<Meal> query = ParseQuery.getQuery(Meal.class);
+        query.setLimit(MAX_MEALS_TO_SHOW);
+        query.orderByDescending("createdAt");
+        // Execute query for messages asynchronously
+        query.findInBackground(new FindCallback<Meal>() {
+            public void done(List<Meal> parseMeals, ParseException e) {
+                if (e == null) {
+                    mealsReceived.handle(parseMeals);
+                } else {
+                    Log.d("message", "Error: " + e.getMessage());
+                }
+            }
+        });
 
+    }
+
+    public interface IMealsReceivedListener{
+        void handle(List<Meal> meals);
+    }
 }
 
