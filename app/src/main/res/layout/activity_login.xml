@@ -28,5 +28,4 @@
         facebook:confirm_logout="false"
         facebook:fetch_user_info="true" />
 
-
 </LinearLayout>

@@ -14,6 +14,7 @@ import com.codepath.the_town_kitchen.R;
 import com.codepath.the_town_kitchen.TheTownKitchenApplication;
 import com.codepath.the_town_kitchen.models.User;
 import com.codepath.the_town_kitchen.net.FacebookApi;
+import com.codepath.the_town_kitchen.net.GoogleApi;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
@@ -24,9 +25,6 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.google.android.gms.plus.Plus;
-
-import org.json.JSONObject;
 
 import java.util.Arrays;
 
@@ -47,7 +45,6 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener,
     private boolean mIntentInProgress;
 
     private boolean mSignInClicked;
-    private boolean mLoggedIn;
     private ConnectionResult mConnectionResult;
 
     private SignInButton googleLoginBtn;
@@ -76,18 +73,23 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener,
         googleLoginBtn = (SignInButton) findViewById(R.id.google_login_button);
         googleLoginBtn.setOnClickListener(this);
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .addConnectionCallbacks(this)
-                .addOnConnectionFailedListener(this)
-                .addApi(Plus.API)
-                .addScope(Plus.SCOPE_PLUS_LOGIN)
-                .build();
+        mGoogleApiClient = GoogleApi.getGoogleClient(this,this,this);
+
     }
     
+    private GoogleApi.IResponseHandler googleApiHandler = new GoogleApi.IResponseHandler() {
+        @Override
+        public void handle(User user) {
+            setCurrentUser(user);
+        }
+    };
+
+
     private FacebookApi.IResponseHandler facebookApiHandler = new FacebookApi.IResponseHandler() {
         @Override
-        public void handle(JSONObject json) {
-            setCurrentUser(json);
+        public void handle(User user) {
+
+            setCurrentUser(user);
         }
     };
     @Override
@@ -182,11 +184,14 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener,
     @Override
     public void onConnected(Bundle arg0) {
         mSignInClicked = false;
-        mLoggedIn = true;
-        // Get user's information
-        TheTownKitchenApplication.getCurrentUser().requestCurrentUserFromGoogle(mGoogleApiClient);
+        //Toast.makeText(this, "User is connected!", Toast.LENGTH_LONG).show();
 
+        // Get user's information
+        if (TheTownKitchenApplication.getCurrentUser().getUser() == null) {
+            TheTownKitchenApplication.getGoogleApi().getUser(googleApiHandler);
+        }
     }
+
 
     @Override
     public void onConnectionSuspended(int arg0) {
@@ -218,13 +223,6 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener,
             mSignInClicked = true;
             resolveSignInError();
         }
-        
-        if(mLoggedIn){
-            if(TheTownKitchenApplication.getCurrentUser().getUser() != null){
-                Intent intent = new Intent(this, MealListActivity.class);
-                startActivity(intent);
-            }
-        }
     }
 
     private void onSessionStateChange(Session session, SessionState state, Exception exception) {
@@ -244,9 +242,7 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener,
         }
     }
 
-    private void setCurrentUser(JSONObject response) {
-        JSONObject json = response;
-        User user = User.fromJson(json);
+    private void setCurrentUser(User user) {
         TheTownKitchenApplication.getCurrentUser().setUser(user);
         Intent intent = new Intent(this, MealListActivity.class);
         startActivity(intent);
@@ -259,6 +255,4 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener,
             onSessionStateChange(session, state, exception);
         }
     };
-
-
 }

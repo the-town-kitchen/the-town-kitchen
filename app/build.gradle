@@ -11,6 +11,11 @@ android {
         versionCode 1
         versionName "1.0"
     }
+    signingConfigs {
+        debug {
+            storeFile file("keystore/debug.keystore")
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false

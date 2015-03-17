@@ -68,7 +68,7 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         meals = new ArrayList<>();
         mealAdapter = new MealAdapter(this, meals, this);
         lvList.setAdapter(mealAdapter);
-        readFile("meal.json");
+        //readFile("meal.json");
 
         calendar = Calendar.getInstance();
         datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);

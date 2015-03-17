@@ -61,7 +61,7 @@ public class User extends ParseObject {
         return user;
     }
 
-    public static User fromJson(JSONObject json) {
+    public static User fromFacebookJson(JSONObject json) {
         User user = new User();
         try {
             user.email = json.getString("email");

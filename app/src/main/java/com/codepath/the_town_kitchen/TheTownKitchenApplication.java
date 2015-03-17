@@ -2,13 +2,13 @@ package com.codepath.the_town_kitchen;
 
 import android.content.Context;
 
-import com.activeandroid.ActiveAndroid;
 import com.codepath.the_town_kitchen.models.Feedback;
 import com.codepath.the_town_kitchen.models.Meal;
 import com.codepath.the_town_kitchen.models.Order;
 import com.codepath.the_town_kitchen.models.OrderItem;
 import com.codepath.the_town_kitchen.models.User;
 import com.codepath.the_town_kitchen.net.FacebookApi;
+import com.codepath.the_town_kitchen.net.GoogleApi;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
@@ -49,6 +49,10 @@ public class TheTownKitchenApplication extends com.activeandroid.app.Application
     public static FacebookApi getFaceBookApi() {
         return (FacebookApi) FacebookApi.getInstance();
     }
+    public static GoogleApi getGoogleApi() {
+        return (GoogleApi) GoogleApi.getInstance();
+    }
+
     public static CurrentUser getCurrentUser() {
         return (CurrentUser) CurrentUser.getInstance();
     }
