@@ -17,6 +17,7 @@ import com.codepath.the_town_kitchen.models.Order;
 import com.codepath.the_town_kitchen.models.OrderItem;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class OrderSummaryActivity extends ActionBarActivity {
     Button bSubmitOrder;
@@ -55,18 +56,22 @@ public class OrderSummaryActivity extends ActionBarActivity {
         //order items
         lvOrderItems = (ListView) findViewById(R.id.lvOrderItems);
         tvDeliveryTime = (TextView) findViewById(R.id.tvDeliveryTime);
-        Order order = TheTownKitchenApplication.getOrder();
-        //  Order.fromCacheByDate(date);
-        if (order != null) {
-            tvDeliveryTime.setText(order.getDate() + " " + order.getTime());
-            orderItems = order.getOrderItems();
-            if (orderItems == null)
-                orderItems = new ArrayList<>();
-            orderItemAdapter = new OrderItemAdapter(this, orderItems, null);
-            lvOrderItems.setAdapter(orderItemAdapter);
-            tvOrderTotal = (TextView) findViewById(R.id.tvOrderTotal);
-            tvOrderTotal.setText("$" + order.getCost() + "");
-        }
+        Order.getOrderByDateFromLocal(TheTownKitchenApplication.orderDate, new Order.IOrderReceivedListener() {
+            @Override
+            public void handle(Order order, List<OrderItem> orderItems) {
+                if (order != null) {
+                    tvDeliveryTime.setText(order.getDate() + " " + order.getTime());
+
+                    if (orderItems == null)
+                        orderItems = new ArrayList<>();
+                    orderItemAdapter = new OrderItemAdapter(OrderSummaryActivity.this, orderItems, null);
+                    lvOrderItems.setAdapter(orderItemAdapter);
+                    tvOrderTotal = (TextView) findViewById(R.id.tvOrderTotal);
+                    tvOrderTotal.setText("$" + order.getCost() + "");
+                }
+            }
+        });
+
     }
 
 

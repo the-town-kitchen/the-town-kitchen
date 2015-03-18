@@ -17,7 +17,6 @@ import com.codepath.the_town_kitchen.TheTownKitchenApplication;
 import com.codepath.the_town_kitchen.adapters.MealAdapter;
 import com.codepath.the_town_kitchen.models.Meal;
 import com.codepath.the_town_kitchen.models.Order;
-import com.codepath.the_town_kitchen.models.OrderItem;
 import com.codepath.the_town_kitchen.models.User;
 import com.facebook.widget.ProfilePictureView;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
@@ -26,6 +25,7 @@ import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -82,7 +82,9 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
     private void setupToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         tvCalendar = (TextView) toolbar.findViewById(R.id.tvCalendar);
-        tvCalendar.setText(getString(R.string.today));
+        java.text.DateFormat df = new SimpleDateFormat("yyyy-MM-d");
+        String date = df.format(Calendar.getInstance().getTime());
+        tvCalendar.setText(date);
         setSupportActionBar(toolbar);
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
@@ -179,7 +181,7 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
 
         if (order != null) {
             if (order.getTime() == null || order.getTime().isEmpty()) {
-                order.setTime(hourOfDay + "-" + minute);
+                order.setTime(hourOfDay + ":" + minute);
                 try {
                     order.save();
                 } catch (ParseException e) {
@@ -189,7 +191,7 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
             }
 
         } else
-            Toast.makeText(this, "new time:" + hourOfDay + "-" + minute, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "new time:" + hourOfDay + ":" + minute, Toast.LENGTH_LONG).show();
     }
 
     private void startOrderSummaryActivity() {
@@ -199,65 +201,12 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
 
     @Override
     public void onActionClicked(int position, int count) {
+
         Meal meal = meals.get(position);
         String date = tvCalendar.getText().toString();
+        Order.update(date, meal, count);
 
-        Order order = null; //Order.fromCacheByDate(date);
-        ArrayList<OrderItem> orderItems;
-        boolean isMealInCart = false;
-        double totalCost = 0;
-        int orderCount = 0;
-        TheTownKitchenApplication.orderDate = date;
-        //User singleton of Order
-        order = TheTownKitchenApplication.getOrder();
-        if (order == null) {
-            order = new Order();
-            orderItems = new ArrayList<>();
-        } else {
-            orderItems = order.getOrderItems();
-        }
+        tvCount.setText(count + "");
 
-        if (orderItems == null || orderItems.size() == 0) {
-            orderItems = new ArrayList<>();
-
-            orderItems.add(OrderItem.orderItemFromClick(meal, count));
-            totalCost = meal.getPrice() * count;
-            orderCount = count;
-        } else {
-            for (OrderItem orderItem : orderItems) {
-                if (orderItem.getMeal().getUid() == meal.getUid()) {
-                    orderItem.setQuantity(count);
-                    try {
-                        orderItem.save();
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-
-                    isMealInCart = true;
-
-                    //break;
-                }
-                totalCost += orderItem.getQuantity() * orderItem.getMeal().getPrice();
-                orderCount += orderItem.getQuantity();
-            }
-            if (!isMealInCart) {
-                orderItems.add(OrderItem.orderItemFromClick(meal, count));
-                totalCost += meal.getPrice() * count;
-                orderCount += count;
-            }
-        }
-        order.setOrderItems(orderItems);
-
-        order.setDate(date);
-        order.setUser(TheTownKitchenApplication.getCurrentUser().getUser());
-
-        order.setCost(totalCost);
-
-        try {
-            order.save();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        tvCount.setText(orderCount + "");
     }
 }
