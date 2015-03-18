@@ -136,7 +136,8 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
                         timePickerDialog.show(getSupportFragmentManager(), TIMEPICKER_TAG);
 
                     } else {
-                        startOrderSummaryActivity();
+//                        startOrderSummaryActivity();
+                        startDeliveryLocationActivity();
                     }
                 }
 
@@ -207,7 +208,8 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
                     order.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
-                            startOrderSummaryActivity();
+//                            startOrderSummaryActivity();
+                            startDeliveryLocationActivity();
                         }
                     });
                     order.pinInBackground();
@@ -221,6 +223,11 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
 
     private void startOrderSummaryActivity() {
         Intent i = new Intent(MealListActivity.this, OrderSummaryActivity.class);
+        startActivity(i);
+    }
+
+    private void startDeliveryLocationActivity() {
+        Intent i = new Intent(MealListActivity.this, DeliveryLocationActivity.class);
         startActivity(i);
     }
 

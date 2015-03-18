@@ -75,17 +75,12 @@
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyDxEvw03ZteVUd55h57jOTJhR8BaxloheA" />
+            android:value="AIzaSyBVEc_HW2KCTGcIpSCNM0NQEY0MWkaovh4" />
 
         <activity
             android:name=".activities.DeliveryLocationActivity"
             android:label="@string/title_activity_delivery_location"
             android:theme="@android:style/Theme.Holo.Light.DarkActionBar">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".activities.PaymentInfoActivity"

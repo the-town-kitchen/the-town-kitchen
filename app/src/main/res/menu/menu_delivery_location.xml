@@ -2,8 +2,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.codepath.the_town_kitchen.activities.DeliveryLocationActivity">
-    <item android:id="@+id/action_settings" android:title="@string/settings"
-          android:orderInCategory="1" app:showAsAction="never" />
     <item android:id="@+id/action_view_order_summary" android:title="@string/action_view_order_summary"
-        android:orderInCategory="2" app:showAsAction="never" />
+        android:orderInCategory="1" app:showAsAction="never" />
 </menu>
