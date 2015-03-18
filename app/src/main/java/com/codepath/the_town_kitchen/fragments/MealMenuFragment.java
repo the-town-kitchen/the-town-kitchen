@@ -12,11 +12,11 @@ import android.view.ViewGroup;
 /**
  * Created by pramos on 2/25/15.
  */
-public class CurrentMenuFragment extends Fragment {
+public class MealMenuFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Defines the xml file for the fragment
-        View view = inflater.inflate(R.layout.fragment_current_menu, container, false);
+        View view = inflater.inflate(R.layout.fragment_meal_menu, container, false);
         // Setup handles to view objects here
         // etFoo = (EditText) view.findViewById(R.id.etFoo);
         return view;

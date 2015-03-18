@@ -19,11 +19,10 @@ import com.codepath.the_town_kitchen.R;
 import com.codepath.the_town_kitchen.TheTownKitchenApplication;
 import com.codepath.the_town_kitchen.adapters.MealAdapter;
 import com.codepath.the_town_kitchen.fragments.AboutFragment;
-import com.codepath.the_town_kitchen.fragments.CurrentMenuFragment;
+import com.codepath.the_town_kitchen.fragments.MealMenuFragment;
 import com.codepath.the_town_kitchen.fragments.ProfileFragment;
 import com.codepath.the_town_kitchen.models.Meal;
 import com.codepath.the_town_kitchen.models.Order;
-import com.facebook.widget.ProfilePictureView;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.parse.ParseException;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
@@ -140,9 +139,9 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
                 R.layout.drawer_nav_item, R.id.flContent);
 
         // Add nav items
-        dlDrawer.addNavItem("Profile", "Profile", ProfileFragment.class);
-        dlDrawer.addNavItem("Current Menu", "Current Menu", CurrentMenuFragment.class);
-        dlDrawer.addNavItem("About", "About", AboutFragment.class);
+        dlDrawer.addNavItem(getResources().getString(R.string.nav_item_profile), getResources().getString(R.string.nav_item_profile), ProfileFragment.class);
+        dlDrawer.addNavItem(getResources().getString(R.string.nav_item_meal_menu), getResources().getString(R.string.nav_item_meal_menu), MealMenuFragment.class);
+        dlDrawer.addNavItem(getResources().getString(R.string.nav_item_about), getResources().getString(R.string.nav_item_about), AboutFragment.class);
     }
 
     @Override
