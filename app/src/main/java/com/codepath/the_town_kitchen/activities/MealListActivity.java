@@ -1,32 +1,29 @@
 package com.codepath.the_town_kitchen.activities;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.codepath.the_town_kitchen.FragmentNavigationDrawer;
 import com.codepath.the_town_kitchen.R;
+import com.codepath.the_town_kitchen.TheTownKitchenApplication;
 import com.codepath.the_town_kitchen.adapters.MealAdapter;
-import com.codepath.the_town_kitchen.fragments.AboutFragment;
-import com.codepath.the_town_kitchen.fragments.MealMenuFragment;
-import com.codepath.the_town_kitchen.fragments.ProfileFragment;
 import com.codepath.the_town_kitchen.models.Meal;
 import com.codepath.the_town_kitchen.models.Order;
+import com.codepath.the_town_kitchen.models.User;
+import com.facebook.widget.ProfilePictureView;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.SaveCallback;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,6 +31,9 @@ import java.util.Calendar;
 import java.util.List;
 
 public class MealListActivity extends ActionBarActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, MealAdapter.IActionClickListener {
+    private ProfilePictureView profilePictureView;
+    private ImageView ivProfile;
+    private TextView tvUserName, tvEmail;
     private ListView lvList;
     private MealAdapter mealAdapter;
     private TextView tvCount;
@@ -51,14 +51,13 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
 
-    private FragmentNavigationDrawer dlDrawer;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meal_list);
         setupToolbar();
-        setupNavDrawer();
+        setupProfile();
+
 
         meals = new ArrayList<>();
         mealAdapter = new MealAdapter(this, meals, this);
@@ -67,11 +66,6 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         calendar = Calendar.getInstance();
         datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
         timePickerDialog = TimePickerDialog.newInstance(this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false, false);
-
-        // Select default nav drawer item
-        if (savedInstanceState == null) {
-            dlDrawer.selectDrawerItem(1);
-        }
 
     }
 
@@ -86,13 +80,20 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
     };
 
     private void setupToolbar() {
-        tvCalendar = (TextView) findViewById(R.id.tvCalendar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        tvCalendar = (TextView) toolbar.findViewById(R.id.tvCalendar);
         java.text.DateFormat df = new SimpleDateFormat("yyyy-MM-d");
         String date = df.format(Calendar.getInstance().getTime());
         tvCalendar.setText(date);
-        tvCount = (TextView) findViewById(R.id.tvCount);
-        imgCalendar = (ImageView) findViewById(R.id.icon_calendar);
-        imgCart = (ImageView) findViewById(R.id.icon_cart);
+        setSupportActionBar(toolbar);
+
+        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+
+        toolbar.setLogo(R.mipmap.ic_launcher);
+        actionBar.setTitle("");
+        tvCount = (TextView) toolbar.findViewById(R.id.tvCount);
+        imgCalendar = (ImageView) toolbar.findViewById(R.id.icon_calendar);
+        imgCart = (ImageView) toolbar.findViewById(R.id.icon_cart);
         imgCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,100 +108,90 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         imgCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                timePickerDialog.setVibrate(false);
-                timePickerDialog.setCloseOnSingleTapMinute(true);
-                timePickerDialog.show(getSupportFragmentManager(), TIMEPICKER_TAG);
+                Order order = TheTownKitchenApplication.getOrder();
+
+                if (order != null) {
+                    if (order.getTime() == null || order.getTime().isEmpty()) {
+
+                        timePickerDialog.setVibrate(false);
+                        timePickerDialog.setCloseOnSingleTapMinute(true);
+                        timePickerDialog.show(getSupportFragmentManager(), TIMEPICKER_TAG);
+
+                    } else {
+                        startOrderSummaryActivity();
+                    }
+                }
 
             }
         });
     }
 
-    private void setupNavDrawer() {
+    private void setupProfile() {
+        ivProfile = (ImageView) findViewById(R.id.ivProfile);
+        tvUserName = (TextView) findViewById(R.id.tvUserName);
+        tvEmail = (TextView) findViewById(R.id.tvEmail);
         lvList = (ListView) findViewById(R.id.lvList);
+        profilePictureView = (ProfilePictureView) findViewById(R.id.ivFacebookProfile);
 
-        // Set a Toolbar to replace the ActionBar.
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        User currentUser = TheTownKitchenApplication.getCurrentUser().getUser();
+        if (currentUser != null) {
+            if (currentUser.getProfileImageUrl() != null && !currentUser.getProfileImageUrl().isEmpty()) {
+                Picasso.with(this).load(currentUser.getProfileImageUrl()).into(ivProfile);
+            } else if (currentUser.getFacebookId() != null && !currentUser.getFacebookId().isEmpty()) {
 
-        // Find our drawer view
-        dlDrawer = (FragmentNavigationDrawer) findViewById(R.id.drawer_layout);
-        // Setup drawer view
-        dlDrawer.setupDrawerConfiguration((ListView) findViewById(R.id.lvDrawer), toolbar,
-                R.layout.drawer_nav_item, R.id.flContent);
+                profilePictureView.setCropped(true);
+                profilePictureView.setProfileId(currentUser.getFacebookId());
+                profilePictureView.setVisibility(View.VISIBLE);
 
-        // Add nav items
-        dlDrawer.addNavItem(getResources().getString(R.string.nav_item_profile), getResources().getString(R.string.nav_item_profile), ProfileFragment.class);
-        dlDrawer.addNavItem(getResources().getString(R.string.nav_item_meal_menu), getResources().getString(R.string.nav_item_meal_menu), MealMenuFragment.class);
-        dlDrawer.addNavItem(getResources().getString(R.string.nav_item_about), getResources().getString(R.string.nav_item_about), AboutFragment.class);
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        // If the nav drawer is open, hide action items related to the content
-        if (dlDrawer.isDrawerOpen()) {
-            // Uncomment to hide menu items
-            // menu.findItem(R.id.mi_test).setVisible(false);
+            }
+            tvUserName.setText(currentUser.getName());
+            tvEmail.setText(currentUser.getEmail());
         }
-        return super.onPrepareOptionsMenu(menu);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        // Uncomment to inflate menu items to Action Bar
-        // inflater.inflate(R.menu.main, menu);
-        return super.onCreateOptionsMenu(menu);
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_meal_list, menu);
+        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // The action bar home/up action should open or close the drawer.
-        // ActionBarDrawerToggle will take care of this.
-        if (dlDrawer.getDrawerToggle().onOptionsItemSelected(item)) {
-            return true;
-        }
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
 
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        dlDrawer.getDrawerToggle().syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggles
-        dlDrawer.getDrawerToggle().onConfigurationChanged(newConfig);
-    }
 
     @Override
     public void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int day) {
         tvCalendar.setText(year + "-" + (month + 1) + "-" + day);
+
     }
 
     @Override
-    public void onTimeSet(RadialPickerLayout view, final int hourOfDay, final int minute) {
-        Order.getOrderByDateWithoutItems(tvCalendar.getText().toString(), new Order.IParseOrderReceivedListener() {
-            @Override
-            public void handle(ParseObject order, List<ParseObject> orderItems) {
-                if(order != null){
-                    order.put("time", hourOfDay + ":" + minute);
-                    order.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            startOrderSummaryActivity();
-                        }
-                    });
-                    order.pinInBackground();
-                }
+    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
+        Order order = TheTownKitchenApplication.getOrder();
 
+        if (order != null) {
+            if (order.getTime() == null || order.getTime().isEmpty()) {
+                order.setTime(hourOfDay + ":" + minute);
+                try {
+                    order.save();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                startOrderSummaryActivity();
             }
 
-        });
+        } else
+            Toast.makeText(this, "new time:" + hourOfDay + ":" + minute, Toast.LENGTH_LONG).show();
     }
 
     private void startOrderSummaryActivity() {
