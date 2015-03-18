@@ -10,6 +10,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @ParseClassName("Order")
@@ -34,6 +35,15 @@ public class Order extends ParseObject {
 
     private int quantity;
 
+    public String getEmail() {
+        return getString("email");
+    }
+
+    public void setEmail(String email) {
+        put("email",   email);
+    }
+
+    private String email;
     private List<OrderItem> orderItems;
 
     public double getCost() {
@@ -139,16 +149,16 @@ public class Order extends ParseObject {
         return instance;
     }
 
-    public static void getOrderByDateWithoutItems(String date, final IParseOrderReceivedListener orderReceivedListener, boolean isPlaced) {
+    public static void getOrderByDateWithoutItems(String date, final IOrderReceivedListener orderReceivedListener, boolean isPlaced) {
 
-            ParseQuery<ParseObject> query = ParseQuery.getQuery("Order");
+            ParseQuery<Order> query = ParseQuery.getQuery("Order");
             query.whereEqualTo("date", date);
             query.whereEqualTo("email", TheTownKitchenApplication.getCurrentUser().getUser().getEmail());
             query.whereEqualTo("isPlaced", isPlaced);
             query.orderByDescending("createdAt");
             // Execute query for order asynchronously
-            query.getFirstInBackground(new GetCallback<ParseObject>() {
-                public void done(final ParseObject order, ParseException e) {
+            query.getFirstInBackground(new GetCallback<Order>() {
+            public void done(final Order order, ParseException e) {
                     if (e == null || e.getCode() == 101) {
                         orderReceivedListener.handle(order, null);
                     }
@@ -157,11 +167,11 @@ public class Order extends ParseObject {
         });
     }
 
-    public static void getOrderByDateWithoutItems(String date, final IParseOrderReceivedListener orderReceivedListener) {
+    public static void getOrderByDateWithoutItems(String date, final IOrderReceivedListener orderReceivedListener) {
        getOrderByDateWithoutItems(date, orderReceivedListener, false);
     }
 
-    public static void getOrderByDate(String date, final IOrderReceivedListener orderReceivedListener, boolean isPlaced){
+    public static void getOrderByDate(final String date, final IOrderReceivedListener orderReceivedListener, boolean isPlaced){
         ParseQuery<Order> query = ParseQuery.getQuery(Order.class);
         query.whereEqualTo("date", date);
         query.whereEqualTo("email", TheTownKitchenApplication.getCurrentUser().getUser().getEmail());
@@ -189,6 +199,18 @@ public class Order extends ParseObject {
                     }
 
                 }
+                else if(e.getCode() == 101){
+                    //no order for the day, create an empty one
+                    Order newOrder = new Order();
+                    newOrder.setDate(date);
+                    newOrder.setUser(TheTownKitchenApplication.getCurrentUser().getUser());
+                    newOrder.setIsPlaced(false);
+                    newOrder.setIsDelivered(false);
+                    newOrder.setEmail(TheTownKitchenApplication.getCurrentUser().getUser().getEmail());
+                    newOrder.saveInBackground();
+
+                    getOrderByDate(date, orderReceivedListener, false);
+                }
             }
         });
     }
@@ -198,7 +220,7 @@ public class Order extends ParseObject {
 
     }
 
-    public static void getOrderByDate(final String date, final IParseOrderReceivedListener orderReceivedListener, boolean isPlaced) {
+    public static void getParseOrderByDate(final String date, final IParseOrderReceivedListener orderReceivedListener, boolean isPlaced) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Order");
         query.whereEqualTo("date", date);
         query.whereEqualTo("email", TheTownKitchenApplication.getCurrentUser().getUser().getEmail());
@@ -236,7 +258,7 @@ public class Order extends ParseObject {
                     parseOrder.put("isDelivered",false);
                     parseOrder.saveInBackground();
                     parseOrder.pinInBackground();
-                    getOrderByDate(date, orderReceivedListener);
+                    getParseOrderByDate(date, orderReceivedListener, false);
                 }
             }
         });
@@ -245,8 +267,8 @@ public class Order extends ParseObject {
 
 
 
-    public static void getOrderByDate(final String date, final IParseOrderReceivedListener orderReceivedListener) {
-      getOrderByDate(date, orderReceivedListener, false);
+    public static void getParseOrderByDate(final String date, final IParseOrderReceivedListener orderReceivedListener) {
+        getParseOrderByDate(date, orderReceivedListener, false);
 
     }
 
@@ -296,13 +318,13 @@ public class Order extends ParseObject {
         void handle(int count);
     }
 
-
+/*
     public static void update(final String date, final Meal meal, final int count, final IOrderUpdatedListener orderUpdatedListener) {
 
         IParseOrderReceivedListener orderReceivedListener = new IParseOrderReceivedListener() {
             @Override
             public void handle(ParseObject parseOrder, List<ParseObject> parseOrderItems) {
-              //  ParseObject newOrder;// = ParseObject.create("Order");
+                //  ParseObject newOrder;// = ParseObject.create("Order");
                 ParseObject newOrderItem;// = ParseObject.create("OrderItem");
 
                 //ArrayList<OrderItem> orderItems;
@@ -352,25 +374,90 @@ public class Order extends ParseObject {
 
     }
 
-    private static void updateOrder(ParseObject parseOrder, double totalCost, int orderCount, String date) {
-        parseOrder.put("cost", totalCost);
-        parseOrder.put("quantity", orderCount);
-        parseOrder.put("date", date);
-        parseOrder.put("user", TheTownKitchenApplication.getCurrentUser().getUser());
-        parseOrder.put("email", TheTownKitchenApplication.getCurrentUser().getUser().getEmail());
-        parseOrder.saveInBackground();
+*/
+    public static void update(final String date, final Meal meal, final int count, final IOrderUpdatedListener orderUpdatedListener) {
+
+        IOrderReceivedListener orderReceivedListener = new IOrderReceivedListener() {
+            @Override
+            public void handle(Order parseOrder, List<OrderItem> parseOrderItems) {
+                //  ParseObject newOrder;// = ParseObject.create("Order");
+                final OrderItem newOrderItem;// = ParseObject.create("OrderItem");
+
+                //ArrayList<OrderItem> orderItems;
+                boolean isMealInCart = false;
+
+                double currentItemCost =  meal.getPrice() * count;
+                int currentItemCount = count;
+
+                double totalCost = currentItemCost;
+                int orderCount = currentItemCount;
+                if (parseOrder == null || parseOrderItems == null || parseOrderItems.size() == 0) {
+                    if (parseOrder == null) {
+                        parseOrder = new Order();// ParseObject.create("Order");
+                    }
+                    orderUpdatedListener.handle(count);
+                    newOrderItem = createNewOrderItem(parseOrder, currentItemCost, currentItemCount, meal);
+                    updateOrder(parseOrder, totalCost, orderCount, date);
+                    List<OrderItem> orderItems =new ArrayList<>();
+                    orderItems.add(newOrderItem);
+                    parseOrder.setOrderItems(orderItems);
+                    TheTownKitchenApplication.getOrder().setCurrentOrder(parseOrder);
+                    return;
+                }
+
+
+                for (OrderItem parseOrderItem : parseOrderItems) {
+                    //if meal exists in cart already
+                    if (parseOrderItem.getMeal().getObjectId() == meal.getObjectId()) {
+                        parseOrderItem.setQuantity(currentItemCount);
+                        parseOrderItem.setCost(currentItemCost);
+                        //parseOrderItem.put("quantity", currentItemCount);
+                       // parseOrderItem.put("cost", currentItemCost);
+                       // parseOrderItem.pinInBackground();
+                        parseOrderItem.saveInBackground();
+                        isMealInCart = true;
+
+                    }else {
+                        totalCost += parseOrderItem.getQuantity() * parseOrderItem.getMeal().getPrice();//getInt("quantity") * parseOrderItem.getParseObject("meal").getDouble("price");//.getQuantity() * orderItem.getMeal().getPrice();/
+                        orderCount += parseOrderItem.getQuantity();//.getInt("quantity");
+                    }
+                }
+                orderUpdatedListener.handle(orderCount);
+                if (!isMealInCart) {
+                    createNewOrderItem(parseOrder, currentItemCost, currentItemCount, meal);
+                }
+                updateOrder(parseOrder, totalCost, orderCount, date);
+                parseOrder.setOrderItems(parseOrderItems);
+                TheTownKitchenApplication.getOrder().setCurrentOrder(parseOrder);
+
+            }
+        };
+        Order.getOrderByDate(date, orderReceivedListener);
+
+    }
+
+    private static void updateOrder(Order parseOrder, double totalCost, int orderCount, String date) {
+        parseOrder.setCost(totalCost);
+        parseOrder.setQuantity(orderCount);
+        parseOrder.setDate(date);
+        parseOrder.setUser(TheTownKitchenApplication.getCurrentUser().getUser());
+        parseOrder.setEmail(TheTownKitchenApplication.getCurrentUser().getUser().getEmail());
+        //parseOrder.saveInBackground();
         parseOrder.pinInBackground();
     }
 
-    private static void createNewOrderItem(ParseObject parseOrder, double currentItemCost, int currentItemCount, Meal meal) {
-        ParseObject newOrderItem = ParseObject.create("OrderItem");
-        newOrderItem.put("meal", meal);
-        newOrderItem.put("quantity", currentItemCount);
-        newOrderItem.put("cost", currentItemCost);
-        newOrderItem.put("parent", parseOrder.getObjectId());
+    private static OrderItem createNewOrderItem(Order parseOrder, double currentItemCost, int currentItemCount, Meal meal) {
 
-        newOrderItem.pinInBackground();
+        OrderItem newOrderItem = new OrderItem();// ParseObject.create("OrderItem");
+
+        newOrderItem.setMeal(meal);
+        newOrderItem.setQuantity(currentItemCount);
+        newOrderItem.setCost(currentItemCost);
+        newOrderItem.setParent(parseOrder.getObjectId());
+
+        //newOrderItem.pinInBackground();
         newOrderItem.saveInBackground();
+        return newOrderItem;
     }
 
     private Order order;

@@ -15,6 +15,16 @@ public class OrderItem extends ParseObject {
 
     private int quantity;
 
+    public String getParent() {
+        return getString("parent");
+    }
+
+    public void setParent(String parent) {
+        put("parent", parent);
+    }
+
+    private String parent;
+
     public Long getUid() { return getLong("uid"); }
 
     public double getCost() { return getDouble("cost"); }

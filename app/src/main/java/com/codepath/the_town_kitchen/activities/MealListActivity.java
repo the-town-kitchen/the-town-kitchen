@@ -22,7 +22,6 @@ import com.codepath.the_town_kitchen.models.User;
 import com.facebook.widget.ProfilePictureView;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.SaveCallback;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
@@ -218,13 +217,13 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
 
     @Override
     public void onTimeSet(RadialPickerLayout view, final int hourOfDay, final int minute) {
-        Order.getOrderByDateWithoutItems(tvCalendar.getText().toString(), new Order.IParseOrderReceivedListener() {
+        Order.getOrderByDateWithoutItems(tvCalendar.getText().toString(), new Order.IOrderReceivedListener() {
             @Override
-            public void handle(final ParseObject order, List<ParseObject> orderItems) {
+            public void handle(final Order order, List<OrderItem> orderItems) {
 
                 if(order != null){
 
-                    order.put("time", hourOfDay + ":" + minute);
+                    order.setTime( hourOfDay + ":" + minute);
                     order.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
