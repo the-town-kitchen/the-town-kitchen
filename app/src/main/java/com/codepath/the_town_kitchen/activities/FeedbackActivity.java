@@ -1,6 +1,5 @@
 package com.codepath.the_town_kitchen.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -8,6 +7,10 @@ import android.view.MenuItem;
 import android.widget.RatingBar;
 
 import com.codepath.the_town_kitchen.R;
+import com.codepath.the_town_kitchen.models.Order;
+import com.codepath.the_town_kitchen.models.OrderItem;
+
+import java.util.List;
 
 public class FeedbackActivity extends ActionBarActivity {
     RatingBar rbFeedback;
@@ -22,11 +25,33 @@ public class FeedbackActivity extends ActionBarActivity {
 
 
             @Override
-            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
-                Intent i = new Intent(FeedbackActivity.this, MealListActivity.class);
-                startActivity(i);
+            public void onRatingChanged(RatingBar ratingBar, final float rating, boolean fromUser) {
+                Order.getUsersLastOrder(new Order.IOrderReceivedListener() {
+                    @Override
+                    public void handle(Order order, List<OrderItem> orderItems) {
+                        if (order != null) {
+//                            Feedback feedback = new Feedback();
+//                            feedback.setRating(Math.round(rating));
+//                            feedback.put("parent", order);
+//                            feedback.saveInBackground();
+
+                            order.setFeedbackRating(Math.round(rating));
+                            order.saveInBackground();
+
+                            finishActivity();
+                        }
+                    }
+                });
+
+
+
+
             }
         });
+    }
+
+    private void finishActivity(){
+        this.finish();
     }
 
 

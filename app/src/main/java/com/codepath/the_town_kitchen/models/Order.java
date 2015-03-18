@@ -23,6 +23,8 @@ public class Order extends ParseObject {
 
     private String deliveryLocation;
 
+    private int feedbackRating;
+
     private User user;
 
     private String date;
@@ -95,6 +97,15 @@ public class Order extends ParseObject {
 
     public void setQuantity(int quantity) {
         put("quantity", quantity);
+    }
+
+
+    public int getFeedbackRating() {
+        return getInt("feedbackRating");
+    }
+
+    public void setFeedbackRating(int feedbackRating) {
+        put("feedbackRating", feedbackRating);
     }
 
     public void setOrderItems(List<OrderItem> orderItems) {
@@ -213,6 +224,40 @@ public class Order extends ParseObject {
                 }
             }
         });
+    }
+
+    public static void getUsersLastOrder(final IOrderReceivedListener orderReceivedListener) {
+
+        ParseQuery<Order> query = ParseQuery.getQuery(Order.class);
+        query.whereEqualTo("email", TheTownKitchenApplication.getCurrentUser().getUser().getEmail());
+
+        query.orderByDescending("createdAt");
+        // Execute query for order asynchronously
+        query.getFirstInBackground(new GetCallback<Order>() {
+            public void done(final Order order, ParseException e) {
+                if (e == null) {
+                    if (order != null) {
+                        ParseQuery<OrderItem> query = ParseQuery.getQuery(OrderItem.class);
+                        query.whereEqualTo("parent", order.getObjectId());
+                        query.orderByDescending("createdAt");
+                        query.findInBackground(new FindCallback<OrderItem>() {
+                            public void done(List<OrderItem> orderItems, ParseException e) {
+                                if (e == null) {
+                                    orderReceivedListener.handle(order, orderItems);
+                                } else {
+                                    Log.d("Order", "Error: " + e.getMessage());
+                                }
+                            }
+                        });
+                    } else {
+                        orderReceivedListener.handle(order, null);
+                    }
+
+                }
+            }
+        });
+
+
     }
 
     public interface IParseOrderReceivedListener {

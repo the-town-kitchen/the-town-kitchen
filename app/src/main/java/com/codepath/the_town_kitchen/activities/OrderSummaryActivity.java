@@ -132,8 +132,10 @@ public class OrderSummaryActivity extends ActionBarActivity {
     }
 
     private void startNewActivity(){
-        Intent i = new Intent(OrderSummaryActivity.this, FeedbackActivity.class);
-        startActivity(i);
+//        Intent i = new Intent(OrderSummaryActivity.this, MealListActivity.class);
+//        i.putExtra("JUST PLACED ORDER", true);
+//        startActivity(i);
+        this.finish();
     }
 
     public void onCouponCodeSubmit(View view) {

@@ -63,19 +63,36 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         setupToolbar();
         setupProfile();
 
+        showFeedbackIfApplicable();
 
         setupOrderCounts();
         meals = new ArrayList<>();
         mealAdapter = new MealAdapter(this, meals, this);
         lvList.setAdapter(mealAdapter);
-        //Meal.fromParse(mealsReceived);
+        Meal.fromParse(mealsReceived);
         calendar = Calendar.getInstance();
         datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
         timePickerDialog = TimePickerDialog.newInstance(this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false, false);
 
     }
 
-  private List<OrderItem> items = new ArrayList<>();
+    private void showFeedbackIfApplicable() {
+        Order.getUsersLastOrder(new Order.IOrderReceivedListener() {
+            @Override
+            public void handle(Order order, List<OrderItem> orderItems) {
+                if (order != null) {
+                    Log.d("DEBUG", Integer.toString(order.getFeedbackRating()));
+
+                    if (order.getFeedbackRating() == 0) {
+                        Intent i = new Intent(MealListActivity.this, FeedbackActivity.class);
+                        startActivity(i);
+                    }
+                }
+            }
+        });
+    }
+
+    private List<OrderItem> items = new ArrayList<>();
     private void setupOrderCounts(){
         Order.getOrderByDate(tvCalendar.getText().toString(), new Order.IOrderReceivedListener() {
             @Override
