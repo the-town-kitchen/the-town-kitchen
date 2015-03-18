@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -65,7 +66,7 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         meals = new ArrayList<>();
         mealAdapter = new MealAdapter(this, meals, this);
         lvList.setAdapter(mealAdapter);
-        Meal.fromParse(mealsReceived);
+        //Meal.fromParse(mealsReceived);
         calendar = Calendar.getInstance();
         datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
         timePickerDialog = TimePickerDialog.newInstance(this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false, false);
@@ -80,6 +81,9 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
                 if (order != null) {
                     tvCount.setText(order.getQuantity() + "");
                     items = orderItems;
+                    order.setOrderItems(orderItems);
+                    TheTownKitchenApplication.getOrder().setCurrentOrder(order);
+                    Meal.fromParse(mealsReceived);
                 }
             }
         });
@@ -90,7 +94,15 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         @Override
         public void handle(List<Meal> parseMeals) {
             meals.clear();
+            for(OrderItem item: items){
+                int index = parseMeals.indexOf(item.getMeal());
 
+                if(index > -1 ){
+                    Log.d(TAG, "this meal has orders " + index);
+                    Meal meal = parseMeals.get(index);
+                    meal.quantityOrdered = item.getQuantity();
+                }
+            }
             meals.addAll(parseMeals);
             mealAdapter.notifyDataSetChanged();
 

@@ -14,7 +14,6 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @ParseClassName("Order")
@@ -37,7 +36,7 @@ public class Order extends ParseObject {
 
     private int quantity;
 
-    private ArrayList<OrderItem> orderItems;
+    private List<OrderItem> orderItems;
 
     public Long getUid() {
         return getLong("uid");
@@ -71,7 +70,7 @@ public class Order extends ParseObject {
         return (Feedback) getParseObject("feedback");
     }
 
-    public ArrayList<OrderItem> getOrderItems() {
+    public List<OrderItem> getOrderItems() {
         return orderItems;
     }
 
@@ -108,7 +107,7 @@ public class Order extends ParseObject {
         put("quantity", quantity);
     }
 
-    public void setOrderItems(ArrayList<OrderItem> orderItems) {
+    public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
     }
 
@@ -313,5 +312,16 @@ public class Order extends ParseObject {
 
         newOrderItem.pinInBackground();
         newOrderItem.saveInBackground();
+    }
+
+    private Order order;
+
+    public  void setCurrentOrder(Order order) {
+        this.order = order;
+    }
+
+    public Order getCurrentOrder(){
+        return this.order;
+
     }
 }
