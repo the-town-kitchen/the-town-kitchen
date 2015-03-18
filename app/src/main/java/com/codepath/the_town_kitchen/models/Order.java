@@ -1,9 +1,5 @@
 package com.codepath.the_town_kitchen.models;
 
-/**
- * Created by paulina on 3/7/15.
- */
-
 import android.util.Log;
 
 import com.codepath.the_town_kitchen.TheTownKitchenApplication;
@@ -26,7 +22,7 @@ public class Order extends ParseObject {
     private int feedbackRating;
 
     private boolean isDelivered;
-
+    private boolean isPlaced;
     private User user;
 
     private String date;
@@ -117,6 +113,14 @@ public class Order extends ParseObject {
         put("feedbackRating", feedbackRating);
     }
 
+    public boolean getIsPlaced(){
+        return getBoolean("isDelivered");
+    }
+
+    public void setIsPlaced(boolean isPlaced){
+        put("isPlaced", isPlaced);
+    }
+
     public void setOrderItems(List<OrderItem> orderItems) {
         this.orderItems = orderItems;
     }
@@ -133,8 +137,8 @@ public class Order extends ParseObject {
 
         }
         return instance;
-
     }
+
     public static void getOrderByDateWithoutItems(String date, final IParseOrderReceivedListener orderReceivedListener) {
 
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Order");
@@ -156,14 +160,11 @@ public class Order extends ParseObject {
 
 
     }
-
-
-    public static void getOrderByDate(String date, final IOrderReceivedListener orderReceivedListener) {
-
+    public static void getOrderByDate(String date, final IOrderReceivedListener orderReceivedListener, boolean isPlaced){
         ParseQuery<Order> query = ParseQuery.getQuery(Order.class);
         query.whereEqualTo("date", date);
         query.whereEqualTo("email", TheTownKitchenApplication.getCurrentUser().getUser().getEmail());
-
+        query.whereEqualTo("isPlaced", isPlaced);
         query.orderByDescending("createdAt");
         // Execute query for order asynchronously
         query.getFirstInBackground(new GetCallback<Order>() {
@@ -189,15 +190,18 @@ public class Order extends ParseObject {
                 }
             }
         });
+    }
 
+    public static void getOrderByDate(String date, final IOrderReceivedListener orderReceivedListener) {
+        getOrderByDate(date, orderReceivedListener, false);
 
     }
 
-    public static void getOrderByDate(final String date, final IParseOrderReceivedListener orderReceivedListener) {
-
+    public static void getOrderByDate(final String date, final IParseOrderReceivedListener orderReceivedListener, boolean isPlaced) {
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Order");
         query.whereEqualTo("date", date);
         query.whereEqualTo("email", TheTownKitchenApplication.getCurrentUser().getUser().getEmail());
+        query.whereEqualTo("isPlaced", isPlaced);
         query.orderByDescending("createdAt");
         // Execute query for order asynchronously
         query.getFirstInBackground(new GetCallback<ParseObject>() {
@@ -227,12 +231,22 @@ public class Order extends ParseObject {
                     parseOrder.put("date", date);
                     parseOrder.put("user", TheTownKitchenApplication.getCurrentUser().getUser());
                     parseOrder.put("email", TheTownKitchenApplication.getCurrentUser().getUser().getEmail());
+                    parseOrder.put("isPlaced",false);
+                    parseOrder.put("isDelivered",false);
                     parseOrder.saveInBackground();
                     parseOrder.pinInBackground();
                     getOrderByDate(date, orderReceivedListener);
                 }
             }
         });
+
+    }
+
+
+
+    public static void getOrderByDate(final String date, final IParseOrderReceivedListener orderReceivedListener) {
+      getOrderByDate(date, orderReceivedListener, false);
+
     }
 
     public static void getUsersLastOrder(final IOrderReceivedListener orderReceivedListener) {
