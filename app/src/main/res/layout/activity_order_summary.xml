@@ -82,7 +82,8 @@
        android:layout_alignParentRight="true"
         android:layout_marginLeft="37dp"
         android:layout_marginStart="37dp"
-        android:layout_marginTop="@dimen/activity_large_margin"/>
+        android:layout_marginTop="@dimen/activity_large_margin"
+        android:onClick="onCouponCodeSubmit"/>
 
 
     <TextView

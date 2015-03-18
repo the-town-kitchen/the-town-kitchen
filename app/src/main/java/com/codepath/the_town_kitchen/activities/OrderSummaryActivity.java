@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -136,4 +137,12 @@ public class OrderSummaryActivity extends ActionBarActivity {
         startActivity(i);
     }
 
+    public void onCouponCodeSubmit(View view) {
+        EditText etCouponCode = (EditText) findViewById(R.id.etCouponCode);
+
+        orderToSave.setCost(orderToSave.getCost() - (.15 * orderToSave.getCost()));
+        tvOrderTotal.setText("$" + orderToSave.getCost() + "");
+
+        etCouponCode.setText("");
+    }
 }
