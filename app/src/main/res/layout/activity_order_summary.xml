@@ -26,7 +26,8 @@
         android:textColor="@color/secondary_darker"
         android:textSize="16sp"
         android:layout_below="@+id/topLabel"
-        android:layout_marginBottom="@dimen/activity_large_margin"/>
+        android:layout_marginBottom="@dimen/activity_large_margin"
+        android:layout_marginRight="@dimen/activity_normal_margin"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,56 +38,59 @@
         android:textSize="16sp"
         android:layout_below="@+id/topLabel"
         android:layout_toRightOf="@+id/tvDeliveryTimeLabel"
-        android:layout_marginBottom="@dimen/activity_large_margin"/>
+        android:layout_marginBottom="@dimen/activity_large_margin"
+        android:layout_marginRight="@dimen/activity_normal_margin"/>
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/lvOrderItems"
         android:layout_below="@+id/tvDeliveryTime"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/order_total"
+        android:id="@+id/tvTotalLabel"
+        android:layout_below="@+id/lvOrderItems"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="@dimen/activity_large_margin"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvOrderTotal"
+        android:layout_alignBottom="@+id/tvTotalLabel"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/activity_large_margin"/>
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/etCouponCode"
-        android:layout_below="@+id/lvOrderItems"
+        android:layout_below="@+id/tvTotalLabel"
         android:layout_centerHorizontal="true"
         android:hint="coupon code"
-        android:layout_alignBottom="@+id/bSubmitCoupon"/>
+        android:layout_alignBottom="@+id/bSubmitCoupon"
+        android:layout_marginTop="@dimen/activity_large_margin"/>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/submit_coupon"
         android:id="@+id/bSubmitCoupon"
-        android:layout_below="@+id/lvOrderItems"
-        android:layout_toRightOf="@+id/etCouponCode"
-        android:layout_toEndOf="@+id/etCouponCode"
+        android:layout_below="@+id/tvTotalLabel"
+       android:layout_alignParentRight="true"
         android:layout_marginLeft="37dp"
-        android:layout_marginStart="37dp" />
+        android:layout_marginStart="37dp"
+        android:layout_marginTop="@dimen/activity_large_margin"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/order_total"
-        android:id="@+id/textView"
-        android:layout_below="@+id/etCouponCode"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvOrderTotal"
-        android:layout_alignBottom="@+id/textView"
-        android:layout_alignRight="@+id/bSubmitCoupon"
-        android:layout_alignEnd="@+id/bSubmitCoupon" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/delivering_to"
         android:id="@+id/tvDeliveringTo"
-        android:layout_below="@+id/textView"
+        android:layout_below="@+id/etCouponCode"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="39dp"
