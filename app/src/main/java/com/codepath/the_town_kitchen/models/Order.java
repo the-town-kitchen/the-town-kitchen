@@ -19,8 +19,6 @@ import java.util.List;
 @ParseClassName("Order")
 public class Order extends ParseObject {
 
-    private Long uid; // unique id for an order
-
     private double cost;
 
     private String deliveryLocation;
@@ -37,10 +35,6 @@ public class Order extends ParseObject {
     private int quantity;
 
     private List<OrderItem> orderItems;
-
-    public Long getUid() {
-        return getLong("uid");
-    }
 
     public double getCost() {
         return getDouble("cost");
@@ -72,10 +66,6 @@ public class Order extends ParseObject {
 
     public List<OrderItem> getOrderItems() {
         return orderItems;
-    }
-
-    public void setUid(Long uid) {
-        put("uid", uid);
     }
 
     public void setCost(double cost) {

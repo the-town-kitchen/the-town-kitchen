@@ -21,10 +21,16 @@ import android.view.View;
 import android.view.Window;
 import android.view.animation.BounceInterpolator;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.the_town_kitchen.R;
 import com.codepath.the_town_kitchen.adapters.DeliveryPinAdapter;
+import com.codepath.the_town_kitchen.models.Order;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -67,6 +73,7 @@ public class DeliveryLocationActivity extends FragmentActivity implements
     private boolean pinDisplayed = false;
     private String deliveryLocation;
     Geocoder geocoder;
+    private String orderId;
     private double latitude;
     private double longitude;
 
@@ -82,6 +89,7 @@ public class DeliveryLocationActivity extends FragmentActivity implements
         setContentView(R.layout.activity_delivery_location);
 
         geocoder = new Geocoder(this);
+        orderId = getIntent().getStringExtra("orderId");
 
         mapFragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
         if (mapFragment != null) {
@@ -316,6 +324,7 @@ public class DeliveryLocationActivity extends FragmentActivity implements
         } else if (id == R.id.action_view_order_summary) {
             Intent i = new Intent(DeliveryLocationActivity.this, OrderSummaryActivity.class);
             i.putExtra("deliveryLocation", deliveryLocation);
+            updateOrder();
             startActivity(i);
             return true;
         }
@@ -412,6 +421,22 @@ public class DeliveryLocationActivity extends FragmentActivity implements
             e.printStackTrace();
             return null;
         }
+    }
+
+    private void updateOrder() {
+        ParseQuery<ParseObject> query = ParseQuery.getQuery("Order");
+        query.whereEqualTo("objectId", orderId);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> objects, ParseException e) {
+                if (e == null) {
+                    Order order = (Order) objects.get(0);
+                    order.setDeliveryLocation(deliveryLocation);
+                    order.saveInBackground();
+                } else {
+                    Log.e(TAG_DELIVERY_LOCATION_ACTIVITY, "No order found");
+                }
+            }
+        });
     }
 }
 

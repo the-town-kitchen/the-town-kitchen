@@ -54,6 +54,8 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
 
+    private String orderId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -202,7 +204,7 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
     public void onTimeSet(RadialPickerLayout view, final int hourOfDay, final int minute) {
         Order.getOrderByDateWithoutItems(tvCalendar.getText().toString(), new Order.IParseOrderReceivedListener() {
             @Override
-            public void handle(ParseObject order, List<ParseObject> orderItems) {
+            public void handle(final ParseObject order, List<ParseObject> orderItems) {
 
                 if(order != null){
 
@@ -211,7 +213,8 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
                         @Override
                         public void done(ParseException e) {
 //                            startOrderSummaryActivity();
-                            startDeliveryLocationActivity();
+                            orderId = order.getObjectId();
+                            startDeliveryLocationActivity(orderId);
                         }
                     });
                     order.pinInBackground();
@@ -228,8 +231,9 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         startActivity(i);
     }
 
-    private void startDeliveryLocationActivity() {
+    private void startDeliveryLocationActivity(String orderId) {
         Intent i = new Intent(MealListActivity.this, DeliveryLocationActivity.class);
+        i.putExtra("orderId", orderId);
         startActivity(i);
     }
 
