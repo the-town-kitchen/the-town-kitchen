@@ -111,7 +111,6 @@ public class Meal extends ParseObject {
     // Query messages from Parse so we can load them into the chat adapter
     public static void fromParse(final IMealsReceivedListener mealsReceived) {
         // Construct query to execute
-        final List<Meal> meals = null;
         ParseQuery<Meal> query = ParseQuery.getQuery(Meal.class);
         query.setLimit(MAX_MEALS_TO_SHOW);
         query.orderByDescending("createdAt");

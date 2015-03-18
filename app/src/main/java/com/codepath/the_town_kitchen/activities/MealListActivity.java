@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.codepath.the_town_kitchen.FragmentNavigationDrawer;
 import com.codepath.the_town_kitchen.R;
+import com.codepath.the_town_kitchen.TheTownKitchenApplication;
 import com.codepath.the_town_kitchen.adapters.MealAdapter;
 import com.codepath.the_town_kitchen.fragments.AboutFragment;
 import com.codepath.the_town_kitchen.fragments.MealMenuFragment;
@@ -62,18 +63,34 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
 
         meals = new ArrayList<>();
         mealAdapter = new MealAdapter(this, meals, this);
+
+        lvList = (ListView) findViewById(R.id.lvList);
+
         lvList.setAdapter(mealAdapter);
         Meal.fromParse(mealsReceived);
         calendar = Calendar.getInstance();
         datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
         timePickerDialog = TimePickerDialog.newInstance(this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false, false);
-
         // Select default nav drawer item
         if (savedInstanceState == null) {
             dlDrawer.selectDrawerItem(1);
         }
-
+        setupOrderCounts();
     }
+
+    private void setupOrderCounts(){
+        Order.getOrderByDateWithoutItems(tvCalendar.getText().toString(), new Order.IParseOrderReceivedListener() {
+            @Override
+            public void handle(ParseObject order, List<ParseObject> orderItems) {
+                if(order != null){
+                    tvCount.setText(order.getInt("quantity") + "");
+                }
+                else
+                    tvCount.setVisibility(View.GONE);
+            }
+        });
+    }
+
 
     private Meal.IMealsReceivedListener mealsReceived = new Meal.IMealsReceivedListener() {
         @Override
@@ -90,6 +107,7 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         java.text.DateFormat df = new SimpleDateFormat("yyyy-MM-d");
         String date = df.format(Calendar.getInstance().getTime());
         tvCalendar.setText(date);
+        TheTownKitchenApplication.orderDate = date;
         tvCount = (TextView) findViewById(R.id.tvCount);
         imgCalendar = (ImageView) findViewById(R.id.icon_calendar);
         imgCart = (ImageView) findViewById(R.id.icon_cart);
@@ -116,7 +134,6 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
     }
 
     private void setupNavDrawer() {
-        lvList = (ListView) findViewById(R.id.lvList);
 
         // Set a Toolbar to replace the ActionBar.
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -179,7 +196,9 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
 
     @Override
     public void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int day) {
-        tvCalendar.setText(year + "-" + (month + 1) + "-" + day);
+        String newDate = year + "-" + (month + 1) + "-" + day;
+        tvCalendar.setText(newDate);
+        TheTownKitchenApplication.orderDate = newDate;
     }
 
     @Override
@@ -216,6 +235,7 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         Order.update(date, meal, count);
 
         tvCount.setText(count + "");
+        tvCount.setVisibility(View.VISIBLE);
 
     }
 }

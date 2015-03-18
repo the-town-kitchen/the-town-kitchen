@@ -23,8 +23,7 @@
     <ListView
         android:id="@+id/lvList"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/rlProfile" />
+        android:layout_height="wrap_content"/>
 
 
     <com.codepath.the_town_kitchen.FragmentNavigationDrawer
