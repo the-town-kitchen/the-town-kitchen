@@ -80,8 +80,7 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         Order.getUsersLastOrder(new Order.IOrderReceivedListener() {
             @Override
             public void handle(Order order, List<OrderItem> orderItems) {
-                if (order != null) {
-                    Log.d("DEBUG", Integer.toString(order.getFeedbackRating()));
+                if (order != null && order.getIsDelivered()) {
 
                     if (order.getFeedbackRating() == 0) {
                         Intent i = new Intent(MealListActivity.this, FeedbackActivity.class);
