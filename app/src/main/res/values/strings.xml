@@ -30,5 +30,6 @@
     <string name="action_view_order_summary">View Order Summary</string>
     <string name="order_summary">Order Summary</string>
     <string name="deliver_here">DELIVER HERE</string>
-
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 </resources>

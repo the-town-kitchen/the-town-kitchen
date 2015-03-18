@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="fragment ONE"/>
+
+    <!--<RelativeLayout-->
+            <!--android:id="@+id/rlProfile"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="@dimen/activity_large_margin">-->
+
+        <!--<com.facebook.widget.ProfilePictureView-->
+                <!--android:id="@+id/ivFacebookProfile"-->
+                <!--android:layout_width="@dimen/avatar_size"-->
+                <!--android:layout_height="@dimen/avatar_size"-->
+                <!--android:layout_marginRight="@dimen/activity_normal_margin" />-->
+
+        <!--<ImageView-->
+                <!--android:id="@+id/ivProfile"-->
+                <!--android:layout_width="@dimen/avatar_size"-->
+                <!--android:layout_height="@dimen/avatar_size"-->
+                <!--android:layout_marginRight="@dimen/activity_normal_margin" />-->
+
+        <!--<TextView-->
+                <!--android:id="@+id/tvUserName"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_alignTop="@+id/ivProfile"-->
+                <!--android:layout_toRightOf="@+id/ivProfile"-->
+                <!--android:fontFamily="sans-serif"-->
+                <!--android:textColor="@color/secondary_darkest"-->
+                <!--android:textSize="14sp"-->
+                <!--android:textStyle="bold" />-->
+
+        <!--<TextView-->
+                <!--android:id="@+id/tvEmail"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_below="@+id/tvUserName"-->
+                <!--android:layout_toRightOf="@+id/ivProfile"-->
+                <!--android:fontFamily="sans-serif"-->
+                <!--android:textColor="@color/neutral"-->
+                <!--android:textSize="12sp" />-->
+    <!--</RelativeLayout>-->
+
+</LinearLayout>

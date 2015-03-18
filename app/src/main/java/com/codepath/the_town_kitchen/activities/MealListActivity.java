@@ -1,10 +1,12 @@
 package com.codepath.the_town_kitchen.activities;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -12,18 +14,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.codepath.the_town_kitchen.FragmentNavigationDrawer;
 import com.codepath.the_town_kitchen.R;
 import com.codepath.the_town_kitchen.TheTownKitchenApplication;
 import com.codepath.the_town_kitchen.adapters.MealAdapter;
+import com.codepath.the_town_kitchen.fragments.AboutFragment;
+import com.codepath.the_town_kitchen.fragments.CurrentMenuFragment;
+import com.codepath.the_town_kitchen.fragments.ProfileFragment;
 import com.codepath.the_town_kitchen.models.Meal;
 import com.codepath.the_town_kitchen.models.Order;
-import com.codepath.the_town_kitchen.models.User;
 import com.facebook.widget.ProfilePictureView;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.parse.ParseException;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
-import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,13 +55,15 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
 
+    private FragmentNavigationDrawer dlDrawer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meal_list);
         setupToolbar();
-        setupProfile();
-
+//        setupProfile();
+        setupNavDrawer();
 
         meals = new ArrayList<>();
         mealAdapter = new MealAdapter(this, meals, this);
@@ -66,6 +72,11 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         calendar = Calendar.getInstance();
         datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
         timePickerDialog = TimePickerDialog.newInstance(this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false, false);
+
+        // Select default nav drawer item
+        if (savedInstanceState == null) {
+            dlDrawer.selectDrawerItem(1);
+        }
 
     }
 
@@ -80,20 +91,13 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
     };
 
     private void setupToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        tvCalendar = (TextView) toolbar.findViewById(R.id.tvCalendar);
+        tvCalendar = (TextView) findViewById(R.id.tvCalendar);
         java.text.DateFormat df = new SimpleDateFormat("yyyy-MM-d");
         String date = df.format(Calendar.getInstance().getTime());
         tvCalendar.setText(date);
-        setSupportActionBar(toolbar);
-
-        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
-
-        toolbar.setLogo(R.mipmap.ic_launcher);
-        actionBar.setTitle("");
-        tvCount = (TextView) toolbar.findViewById(R.id.tvCount);
-        imgCalendar = (ImageView) toolbar.findViewById(R.id.icon_calendar);
-        imgCart = (ImageView) toolbar.findViewById(R.id.icon_cart);
+        tvCount = (TextView) findViewById(R.id.tvCount);
+        imgCalendar = (ImageView) findViewById(R.id.icon_calendar);
+        imgCart = (ImageView) findViewById(R.id.icon_cart);
         imgCalendar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -126,48 +130,90 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         });
     }
 
-    private void setupProfile() {
-        ivProfile = (ImageView) findViewById(R.id.ivProfile);
-        tvUserName = (TextView) findViewById(R.id.tvUserName);
-        tvEmail = (TextView) findViewById(R.id.tvEmail);
+//    private void setupProfile() {
+//        ivProfile = (ImageView) findViewById(R.id.ivProfile);
+//        tvUserName = (TextView) findViewById(R.id.tvUserName);
+//        tvEmail = (TextView) findViewById(R.id.tvEmail);
+//        lvList = (ListView) findViewById(R.id.lvList);
+//        profilePictureView = (ProfilePictureView) findViewById(R.id.ivFacebookProfile);
+//
+//        User currentUser = TheTownKitchenApplication.getCurrentUser().getUser();
+//        if (currentUser != null) {
+//            if (currentUser.getProfileImageUrl() != null && !currentUser.getProfileImageUrl().isEmpty()) {
+//                Picasso.with(this).load(currentUser.getProfileImageUrl()).into(ivProfile);
+//            } else if (currentUser.getFacebookId() != null && !currentUser.getFacebookId().isEmpty()) {
+//
+//                profilePictureView.setCropped(true);
+//                profilePictureView.setProfileId(currentUser.getFacebookId());
+//                profilePictureView.setVisibility(View.VISIBLE);
+//
+//            }
+//            tvUserName.setText(currentUser.getName());
+//            tvEmail.setText(currentUser.getEmail());
+//        }
+//    }
+
+    private void setupNavDrawer() {
         lvList = (ListView) findViewById(R.id.lvList);
-        profilePictureView = (ProfilePictureView) findViewById(R.id.ivFacebookProfile);
 
-        User currentUser = TheTownKitchenApplication.getCurrentUser().getUser();
-        if (currentUser != null) {
-            if (currentUser.getProfileImageUrl() != null && !currentUser.getProfileImageUrl().isEmpty()) {
-                Picasso.with(this).load(currentUser.getProfileImageUrl()).into(ivProfile);
-            } else if (currentUser.getFacebookId() != null && !currentUser.getFacebookId().isEmpty()) {
+        // Set a Toolbar to replace the ActionBar.
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-                profilePictureView.setCropped(true);
-                profilePictureView.setProfileId(currentUser.getFacebookId());
-                profilePictureView.setVisibility(View.VISIBLE);
+        // Find our drawer view
+        dlDrawer = (FragmentNavigationDrawer) findViewById(R.id.drawer_layout);
+        // Setup drawer view
+        dlDrawer.setupDrawerConfiguration((ListView) findViewById(R.id.lvDrawer), toolbar,
+                R.layout.drawer_nav_item, R.id.flContent);
 
-            }
-            tvUserName.setText(currentUser.getName());
-            tvEmail.setText(currentUser.getEmail());
-        }
+        // Add nav items
+        dlDrawer.addNavItem("Profile", "Profile", ProfileFragment.class);
+        dlDrawer.addNavItem("Current Menu", "Current Menu", CurrentMenuFragment.class);
+        dlDrawer.addNavItem("About", "About", AboutFragment.class);
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // If the nav drawer is open, hide action items related to the content
+        if (dlDrawer.isDrawerOpen()) {
+            // Uncomment to hide menu items
+            // menu.findItem(R.id.mi_test).setVisible(false);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_meal_list, menu);
-        return true;
+        MenuInflater inflater = getMenuInflater();
+        // Uncomment to inflate menu items to Action Bar
+        // inflater.inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
+        // The action bar home/up action should open or close the drawer.
+        // ActionBarDrawerToggle will take care of this.
+        if (dlDrawer.getDrawerToggle().onOptionsItemSelected(item)) {
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        dlDrawer.getDrawerToggle().syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggles
+        dlDrawer.getDrawerToggle().onConfigurationChanged(newConfig);
+    }
 
     @Override
     public void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int day) {
