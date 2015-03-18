@@ -61,7 +61,7 @@ public class Meal extends ParseObject {
     public void setQuantity(int quantity) { put("quantity", quantity); }
 
     public void setDate(String date) { put("date", date); }
-
+public int quantityOrdered;
     public static ArrayList<Meal> fromJsonArray(JSONArray jsonArray) {
         if (jsonArray == null || jsonArray.length() < 1) return null;
         ArrayList<Meal> meals = new ArrayList<>(jsonArray.length());
