@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.animation.BounceInterpolator;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -109,6 +110,16 @@ public class DeliveryLocationActivity extends FragmentActivity implements
 
     protected void loadMap(GoogleMap googleMap) {
         map = googleMap;
+        map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Intent i = new Intent(DeliveryLocationActivity.this, OrderSummaryActivity.class);
+                i.putExtra("deliveryLocation", deliveryLocation);
+                updateOrder();
+                startActivity(i);
+            }
+        });
+
         if (map != null) {
             // Map is ready
 //            Toast.makeText(this, "Map Fragment was loaded properly!", Toast.LENGTH_SHORT).show();
@@ -311,26 +322,26 @@ public class DeliveryLocationActivity extends FragmentActivity implements
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        } else if (id == R.id.action_view_order_summary) {
-            Intent i = new Intent(DeliveryLocationActivity.this, OrderSummaryActivity.class);
-            i.putExtra("deliveryLocation", deliveryLocation);
-            updateOrder();
-            startActivity(i);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            return true;
+//        } else if (id == R.id.action_view_order_summary) {
+//            Intent i = new Intent(DeliveryLocationActivity.this, OrderSummaryActivity.class);
+//            i.putExtra("deliveryLocation", deliveryLocation);
+//            updateOrder();
+//            startActivity(i);
+//            return true;
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
