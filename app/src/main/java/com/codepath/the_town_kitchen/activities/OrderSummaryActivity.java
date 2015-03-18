@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.codepath.the_town_kitchen.R;
 import com.codepath.the_town_kitchen.TheTownKitchenApplication;
@@ -35,6 +34,7 @@ public class OrderSummaryActivity extends ActionBarActivity {
     private TextView tvDeliveryTime;
     private TextView tvAddress;
     private String deliveryLocation;
+    private Order orderToSave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +78,8 @@ public class OrderSummaryActivity extends ActionBarActivity {
                     lvOrderItems.setAdapter(orderItemAdapter);
                     tvOrderTotal = (TextView) findViewById(R.id.tvOrderTotal);
                     tvOrderTotal.setText("$" + order.getCost() + "");
+
+                    orderToSave = order;
                 }
             }
         });
@@ -118,10 +120,15 @@ public class OrderSummaryActivity extends ActionBarActivity {
         handler = new Handler();
         handler.postDelayed(new Runnable(){
             public void run(){
+                saveOrder();
                 progressBarDialog.dismiss();
                 startNewActivity();
             }
         }, 1000);
+    }
+
+    private void saveOrder() {
+        orderToSave.saveInBackground();
     }
 
     private void startNewActivity(){
