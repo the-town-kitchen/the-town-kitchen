@@ -12,20 +12,19 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.codepath.the_town_kitchen.FragmentNavigationDrawer;
 import com.codepath.the_town_kitchen.R;
-import com.codepath.the_town_kitchen.TheTownKitchenApplication;
 import com.codepath.the_town_kitchen.adapters.MealAdapter;
 import com.codepath.the_town_kitchen.fragments.AboutFragment;
 import com.codepath.the_town_kitchen.fragments.CurrentMenuFragment;
 import com.codepath.the_town_kitchen.fragments.ProfileFragment;
 import com.codepath.the_town_kitchen.models.Meal;
 import com.codepath.the_town_kitchen.models.Order;
-import com.facebook.widget.ProfilePictureView;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.SaveCallback;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
@@ -108,19 +107,9 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         imgCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Order order = TheTownKitchenApplication.getOrder();
-
-                if (order != null) {
-                    if (order.getTime() == null || order.getTime().isEmpty()) {
-
-                        timePickerDialog.setVibrate(false);
-                        timePickerDialog.setCloseOnSingleTapMinute(true);
-                        timePickerDialog.show(getSupportFragmentManager(), TIMEPICKER_TAG);
-
-                    } else {
-                        startOrderSummaryActivity();
-                    }
-                }
+                timePickerDialog.setVibrate(false);
+                timePickerDialog.setCloseOnSingleTapMinute(true);
+                timePickerDialog.show(getSupportFragmentManager(), TIMEPICKER_TAG);
 
             }
         });
@@ -194,22 +183,24 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
     }
 
     @Override
-    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
-        Order order = TheTownKitchenApplication.getOrder();
-
-        if (order != null) {
-            if (order.getTime() == null || order.getTime().isEmpty()) {
-                order.setTime(hourOfDay + ":" + minute);
-                try {
-                    order.save();
-                } catch (ParseException e) {
-                    e.printStackTrace();
+    public void onTimeSet(RadialPickerLayout view, final int hourOfDay, final int minute) {
+        Order.getOrderByDateWithoutItems(tvCalendar.getText().toString(), new Order.IParseOrderReceivedListener() {
+            @Override
+            public void handle(ParseObject order, List<ParseObject> orderItems) {
+                if(order != null){
+                    order.put("time", hourOfDay + ":" + minute);
+                    order.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            startOrderSummaryActivity();
+                        }
+                    });
+                    order.pinInBackground();
                 }
-                startOrderSummaryActivity();
+
             }
 
-        } else
-            Toast.makeText(this, "new time:" + hourOfDay + ":" + minute, Toast.LENGTH_LONG).show();
+        });
     }
 
     private void startOrderSummaryActivity() {

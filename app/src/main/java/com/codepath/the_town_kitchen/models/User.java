@@ -32,23 +32,6 @@ public class User extends ParseObject {
     }
 
 
-    public String getObjectName() {
-        return name;
-    }
-
-    public String getObjectEmail() {
-        return email;
-    }
-
-    public String getObjectProfileImageUrl() {
-        return profileImageUrl;
-    }
-
-    public String getObjectFacebookId() {
-        return facebookId;
-    }
-
-
     public String getName() {
         return getString("name");
     }

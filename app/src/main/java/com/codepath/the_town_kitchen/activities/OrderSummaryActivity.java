@@ -59,7 +59,7 @@ public class OrderSummaryActivity extends ActionBarActivity {
         //order items
         lvOrderItems = (ListView) findViewById(R.id.lvOrderItems);
         tvDeliveryTime = (TextView) findViewById(R.id.tvDeliveryTime);
-        Order.getOrderByDateFromLocal(TheTownKitchenApplication.orderDate, new Order.IOrderReceivedListener() {
+        Order.getOrderByDate(TheTownKitchenApplication.orderDate, new Order.IOrderReceivedListener() {
             @Override
             public void handle(Order order, List<OrderItem> orderItems) {
                 if (order != null) {
