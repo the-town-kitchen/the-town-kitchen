@@ -127,7 +127,7 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         imgCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                 timePickerDialog.setVibrate(false);
+                timePickerDialog.setVibrate(false);
                 timePickerDialog.setCloseOnSingleTapMinute(true);
                 timePickerDialog.show(getSupportFragmentManager(), TIMEPICKER_TAG);
 
@@ -198,7 +198,8 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
                     order.saveInBackground(new SaveCallback() {
                         @Override
                         public void done(ParseException e) {
-                            startOrderSummaryActivity();
+//                            startOrderSummaryActivity();
+                            startDeliveryLocationActivity();
                         }
                     });
                     order.pinInBackground();
@@ -212,6 +213,11 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
 
     private void startOrderSummaryActivity() {
         Intent i = new Intent(MealListActivity.this, OrderSummaryActivity.class);
+        startActivity(i);
+    }
+
+    private void startDeliveryLocationActivity() {
+        Intent i = new Intent(MealListActivity.this, DeliveryLocationActivity.class);
         startActivity(i);
     }
 
