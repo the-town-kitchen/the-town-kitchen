@@ -2,6 +2,7 @@ package com.codepath.the_town_kitchen.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import com.codepath.the_town_kitchen.R;
 import com.codepath.the_town_kitchen.TheTownKitchenApplication;
 import com.codepath.the_town_kitchen.adapters.OrderItemAdapter;
+import com.codepath.the_town_kitchen.fragments.ProgressBarDialog;
 import com.codepath.the_town_kitchen.models.Order;
 import com.codepath.the_town_kitchen.models.OrderItem;
 
@@ -38,8 +40,10 @@ public class OrderSummaryActivity extends ActionBarActivity {
         bSubmitOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(OrderSummaryActivity.this, FeedbackActivity.class);
-                startActivity(i);
+//                Intent i = new Intent(OrderSummaryActivity.this, FeedbackActivity.class);
+//                startActivity(i);
+                showPogressBarDialog();
+
             }
         });
 
@@ -96,4 +100,11 @@ public class OrderSummaryActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void showPogressBarDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        ProgressBarDialog progressBarDialog = ProgressBarDialog.newInstance();
+        progressBarDialog.show(fm, "fragment_progress_bar");
+    }
+
 }
