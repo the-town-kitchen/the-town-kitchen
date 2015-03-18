@@ -10,13 +10,13 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.codepath.the_town_kitchen.R;
 import com.codepath.the_town_kitchen.TheTownKitchenApplication;
 import com.codepath.the_town_kitchen.adapters.MealAdapter;
 import com.codepath.the_town_kitchen.models.Meal;
 import com.codepath.the_town_kitchen.models.Order;
+import com.codepath.the_town_kitchen.models.OrderItem;
 import com.codepath.the_town_kitchen.models.User;
 import com.facebook.widget.ProfilePictureView;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
@@ -61,6 +61,7 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         setupProfile();
 
 
+        setupOrderCounts();
         meals = new ArrayList<>();
         mealAdapter = new MealAdapter(this, meals, this);
         lvList.setAdapter(mealAdapter);
@@ -69,18 +70,17 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
         timePickerDialog = TimePickerDialog.newInstance(this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false, false);
 
-        setupOrderCounts();
     }
 
+  private List<OrderItem> items = new ArrayList<>();
     private void setupOrderCounts(){
-        Order.getOrderByDateWithoutItems(tvCalendar.getText().toString(), new Order.IParseOrderReceivedListener() {
+        Order.getOrderByDate(tvCalendar.getText().toString(), new Order.IOrderReceivedListener() {
             @Override
-            public void handle(ParseObject order, List<ParseObject> orderItems) {
-                if(order != null){
-                    tvCount.setText(order.getInt("quantity") + "");
+            public void handle(Order order, List<OrderItem> orderItems) {
+                if (order != null) {
+                    tvCount.setText(order.getQuantity() + "");
+                    items = orderItems;
                 }
-                else
-                    tvCount.setVisibility(View.GONE);
             }
         });
 
@@ -90,6 +90,7 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         @Override
         public void handle(List<Meal> parseMeals) {
             meals.clear();
+
             meals.addAll(parseMeals);
             mealAdapter.notifyDataSetChanged();
 
@@ -126,19 +127,9 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         imgCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Order order = TheTownKitchenApplication.getOrder();
-
-                if (order != null) {
-                    if (order.getTime() == null || order.getTime().isEmpty()) {
-
-                        timePickerDialog.setVibrate(false);
-                        timePickerDialog.setCloseOnSingleTapMinute(true);
-                        timePickerDialog.show(getSupportFragmentManager(), TIMEPICKER_TAG);
-
-                    } else {
-                        startOrderSummaryActivity();
-                    }
-                }
+                 timePickerDialog.setVibrate(false);
+                timePickerDialog.setCloseOnSingleTapMinute(true);
+                timePickerDialog.show(getSupportFragmentManager(), TIMEPICKER_TAG);
 
             }
         });
@@ -229,9 +220,12 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
 
         Meal meal = meals.get(position);
         String date = tvCalendar.getText().toString();
-        Order.update(date, meal, count);
+        Order.update(date, meal, count, new Order.IOrderUpdatedListener() {
+            @Override
+            public void handle(int count) {
+                tvCount.setText(count + "");
+            }
+        });
 
-        tvCount.setText(count + "");
-        tvCount.setVisibility(View.VISIBLE);
     }
 }
