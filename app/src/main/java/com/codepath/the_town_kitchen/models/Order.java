@@ -139,27 +139,28 @@ public class Order extends ParseObject {
         return instance;
     }
 
-    public static void getOrderByDateWithoutItems(String date, final IParseOrderReceivedListener orderReceivedListener) {
+    public static void getOrderByDateWithoutItems(String date, final IParseOrderReceivedListener orderReceivedListener, boolean isPlaced) {
 
             ParseQuery<ParseObject> query = ParseQuery.getQuery("Order");
             query.whereEqualTo("date", date);
             query.whereEqualTo("email", TheTownKitchenApplication.getCurrentUser().getUser().getEmail());
+            query.whereEqualTo("isPlaced", isPlaced);
             query.orderByDescending("createdAt");
             // Execute query for order asynchronously
             query.getFirstInBackground(new GetCallback<ParseObject>() {
                 public void done(final ParseObject order, ParseException e) {
                     if (e == null || e.getCode() == 101) {
-
                         orderReceivedListener.handle(order, null);
-
                     }
 
                 }
-
         });
-
-
     }
+
+    public static void getOrderByDateWithoutItems(String date, final IParseOrderReceivedListener orderReceivedListener) {
+       getOrderByDateWithoutItems(date, orderReceivedListener, false);
+    }
+
     public static void getOrderByDate(String date, final IOrderReceivedListener orderReceivedListener, boolean isPlaced){
         ParseQuery<Order> query = ParseQuery.getQuery(Order.class);
         query.whereEqualTo("date", date);
