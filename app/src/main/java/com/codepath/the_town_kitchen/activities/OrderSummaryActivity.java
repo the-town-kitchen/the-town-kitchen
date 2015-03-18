@@ -30,11 +30,12 @@ public class OrderSummaryActivity extends ActionBarActivity {
 
     private ListView lvOrderItems;
     private OrderItemAdapter orderItemAdapter;
-    private ArrayList<OrderItem> orderItems;
+    private List<OrderItem> orderItems;
     private TextView tvOrderTotal;
     private TextView tvDeliveryTime;
     private TextView tvAddress;
     private Order orderToSave;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,16 +123,17 @@ public class OrderSummaryActivity extends ActionBarActivity {
             public void run(){
                 saveOrder();
                 progressBarDialog.dismiss();
-                startNewActivity();
+                startMealListActivity();
             }
         }, 1000);
     }
 
     private void saveOrder() {
+        orderToSave.setIsPlaced(true);
         orderToSave.saveInBackground();
     }
 
-    private void startNewActivity(){
+    private void startMealListActivity(){
         Intent startIntent = new Intent(this, MealListActivity.class);
         this.startActivity(startIntent);
     }
