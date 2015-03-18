@@ -64,11 +64,8 @@ public class MealAdapter extends ArrayAdapter<Meal> {
         viewHolder.tvName.setText(meal.getName());
         viewHolder.tvDescription.setText(meal.getDescription());
         viewHolder.tvPrice.setText("$" + meal.getPrice());
-                if(meal.quantityOrdered > 0){
-                    viewHolder.tvCounts.setText(meal.quantityOrdered + "");
-                }
-        else
-                viewHolder.tvCounts.setText("0");
+
+        viewHolder.tvCounts.setText(meal.quantityOrdered + "");
         viewHolder.ibMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
