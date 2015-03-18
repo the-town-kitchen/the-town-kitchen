@@ -34,17 +34,12 @@ public class OrderSummaryActivity extends ActionBarActivity {
     private TextView tvOrderTotal;
     private TextView tvDeliveryTime;
     private TextView tvAddress;
-    private String deliveryLocation;
     private Order orderToSave;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_summary);
-
-        deliveryLocation = getIntent().getStringExtra("deliveryLocation");
-        tvAddress = (TextView) findViewById(R.id.tvAddress);
-        tvAddress.setText(deliveryLocation);
 
         bSubmitOrder = (Button) findViewById(R.id.bSubmitOrder);
         bSubmitOrder.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +74,10 @@ public class OrderSummaryActivity extends ActionBarActivity {
                     lvOrderItems.setAdapter(orderItemAdapter);
                     tvOrderTotal = (TextView) findViewById(R.id.tvOrderTotal);
                     tvOrderTotal.setText("$" + order.getCost() + "");
+
+                    tvAddress = (TextView) findViewById(R.id.tvAddress);
+                    tvAddress.setText(order.getDeliveryLocation());
+
 
                     orderToSave = order;
                 }
