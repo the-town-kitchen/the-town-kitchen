@@ -243,10 +243,28 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener,
         }
     }
 
-    private void setCurrentUser(User user) {
-        TheTownKitchenApplication.getCurrentUser().setUser(user);
-        Intent intent = new Intent(this, MealListActivity.class);
-        startActivity(intent);
+    User.IUserLoadedListener userLoadedListener = new User.IUserLoadedListener() {
+        @Override
+        public void handle(User user) {
+            TheTownKitchenApplication.getCurrentUser().setUser(user);
+            Intent intent = new Intent(LoginActivity.this, MealListActivity.class);
+            startActivity(intent);
+        }
+    };
+    private void setCurrentUser(final User user) {
+
+        User.getParseUser(user, new User.IUserLoadedListener() {
+            @Override
+            public void handle(User parseUser) {
+                if (parseUser == null) {
+                    User.updateParseUser(user, userLoadedListener);
+                } else {
+                    userLoadedListener.handle(parseUser);
+                }
+            }
+        });
+
+
     }
 
 
