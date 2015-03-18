@@ -34,6 +34,20 @@ public class PaymentInfoActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 String creditCardNumber = etCreditCardNum.getText().toString();
+
+                if(creditCardNumber.length() == 16){
+                    String new_string;
+
+                    new_string = creditCardNumber.substring(0, 4) + "-";
+                    new_string += creditCardNumber.substring(4, 8) + "-";
+                    new_string += creditCardNumber.substring(8, 12) + "-";
+                    new_string += creditCardNumber.substring(12, 16);
+
+
+                    creditCardNumber = new_string;
+
+                }
+
                 String cvc = etCvc.getText().toString();
 
                 int cardExpMonth = 0;
