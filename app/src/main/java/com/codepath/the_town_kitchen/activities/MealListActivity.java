@@ -35,9 +35,6 @@ import java.util.Calendar;
 import java.util.List;
 
 public class MealListActivity extends ActionBarActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, MealAdapter.IActionClickListener {
-    private ProfilePictureView profilePictureView;
-    private ImageView ivProfile;
-    private TextView tvUserName, tvEmail;
     private ListView lvList;
     private MealAdapter mealAdapter;
     private TextView tvCount;
@@ -62,7 +59,6 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meal_list);
         setupToolbar();
-//        setupProfile();
         setupNavDrawer();
 
         meals = new ArrayList<>();
@@ -130,29 +126,6 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         });
     }
 
-//    private void setupProfile() {
-//        ivProfile = (ImageView) findViewById(R.id.ivProfile);
-//        tvUserName = (TextView) findViewById(R.id.tvUserName);
-//        tvEmail = (TextView) findViewById(R.id.tvEmail);
-//        lvList = (ListView) findViewById(R.id.lvList);
-//        profilePictureView = (ProfilePictureView) findViewById(R.id.ivFacebookProfile);
-//
-//        User currentUser = TheTownKitchenApplication.getCurrentUser().getUser();
-//        if (currentUser != null) {
-//            if (currentUser.getProfileImageUrl() != null && !currentUser.getProfileImageUrl().isEmpty()) {
-//                Picasso.with(this).load(currentUser.getProfileImageUrl()).into(ivProfile);
-//            } else if (currentUser.getFacebookId() != null && !currentUser.getFacebookId().isEmpty()) {
-//
-//                profilePictureView.setCropped(true);
-//                profilePictureView.setProfileId(currentUser.getFacebookId());
-//                profilePictureView.setVisibility(View.VISIBLE);
-//
-//            }
-//            tvUserName.setText(currentUser.getName());
-//            tvEmail.setText(currentUser.getEmail());
-//        }
-//    }
-
     private void setupNavDrawer() {
         lvList = (ListView) findViewById(R.id.lvList);
 
@@ -218,7 +191,6 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
     @Override
     public void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int day) {
         tvCalendar.setText(year + "-" + (month + 1) + "-" + day);
-
     }
 
     @Override
