@@ -126,25 +126,44 @@ public class Order extends ParseObject {
         return instance;
 
     }
+    public static void getOrderByDateWithoutItems(String date, final IParseOrderReceivedListener orderReceivedListener) {
 
-    public static void getOrderByDateFromLocal(String date, final IOrderReceivedListener orderReceivedListener) {
+            ParseQuery<ParseObject> query = ParseQuery.getQuery("Order");
+            query.whereEqualTo("date", date);
+            query.whereEqualTo("email", TheTownKitchenApplication.getCurrentUser().getUser().getEmail());
+            query.orderByDescending("createdAt");
+            // Execute query for order asynchronously
+            query.getFirstInBackground(new GetCallback<ParseObject>() {
+                public void done(final ParseObject order, ParseException e) {
+                    if (e == null || e.getCode() == 101) {
+
+                        orderReceivedListener.handle(order, null);
+
+                    }
+
+                }
+
+        });
+
+
+    }
+
+
+    public static void getOrderByDate(String date, final IOrderReceivedListener orderReceivedListener) {
 
         TheTownKitchenApplication.orderDate = date;
 
-        ParseQuery<Order> query = ParseQuery.getQuery(Order.class)
-                .fromLocalDatastore()
-                .ignoreACLs();
+        ParseQuery<Order> query = ParseQuery.getQuery(Order.class);
         query.whereEqualTo("date", date);
+        query.whereEqualTo("email", TheTownKitchenApplication.getCurrentUser().getUser().getEmail());
+
         query.orderByDescending("createdAt");
         // Execute query for order asynchronously
         query.getFirstInBackground(new GetCallback<Order>() {
             public void done(final Order order, ParseException e) {
                 if (e == null) {
                     if (order != null) {
-                        ParseQuery<OrderItem> query = ParseQuery.getQuery(OrderItem.class)
-                                .fromLocalDatastore()
-                                .ignoreACLs();
-                        ;
+                        ParseQuery<OrderItem> query = ParseQuery.getQuery(OrderItem.class);
                         query.whereEqualTo("parent", order.getObjectId());
                         query.orderByDescending("createdAt");
                         query.findInBackground(new FindCallback<OrderItem>() {
@@ -173,7 +192,7 @@ public class Order extends ParseObject {
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Order");
         query.whereEqualTo("date", date);
-        query.whereEqualTo("user", TheTownKitchenApplication.getCurrentUser().getUser());
+        query.whereEqualTo("email", TheTownKitchenApplication.getCurrentUser().getUser().getEmail());
         query.orderByDescending("createdAt");
         // Execute query for order asynchronously
         query.getFirstInBackground(new GetCallback<ParseObject>() {
@@ -202,6 +221,7 @@ public class Order extends ParseObject {
                     ParseObject parseOrder = ParseObject.create("Order");
                     parseOrder.put("date", date);
                     parseOrder.put("user", TheTownKitchenApplication.getCurrentUser().getUser());
+                    parseOrder.put("email", TheTownKitchenApplication.getCurrentUser().getUser().getEmail());
                     parseOrder.saveInBackground();
                     parseOrder.pinInBackground();
                     getOrderByDate(date, orderReceivedListener);
@@ -229,25 +249,18 @@ public class Order extends ParseObject {
                 //ArrayList<OrderItem> orderItems;
                 boolean isMealInCart = false;
 
-                double totalCost = meal.getPrice() * count;
-                int orderCount = 0;
+                double currentItemCost =  meal.getPrice() * count;
+                int currentItemCount = count;
+
+                double totalCost = currentItemCost;
+                int orderCount = currentItemCount;
                 if (parseOrder == null || parseOrderItems == null || parseOrderItems.size() == 0) {
                     if (parseOrder == null) {
                         parseOrder = ParseObject.create("Order");
                     }
-                    newOrderItem = ParseObject.create("OrderItem");
-                    newOrderItem.put("meal", meal);
-                    newOrderItem.put("quantity", count);
-                    newOrderItem.put("cost", totalCost);
-                    newOrderItem.put("parent", parseOrder.getObjectId());
-                    newOrderItem.pinInBackground();
-                    newOrderItem.saveInBackground();
-                    parseOrder.put("cost", totalCost);
-                    parseOrder.put("quantity", orderCount);
-                    parseOrder.put("date", date);
-                    parseOrder.put("user", TheTownKitchenApplication.getCurrentUser().getUser());
-                    parseOrder.saveInBackground();
-                    parseOrder.pinInBackground();
+
+                    createNewOrderItem(parseOrder, currentItemCost, currentItemCount, meal);
+                    updateOrder(parseOrder, totalCost, orderCount, date);
                     return;
                 }
 
@@ -255,34 +268,49 @@ public class Order extends ParseObject {
                 for (ParseObject parseOrderItem : parseOrderItems) {
                     //if meal exists in cart already
                     if (parseOrderItem.getParseObject("meal").getObjectId() == meal.getObjectId()) {
-                        parseOrderItem.put("quantity", count);
-                        parseOrderItem.put("cost", totalCost);
+                        parseOrderItem.put("quantity", currentItemCount);
+                        parseOrderItem.put("cost", currentItemCost);
                         parseOrderItem.pinInBackground();
                         parseOrderItem.saveInBackground();
                         isMealInCart = true;
 
+                    }else {
+                        totalCost += parseOrderItem.getInt("quantity") * parseOrderItem.getParseObject("meal").getDouble("price");//.getQuantity() * orderItem.getMeal().getPrice();/
+                        orderCount += parseOrderItem.getInt("quantity");
                     }
-                    // totalCost += orderItem.getQuantity() * orderItem.getMeal().getPrice();
-                    // orderCount += orderItem.getQuantity();
                 }
 
                 if (!isMealInCart) {
-                    //   orderItems.add(OrderItem.orderItemFromClick(meal, count));
-                    totalCost += meal.getPrice() * count;
-                    orderCount += count;
+                    createNewOrderItem(parseOrder, currentItemCost, currentItemCount, meal);
                 }
 
 
-                parseOrder.put("cost", totalCost);
-                parseOrder.put("quantity", count);
-                parseOrder.put("date", date);
-                parseOrder.put("user", TheTownKitchenApplication.getCurrentUser().getUser());
-                parseOrder.saveInBackground();
-                parseOrder.pinInBackground();
+                updateOrder(parseOrder, totalCost, orderCount, date);
 
             }
         };
         Order.getOrderByDate(date, orderReceivedListener);
 
+    }
+
+    private static void updateOrder(ParseObject parseOrder, double totalCost, int orderCount, String date) {
+        parseOrder.put("cost", totalCost);
+        parseOrder.put("quantity", orderCount);
+        parseOrder.put("date", date);
+        parseOrder.put("user", TheTownKitchenApplication.getCurrentUser().getUser());
+        parseOrder.put("email", TheTownKitchenApplication.getCurrentUser().getUser().getEmail());
+        parseOrder.saveInBackground();
+        parseOrder.pinInBackground();
+    }
+
+    private static void createNewOrderItem(ParseObject parseOrder, double currentItemCost, int currentItemCount, Meal meal) {
+        ParseObject newOrderItem = ParseObject.create("OrderItem");
+        newOrderItem.put("meal", meal);
+        newOrderItem.put("quantity", currentItemCount);
+        newOrderItem.put("cost", currentItemCost);
+        newOrderItem.put("parent", parseOrder.getObjectId());
+
+        newOrderItem.pinInBackground();
+        newOrderItem.saveInBackground();
     }
 }

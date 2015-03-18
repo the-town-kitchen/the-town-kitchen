@@ -2,6 +2,7 @@ package com.codepath.the_town_kitchen.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -24,6 +25,7 @@ import java.util.List;
 public class OrderSummaryActivity extends ActionBarActivity {
     Button bSubmitOrder;
     Button bPaymentInfo;
+    ProgressBarDialog progressBarDialog;
 
     private ListView lvOrderItems;
     private OrderItemAdapter orderItemAdapter;
@@ -40,10 +42,7 @@ public class OrderSummaryActivity extends ActionBarActivity {
         bSubmitOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent i = new Intent(OrderSummaryActivity.this, FeedbackActivity.class);
-//                startActivity(i);
                 showPogressBarDialog();
-
             }
         });
 
@@ -60,7 +59,7 @@ public class OrderSummaryActivity extends ActionBarActivity {
         //order items
         lvOrderItems = (ListView) findViewById(R.id.lvOrderItems);
         tvDeliveryTime = (TextView) findViewById(R.id.tvDeliveryTime);
-        Order.getOrderByDateFromLocal(TheTownKitchenApplication.orderDate, new Order.IOrderReceivedListener() {
+        Order.getOrderByDate(TheTownKitchenApplication.orderDate, new Order.IOrderReceivedListener() {
             @Override
             public void handle(Order order, List<OrderItem> orderItems) {
                 if (order != null) {
@@ -77,6 +76,7 @@ public class OrderSummaryActivity extends ActionBarActivity {
         });
 
     }
+
 
 
     @Override
@@ -103,8 +103,23 @@ public class OrderSummaryActivity extends ActionBarActivity {
 
     private void showPogressBarDialog() {
         FragmentManager fm = getSupportFragmentManager();
-        ProgressBarDialog progressBarDialog = ProgressBarDialog.newInstance();
+        progressBarDialog = ProgressBarDialog.newInstance();
         progressBarDialog.show(fm, "fragment_progress_bar");
+
+
+        Handler handler = null;
+        handler = new Handler();
+        handler.postDelayed(new Runnable(){
+            public void run(){
+                progressBarDialog.dismiss();
+                startNewActivity();
+            }
+        }, 1000);
+    }
+
+    private void startNewActivity(){
+        Intent i = new Intent(OrderSummaryActivity.this, FeedbackActivity.class);
+        startActivity(i);
     }
 
 }
