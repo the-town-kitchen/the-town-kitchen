@@ -18,8 +18,11 @@
     <string name="save_credit_card_info">Save my credit card info for future use</string>
     <string name="save_payment">Save Payment Info</string>
     <string name="title_activity_order_summary">OrderSummaryActivity</string>
-    <string name="submit_coupon">Submit</string>
+    <string name="submit_coupon">Apply</string>
+    <string name="order_sub_total">Sub Total</string>
+    <string name="tax">Tax</string>
     <string name="order_total">Total</string>
+    <string name="discount">Discount</string>
     <string name="delivering_to">Delivering to</string>
     <string name="submit_order">Submit Order</string>
     <string name="title_activity_feedback">FeedbackActivity</string>

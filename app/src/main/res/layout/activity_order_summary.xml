@@ -49,9 +49,62 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="@string/order_sub_total"
+        android:id="@+id/tvSubTotalLabel"
+        android:layout_below="@+id/lvOrderItems"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="@dimen/activity_large_margin"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvSubTotal"
+        android:layout_alignBottom="@+id/tvSubTotalLabel"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/activity_large_margin"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/tax"
+        android:id="@+id/tvTaxLabel"
+        android:layout_below="@+id/tvSubTotalLabel"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="@dimen/activity_large_margin"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvTax"
+        android:layout_alignBottom="@+id/tvTaxLabel"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/activity_large_margin"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/discount"
+        android:id="@+id/tvDiscountlabel"
+        android:layout_below="@+id/tvTaxLabel"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/activity_large_margin"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvDiscount"
+        android:layout_alignBottom="@+id/tvDiscountlabel"
+        android:layout_alignParentRight="true"
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/activity_large_margin"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/order_total"
         android:id="@+id/tvTotalLabel"
-        android:layout_below="@+id/lvOrderItems"
+        android:layout_below="@+id/tvDiscountlabel"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="@dimen/activity_large_margin"/>
@@ -63,6 +116,7 @@
         android:layout_alignBottom="@+id/tvTotalLabel"
         android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/activity_large_margin"/>
+
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -79,9 +133,7 @@
         android:text="@string/submit_coupon"
         android:id="@+id/bSubmitCoupon"
         android:layout_below="@+id/tvTotalLabel"
-       android:layout_alignParentRight="true"
-        android:layout_marginLeft="37dp"
-        android:layout_marginStart="37dp"
+        android:layout_alignParentRight="true"
         android:layout_marginTop="@dimen/activity_large_margin"
         android:onClick="onCouponCodeSubmit"/>
 
@@ -94,16 +146,16 @@
         android:layout_below="@+id/etCouponCode"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="39dp"
-        android:drawableLeft="@drawable/ic_place"/>
+        android:layout_marginTop="@dimen/activity_large_margin"
+        android:drawableLeft="@drawable/ic_place"
+        android:textSize="16sp"/>
 
     <TextView
         android:id="@+id/tvAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/tvDeliveringTo"
-        android:layout_alignRight="@+id/bSubmitCoupon"
-        android:layout_alignEnd="@+id/bSubmitCoupon" />
+        android:layout_below="@+id/tvDeliveringTo"
+        android:textSize="16sp"/>
 
     <Button
         android:layout_width="wrap_content"

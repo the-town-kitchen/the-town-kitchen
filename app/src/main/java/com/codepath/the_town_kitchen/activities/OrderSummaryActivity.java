@@ -20,6 +20,7 @@ import com.codepath.the_town_kitchen.fragments.ProgressBarDialog;
 import com.codepath.the_town_kitchen.models.Order;
 import com.codepath.the_town_kitchen.models.OrderItem;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,10 +33,13 @@ public class OrderSummaryActivity extends ActionBarActivity {
     private OrderItemAdapter orderItemAdapter;
     private List<OrderItem> orderItems;
     private TextView tvOrderTotal;
+    private TextView tvSubTotal;
     private TextView tvDeliveryTime;
     private TextView tvAddress;
+    private TextView tvTax;
+    private TextView tvDiscount;
     private Order orderToSave;
-
+    private TextView tvDiscountlabel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +62,12 @@ public class OrderSummaryActivity extends ActionBarActivity {
                 startActivity(i);
             }
         });
-
-
+        tvOrderTotal = (TextView) findViewById(R.id.tvOrderTotal);
+        tvAddress = (TextView) findViewById(R.id.tvAddress);
+        tvSubTotal= (TextView) findViewById(R.id.tvSubTotal);
+        tvTax= (TextView) findViewById(R.id.tvTax);
+        tvDiscount= (TextView) findViewById(R.id.tvDiscount);
+        tvDiscountlabel =  (TextView) findViewById(R.id.tvDiscountlabel);
         //order items
         lvOrderItems = (ListView) findViewById(R.id.lvOrderItems);
         tvDeliveryTime = (TextView) findViewById(R.id.tvDeliveryTime);
@@ -73,10 +81,11 @@ public class OrderSummaryActivity extends ActionBarActivity {
                         orderItems = new ArrayList<>();
                     orderItemAdapter = new OrderItemAdapter(OrderSummaryActivity.this, orderItems, null);
                     lvOrderItems.setAdapter(orderItemAdapter);
-                    tvOrderTotal = (TextView) findViewById(R.id.tvOrderTotal);
-                    tvOrderTotal.setText("$" + order.getCost() + "");
-
-                    tvAddress = (TextView) findViewById(R.id.tvAddress);
+                    double subTotal = order.getCost();
+                    double tax = order.getCost() * 0.09;
+                    tvSubTotal.setText("$" + subTotal);
+                    tvTax.setText("$" + tax);
+                    tvOrderTotal.setText("$" +  new DecimalFormat("##.##").format(subTotal + tax));
                     tvAddress.setText(order.getDeliveryLocation());
 
 
@@ -140,9 +149,12 @@ public class OrderSummaryActivity extends ActionBarActivity {
 
     public void onCouponCodeSubmit(View view) {
         EditText etCouponCode = (EditText) findViewById(R.id.etCouponCode);
-
-        orderToSave.setCost(orderToSave.getCost() - (.15 * orderToSave.getCost()));
-        tvOrderTotal.setText("$" + orderToSave.getCost() + "");
+        tvDiscountlabel.setVisibility(View.VISIBLE);
+        tvDiscount.setText("$-" + new DecimalFormat("##.##").format(orderToSave.getCost() * 0.15));
+        tvDiscountlabel.setVisibility(View.VISIBLE);
+        tvDiscount.setVisibility(View.VISIBLE);
+        orderToSave.setCost(orderToSave.getCost() * 0.85 );
+        tvOrderTotal.setText("$" +  new DecimalFormat("##.##").format(orderToSave.getCost()));
 
         etCouponCode.setText("");
     }
