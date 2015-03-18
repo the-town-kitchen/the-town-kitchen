@@ -25,6 +25,8 @@ public class Order extends ParseObject {
 
     private int feedbackRating;
 
+    private boolean isDelivered;
+
     private User user;
 
     private String date;
@@ -99,6 +101,13 @@ public class Order extends ParseObject {
         put("quantity", quantity);
     }
 
+    public boolean getIsDelivered(){
+        return getBoolean("isDelivered");
+    }
+
+    public void setIsDelivered(boolean isDelivered){
+        put("isDelivered", isDelivered);
+    }
 
     public int getFeedbackRating() {
         return getInt("feedbackRating");
