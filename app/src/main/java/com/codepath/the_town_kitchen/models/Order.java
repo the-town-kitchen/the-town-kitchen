@@ -151,8 +151,6 @@ public class Order extends ParseObject {
 
     public static void getOrderByDate(String date, final IOrderReceivedListener orderReceivedListener) {
 
-        TheTownKitchenApplication.orderDate = date;
-
         ParseQuery<Order> query = ParseQuery.getQuery(Order.class);
         query.whereEqualTo("date", date);
         query.whereEqualTo("email", TheTownKitchenApplication.getCurrentUser().getUser().getEmail());
@@ -187,8 +185,6 @@ public class Order extends ParseObject {
     }
 
     public static void getOrderByDate(final String date, final IParseOrderReceivedListener orderReceivedListener) {
-
-        TheTownKitchenApplication.orderDate = date;
 
         ParseQuery<ParseObject> query = ParseQuery.getQuery("Order");
         query.whereEqualTo("date", date);

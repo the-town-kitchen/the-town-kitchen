@@ -21,6 +21,8 @@ import com.codepath.the_town_kitchen.models.User;
 import com.facebook.widget.ProfilePictureView;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.SaveCallback;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
 import com.squareup.picasso.Picasso;
@@ -67,6 +69,21 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
         timePickerDialog = TimePickerDialog.newInstance(this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false, false);
 
+        setupOrderCounts();
+    }
+
+    private void setupOrderCounts(){
+        Order.getOrderByDateWithoutItems(tvCalendar.getText().toString(), new Order.IParseOrderReceivedListener() {
+            @Override
+            public void handle(ParseObject order, List<ParseObject> orderItems) {
+                if(order != null){
+                    tvCount.setText(order.getInt("quantity") + "");
+                }
+                else
+                    tvCount.setVisibility(View.GONE);
+            }
+        });
+
     }
 
     private Meal.IMealsReceivedListener mealsReceived = new Meal.IMealsReceivedListener() {
@@ -85,6 +102,7 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         java.text.DateFormat df = new SimpleDateFormat("yyyy-MM-d");
         String date = df.format(Calendar.getInstance().getTime());
         tvCalendar.setText(date);
+        TheTownKitchenApplication.orderDate = date;
         setSupportActionBar(toolbar);
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
@@ -171,27 +189,34 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
 
     @Override
     public void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int day) {
-        tvCalendar.setText(year + "-" + (month + 1) + "-" + day);
+        String newDate = year + "-" + (month + 1) + "-" + day;
+        tvCalendar.setText(newDate);
+        TheTownKitchenApplication.orderDate = newDate;
 
     }
 
     @Override
-    public void onTimeSet(RadialPickerLayout view, int hourOfDay, int minute) {
-        Order order = TheTownKitchenApplication.getOrder();
+    public void onTimeSet(RadialPickerLayout view, final int hourOfDay, final int minute) {
+        Order.getOrderByDateWithoutItems(tvCalendar.getText().toString(), new Order.IParseOrderReceivedListener() {
+            @Override
+            public void handle(ParseObject order, List<ParseObject> orderItems) {
 
-        if (order != null) {
-            if (order.getTime() == null || order.getTime().isEmpty()) {
-                order.setTime(hourOfDay + ":" + minute);
-                try {
-                    order.save();
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                if(order != null){
+
+                    order.put("time", hourOfDay + ":" + minute);
+                    order.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(ParseException e) {
+                            startOrderSummaryActivity();
+                        }
+                    });
+                    order.pinInBackground();
                 }
-                startOrderSummaryActivity();
+
             }
 
-        } else
-            Toast.makeText(this, "new time:" + hourOfDay + ":" + minute, Toast.LENGTH_LONG).show();
+        });
+
     }
 
     private void startOrderSummaryActivity() {
@@ -207,6 +232,6 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         Order.update(date, meal, count);
 
         tvCount.setText(count + "");
-
+        tvCount.setVisibility(View.VISIBLE);
     }
 }
