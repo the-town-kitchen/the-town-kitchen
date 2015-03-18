@@ -35,8 +35,16 @@ public class PaymentInfoActivity extends ActionBarActivity {
             public void onClick(View v) {
                 String creditCardNumber = etCreditCardNum.getText().toString();
                 String cvc = etCvc.getText().toString();
-                int cardExpMonth = Integer.parseInt(etExpirationMonth.getText().toString());
-                int cardExpYear = Integer.parseInt(etExpirationYear.getText().toString());
+
+                int cardExpMonth = 0;
+                if(!etExpirationMonth.getText().toString().matches("")) {
+                   cardExpMonth = Integer.parseInt(etExpirationMonth.getText().toString());
+                }
+
+                int cardExpYear = 0;
+                if(!etExpirationYear.getText().toString().matches("")) {
+                    cardExpYear = Integer.parseInt(etExpirationYear.getText().toString());
+                }
 
                 if(verifyCreditCard(creditCardNumber,cardExpMonth, cardExpYear, cvc)) {
 
