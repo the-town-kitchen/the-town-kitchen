@@ -234,7 +234,12 @@ public class Order extends ParseObject {
         void handle(Order order, List<OrderItem> orderItems);
     }
 
-    public static void update(final String date, final Meal meal, final int count) {
+    public interface IOrderUpdatedListener {
+        void handle(int count);
+    }
+
+
+    public static void update(final String date, final Meal meal, final int count, final IOrderUpdatedListener orderUpdatedListener) {
 
         IParseOrderReceivedListener orderReceivedListener = new IParseOrderReceivedListener() {
             @Override
@@ -254,7 +259,7 @@ public class Order extends ParseObject {
                     if (parseOrder == null) {
                         parseOrder = ParseObject.create("Order");
                     }
-
+                    orderUpdatedListener.handle(count);
                     createNewOrderItem(parseOrder, currentItemCost, currentItemCount, meal);
                     updateOrder(parseOrder, totalCost, orderCount, date);
                     return;
@@ -275,7 +280,7 @@ public class Order extends ParseObject {
                         orderCount += parseOrderItem.getInt("quantity");
                     }
                 }
-
+                orderUpdatedListener.handle(orderCount);
                 if (!isMealInCart) {
                     createNewOrderItem(parseOrder, currentItemCost, currentItemCount, meal);
                 }

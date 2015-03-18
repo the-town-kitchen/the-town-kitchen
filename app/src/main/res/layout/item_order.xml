@@ -4,14 +4,17 @@
     android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/ivMealImage"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:cropToPadding="false"
         android:adjustViewBounds="true"
         android:scaleType="fitXY"
         android:contentDescription="@string/photo"
-        android:layout_marginRight="@dimen/activity_large_margin"
-        />
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="@dimen/activity_normal_margin"
+        android:layout_marginBottom="@dimen/activity_normal_margin"
+
+    />
     
     <TextView
         android:layout_width="wrap_content"
@@ -21,7 +24,8 @@
         android:layout_marginRight="50dp"
         android:fontFamily="sans-serif"
         android:textColor="@color/secondary_darker"
-        android:textSize="16sp"/>
+        android:textSize="16sp"
+        android:layout_alignTop="@+id/ivMealImage"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,7 +34,8 @@
         android:fontFamily="sans-serif"
         android:textColor="@color/secondary_darker"
         android:textSize="16sp"
-        android:layout_marginRight="@dimen/activity_large_margin"/>
+        android:layout_marginRight="@dimen/activity_large_margin"
+        android:layout_alignTop="@+id/ivMealImage"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" 
@@ -38,6 +43,7 @@
         android:layout_toRightOf="@+id/tvPrice"
         android:fontFamily="sans-serif"
         android:textColor="@color/secondary_darker"
-        android:textSize="16sp"/>
+        android:textSize="16sp"
+        android:layout_alignTop="@+id/ivMealImage"/>
     </RelativeLayout>
     
