@@ -127,20 +127,6 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         imgCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Order order = TheTownKitchenApplication.getOrder();
-
-                if (order != null) {
-                    if (order.getTime() == null || order.getTime().isEmpty()) {
-
-                        timePickerDialog.setVibrate(false);
-                        timePickerDialog.setCloseOnSingleTapMinute(true);
-                        timePickerDialog.show(getSupportFragmentManager(), TIMEPICKER_TAG);
-
-                    } else {
-//                        startOrderSummaryActivity();
-                        startDeliveryLocationActivity();
-                    }
-                }
                 timePickerDialog.setVibrate(false);
                 timePickerDialog.setCloseOnSingleTapMinute(true);
                 timePickerDialog.show(getSupportFragmentManager(), TIMEPICKER_TAG);
