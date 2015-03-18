@@ -6,6 +6,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -41,6 +43,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
 /**
  * Created by paulina on 3/7/15.
  */
@@ -59,6 +65,10 @@ public class DeliveryLocationActivity extends FragmentActivity implements
     private long FASTEST_INTERVAL = 5000; /* 5 secs */
     private String TAG_DELIVERY_LOCATION_ACTIVITY = "TAG_DELIVERY_LOCATION_ACTIVITY";
     private boolean pinDisplayed = false;
+    private String deliveryLocation;
+    Geocoder geocoder;
+    private double latitude;
+    private double longitude;
 
     /*
      * Define a request code to send to Google Play services This code is
@@ -69,7 +79,9 @@ public class DeliveryLocationActivity extends FragmentActivity implements
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_delivery_location);;
+        setContentView(R.layout.activity_delivery_location);
+
+        geocoder = new Geocoder(this);
 
         mapFragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map));
         if (mapFragment != null) {
@@ -303,6 +315,7 @@ public class DeliveryLocationActivity extends FragmentActivity implements
             return true;
         } else if (id == R.id.action_view_order_summary) {
             Intent i = new Intent(DeliveryLocationActivity.this, OrderSummaryActivity.class);
+            i.putExtra("deliveryLocation", deliveryLocation);
             startActivity(i);
             return true;
         }
@@ -337,6 +350,10 @@ public class DeliveryLocationActivity extends FragmentActivity implements
                 .position(point)
                 .title(getResources().getString(R.string.deliver_here))
                 .icon(defaultMarker));
+
+        latitude = marker.getPosition().latitude;
+        longitude = marker.getPosition().longitude;
+        deliveryLocation = getAddress(latitude, longitude);
 
         pinDisplayed = true;
 
@@ -373,6 +390,28 @@ public class DeliveryLocationActivity extends FragmentActivity implements
                 }
             }
         });
+    }
+
+    public String getAddress(double latitude, double longitude) {
+        try {
+            List<Address> addresses;
+            if (latitude != 0 || longitude != 0) {
+                addresses = geocoder.getFromLocation(latitude ,
+                        longitude, 1);
+                String address = addresses.get(0).getAddressLine(0);
+                String city = addresses.get(0).getAddressLine(1);
+                String country = addresses.get(0).getAddressLine(2);
+                Log.d("TAG", "address = "+address+", city ="+city+", country = "+country );
+                String firstAddress = address + " " + city + " " + country;
+                return firstAddress;
+            } else {
+                Log.e(TAG_DELIVERY_LOCATION_ACTIVITY, "latitude and longitude are null");
+                return null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
 

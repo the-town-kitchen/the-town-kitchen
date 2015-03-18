@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.codepath.the_town_kitchen.R;
 import com.codepath.the_town_kitchen.TheTownKitchenApplication;
@@ -32,11 +33,17 @@ public class OrderSummaryActivity extends ActionBarActivity {
     private ArrayList<OrderItem> orderItems;
     private TextView tvOrderTotal;
     private TextView tvDeliveryTime;
+    private TextView tvAddress;
+    private String deliveryLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_summary);
+
+        deliveryLocation = getIntent().getStringExtra("deliveryLocation");
+        tvAddress = (TextView) findViewById(R.id.tvAddress);
+        tvAddress.setText(deliveryLocation);
 
         bSubmitOrder = (Button) findViewById(R.id.bSubmitOrder);
         bSubmitOrder.setOnClickListener(new View.OnClickListener() {

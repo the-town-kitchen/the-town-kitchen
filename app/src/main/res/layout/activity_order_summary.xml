@@ -97,9 +97,9 @@
         android:drawableLeft="@drawable/ic_place"/>
 
     <TextView
+        android:id="@+id/tvAddress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tvAddress"
         android:layout_alignBottom="@+id/tvDeliveringTo"
         android:layout_alignRight="@+id/bSubmitCoupon"
         android:layout_alignEnd="@+id/bSubmitCoupon" />
