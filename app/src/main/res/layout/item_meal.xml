@@ -27,7 +27,11 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
             android:textColor="@color/secondary_darker"
-            android:textSize="14sp" />
+            android:textSize="16sp"
+            android:layout_marginRight="@dimen/activity_small_margin"
+            android:layout_marginLeft="@dimen/activity_small_margin"
+            android:paddingTop="@dimen/activity_normal_margin"
+            android:paddingBottom="@dimen/activity_normal_margin"/>
     </RelativeLayout>
     <LinearLayout
         android:layout_width="wrap_content"
