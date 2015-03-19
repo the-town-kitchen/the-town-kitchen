@@ -84,7 +84,7 @@ public class OrderSummaryActivity extends ActionBarActivity {
                     double subTotal = order.getCost();
                     double tax = order.getCost() * 0.09;
                     tvSubTotal.setText("$" + subTotal);
-                    tvTax.setText("$" + tax);
+                    tvTax.setText("$" + new DecimalFormat("##.##").format(tax));
                     tvOrderTotal.setText("$" +  new DecimalFormat("##.##").format(subTotal + tax));
                     tvAddress.setText(order.getDeliveryLocation());
 
