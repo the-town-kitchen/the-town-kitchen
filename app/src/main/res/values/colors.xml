@@ -12,4 +12,6 @@
     <color name="secondary_lightest">#f4f4f4</color>
     <color name="the_town_kitchen_red">#AE222C</color>
     <color name="primary_red">#F34235</color>
+    <color name="dark_primary_red">#D32F2F</color>
+    <color name="secondary_gray">#727272</color>
 </resources>
