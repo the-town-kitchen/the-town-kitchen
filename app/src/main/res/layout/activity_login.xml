@@ -1,31 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:facebook="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    tools:context=".LoginActivity">
+              xmlns:facebook="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context=".LoginActivity">
 
-    <ImageView
-        android:id="@+id/ivLogo"
-        android:layout_width="80dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:src="@drawable/townkitchen" />
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                 android:id="@+id/home_container"
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"
+                 android:orientation="vertical">
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/google_login_button"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp" />
+        <RelativeLayout
+                android:layout_width="600dp"
+                android:layout_height="match_parent">
 
-    <com.facebook.widget.LoginButton
-        android:id="@+id/fb_login_button"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        facebook:confirm_logout="false"
-        facebook:fetch_user_info="true" />
+            <VideoView
+                    android:id="@+id/video"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_width="750dp"
+                    android:layout_height="match_parent"/>
+        </RelativeLayout>
+
+        <ImageView
+                android:id="@+id/ivLogo"
+                android:background="@drawable/thetownkitchenlogo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                android:layout_gravity="center|center_horizontal"
+                android:layout_marginBottom="20dp"
+                android:adjustViewBounds="true"/>
+
+        <com.google.android.gms.common.SignInButton
+                android:id="@+id/google_login_button"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="100dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"/>
+
+        <com.facebook.widget.LoginButton
+                android:id="@+id/fb_login_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_gravity="bottom|center_horizontal"
+                facebook:confirm_logout="false"
+                facebook:fetch_user_info="true"/>
+
+    </FrameLayout>
 
 </LinearLayout>

@@ -3,12 +3,16 @@ package com.codepath.the_town_kitchen.activities;
 
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.MediaController;
+import android.widget.VideoView;
 
 import com.codepath.the_town_kitchen.R;
 import com.codepath.the_town_kitchen.TheTownKitchenApplication;
@@ -59,9 +63,20 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener,
         uiHelper = new UiLifecycleHelper(this, callback);
         uiHelper.onCreate(savedInstanceState);
 
-
-        setContentView(R.layout.activity_login);
-
+        /* video background */
+        Uri url = Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.cookingbackground);
+        final VideoView mVideoView = (VideoView) findViewById(R.id.video);
+        mVideoView.setVideoURI(url);
+        MediaController mediaController = new MediaController(this);
+        mediaController.setAnchorView(mVideoView);
+        mVideoView.setMediaController(mediaController);
+        mVideoView.requestFocus();
+        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            public void onPrepared(MediaPlayer mp) {
+                mp.setLooping(true);
+                mVideoView.start();
+            }
+        });
 
         facebookLoginBtn = (LoginButton) findViewById(R.id.fb_login_button);
         facebookLoginBtn.setApplicationId(getResources().getString(R.string.FACEBOOK_APP_ID));
