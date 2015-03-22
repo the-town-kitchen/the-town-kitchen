@@ -21,7 +21,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
                 android:contentDescription="@string/app_name"
-                android:src="@drawable/calendar24" />
+                android:layout_toLeftOf="@id/icon_cart"
+                android:src="@drawable/ic_calendar" />
 
         <com.devspark.robototextview.widget.RobotoTextView
                 android:id="@+id/tvCalendar"

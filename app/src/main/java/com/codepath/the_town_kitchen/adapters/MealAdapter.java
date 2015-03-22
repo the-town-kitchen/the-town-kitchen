@@ -1,6 +1,7 @@
 package com.codepath.the_town_kitchen.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,10 +71,13 @@ public class MealAdapter extends ArrayAdapter<Meal> {
             @Override
             public void onClick(View view) {
                 int counts = Integer.parseInt(viewHolder.tvCounts.getText().toString());
-                if(counts > 0){
+                if (counts > 0) {
                      counts = counts -1;
                     viewHolder.tvCounts.setText(counts + "");
+                    viewHolder.tvCounts.setTextColor(Color.parseColor("#009688"));
                     actionClickListener.onActionClicked(position, counts);
+                } else {
+                    viewHolder.tvCounts.setTextColor(Color.parseColor("#727272"));
                 }
             }
         });
@@ -84,6 +88,11 @@ public class MealAdapter extends ArrayAdapter<Meal> {
                 int counts = Integer.parseInt(viewHolder.tvCounts.getText().toString());
                 counts = counts + 1;
                 viewHolder.tvCounts.setText(counts +"" );
+                if (counts > 0) {
+                    viewHolder.tvCounts.setTextColor(Color.parseColor("#009688"));
+                } else {
+                    viewHolder.tvCounts.setTextColor(Color.parseColor("#727272"));
+                }
                 actionClickListener.onActionClicked(position, counts);
 
             }

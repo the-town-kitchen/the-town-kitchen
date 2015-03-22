@@ -11,37 +11,22 @@
             android:layout_height="@dimen/toolbar_height"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:background="@color/white"
-            android:minHeight="@dimen/toolbar_height"
-            app:popupTheme="@style/Theme.AppCompat.Light"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            android:background="@color/primary_red"
+            android:minHeight="@dimen/toolbar_height">
 
-        <RelativeLayout
+        <com.devspark.robototextview.widget.RobotoTextView
+                android:id="@+id/tvCalendar"
+                android:gravity="center_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="left|center"
-                android:layout_marginLeft="5dp">
-
-            <ImageView
-                    android:id="@+id/icon_calendar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
-                    android:contentDescription="@string/app_name"
-                    android:src="@drawable/calendar24" />
-
-            <com.devspark.robototextview.widget.RobotoTextView
-                    android:id="@+id/tvCalendar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toRightOf="@+id/icon_calendar"
-                    android:text="@string/today"
-                    android:textColor="@color/secondary_dark"
-                    android:textSize="16sp"
-                    app:typeface="roboto_medium" />
-        </RelativeLayout>
+                android:text="@string/today"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                app:typeface="roboto_medium"
+                android:background="@color/primary_red"/>
 
         <RelativeLayout
+                android:background="@color/primary_red"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right|center">
@@ -61,55 +46,24 @@
                     android:layout_height="wrap_content"
                     tools:text="12" />
 
+            <ImageView
+                    android:id="@+id/icon_calendar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toLeftOf="@id/icon_cart"
+                    android:layout_marginRight="5dp"
+                    android:contentDescription="@string/app_name"
+                    android:src="@drawable/ic_calendar" />
+
         </RelativeLayout>
 
     </android.support.v7.widget.Toolbar>
 
-    <RelativeLayout
-            android:id="@+id/rlProfile"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/toolbar"
-            android:layout_margin="@dimen/activity_large_margin">
-
-        <com.facebook.widget.ProfilePictureView
-                android:id="@+id/ivFacebookProfile"
-                android:layout_width="@dimen/avatar_size"
-                android:layout_height="@dimen/avatar_size"
-                android:layout_marginRight="@dimen/activity_normal_margin" />
-
-        <ImageView
-                android:id="@+id/ivProfile"
-                android:layout_width="@dimen/avatar_size"
-                android:layout_height="@dimen/avatar_size"
-                android:layout_marginRight="@dimen/activity_normal_margin" />
-
-        <TextView
-                android:id="@+id/tvUserName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/ivProfile"
-                android:layout_toRightOf="@+id/ivProfile"
-                android:fontFamily="sans-serif"
-                android:textColor="@color/secondary_darkest"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-        <TextView
-                android:id="@+id/tvEmail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tvUserName"
-                android:layout_toRightOf="@+id/ivProfile"
-                android:fontFamily="sans-serif"
-                android:textColor="@color/neutral"
-                android:textSize="12sp" />
-    </RelativeLayout>
-
     <ListView
             android:id="@+id/lvList"
+            android:background="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/rlProfile" />
+            android:layout_below="@+id/toolbar" />
 
 </RelativeLayout>

@@ -14,7 +14,7 @@
                  android:orientation="vertical">
 
         <RelativeLayout
-                android:layout_width="600dp"
+                android:layout_width="750dp"
                 android:layout_height="match_parent">
 
             <VideoView

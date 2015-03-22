@@ -3,14 +3,18 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
-
+        <item name="android:actionBarStyle">@style/CustomActionBar</item>
     </style>
+
+    <style name="CustomActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:background">@color/primary_red</item>
+    </style>
+
     <style name="toolbar_badge_text">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:gravity">center</item>
-        <item name="android:background">@drawable/toolbar_badge_red_background</item>
+        <item name="android:background">@drawable/toolbar_badge_teal_background</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_alignParentTop">true</item>

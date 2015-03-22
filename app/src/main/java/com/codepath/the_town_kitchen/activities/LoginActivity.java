@@ -63,8 +63,9 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener,
         uiHelper = new UiLifecycleHelper(this, callback);
         uiHelper.onCreate(savedInstanceState);
 
+
         /* video background */
-        Uri url = Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.cookingbackground);
+        final Uri url = Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.cookingbackground);
         final VideoView mVideoView = (VideoView) findViewById(R.id.video);
         mVideoView.setVideoURI(url);
         MediaController mediaController = new MediaController(this);
@@ -75,6 +76,12 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener,
             public void onPrepared(MediaPlayer mp) {
                 mp.setLooping(true);
                 mVideoView.start();
+            }
+        });
+        mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                mVideoView.resume();
             }
         });
 

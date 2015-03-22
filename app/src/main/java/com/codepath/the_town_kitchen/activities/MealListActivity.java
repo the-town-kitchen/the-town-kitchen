@@ -60,13 +60,16 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meal_list);
         setupToolbar();
-        setupProfile();
+//        setupProfile();
+
+        getSupportActionBar().setDisplayUseLogoEnabled(false);
 
         showFeedbackIfApplicable();
 
         setupOrderCounts();
         meals = new ArrayList<>();
         mealAdapter = new MealAdapter(this, meals, this);
+        lvList = (ListView) findViewById(R.id.lvList);
         lvList.setAdapter(mealAdapter);
         Meal.fromParse(mealsReceived);
         calendar = Calendar.getInstance();
@@ -164,28 +167,28 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         });
     }
 
-    private void setupProfile() {
-        ivProfile = (ImageView) findViewById(R.id.ivProfile);
-        tvUserName = (TextView) findViewById(R.id.tvUserName);
-        tvEmail = (TextView) findViewById(R.id.tvEmail);
-        lvList = (ListView) findViewById(R.id.lvList);
-        profilePictureView = (ProfilePictureView) findViewById(R.id.ivFacebookProfile);
-
-        User currentUser = TheTownKitchenApplication.getCurrentUser().getUser();
-        if (currentUser != null) {
-            if (currentUser.getProfileImageUrl() != null && !currentUser.getProfileImageUrl().isEmpty()) {
-                Picasso.with(this).load(currentUser.getProfileImageUrl()).into(ivProfile);
-            } else if (currentUser.getFacebookId() != null && !currentUser.getFacebookId().isEmpty()) {
-
-                profilePictureView.setCropped(true);
-                profilePictureView.setProfileId(currentUser.getFacebookId());
-                profilePictureView.setVisibility(View.VISIBLE);
-
-            }
-            tvUserName.setText(currentUser.getName());
-            tvEmail.setText(currentUser.getEmail());
-        }
-    }
+//    private void setupProfile() {
+//        ivProfile = (ImageView) findViewById(R.id.ivProfile);
+//        tvUserName = (TextView) findViewById(R.id.tvUserName);
+//        tvEmail = (TextView) findViewById(R.id.tvEmail);
+//        lvList = (ListView) findViewById(R.id.lvList);
+//        profilePictureView = (ProfilePictureView) findViewById(R.id.ivFacebookProfile);
+//
+//        User currentUser = TheTownKitchenApplication.getCurrentUser().getUser();
+//        if (currentUser != null) {
+//            if (currentUser.getProfileImageUrl() != null && !currentUser.getProfileImageUrl().isEmpty()) {
+//                Picasso.with(this).load(currentUser.getProfileImageUrl()).into(ivProfile);
+//            } else if (currentUser.getFacebookId() != null && !currentUser.getFacebookId().isEmpty()) {
+//
+//                profilePictureView.setCropped(true);
+//                profilePictureView.setProfileId(currentUser.getFacebookId());
+//                profilePictureView.setVisibility(View.VISIBLE);
+//
+//            }
+//            tvUserName.setText(currentUser.getName());
+//            tvEmail.setText(currentUser.getEmail());
+//        }
+//    }
 
 
     @Override
