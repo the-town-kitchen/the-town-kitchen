@@ -83,7 +83,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@id/rlOptions"
-            android:layout_marginLeft="@dimen/padding_big"
+            android:layout_marginLeft="35dp"
             android:layout_marginBottom="10dp"
             android:fontFamily="sans-serif"
             android:textColor="@color/black"
