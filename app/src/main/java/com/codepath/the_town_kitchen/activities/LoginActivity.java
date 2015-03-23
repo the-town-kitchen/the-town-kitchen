@@ -1,16 +1,20 @@
 package com.codepath.the_town_kitchen.activities;
 
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
@@ -56,6 +60,7 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener,
     LoginButton facebookLoginBtn;
     private boolean isResumed = false;
    
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +68,10 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener,
         uiHelper = new UiLifecycleHelper(this, callback);
         uiHelper.onCreate(savedInstanceState);
 
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(this.getResources().getColor(R.color.dark_primary_red));
 
         /* video background */
         final Uri url = Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.cookingbackground);

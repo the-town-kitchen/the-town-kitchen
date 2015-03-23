@@ -149,7 +149,6 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
 
         android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 
-        toolbar.setLogo(R.mipmap.ic_launcher);
         actionBar.setTitle("");
         tvCount = (TextView) toolbar.findViewById(R.id.tvCount);
         imgCalendar = (ImageView) toolbar.findViewById(R.id.icon_calendar);

@@ -1,9 +1,13 @@
 package com.codepath.the_town_kitchen.activities;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.RatingBar;
 
 import com.codepath.the_town_kitchen.R;
@@ -15,10 +19,16 @@ import java.util.List;
 public class FeedbackActivity extends ActionBarActivity {
     RatingBar rbFeedback;
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
+
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(this.getResources().getColor(R.color.dark_primary_red));
         
         rbFeedback = (RatingBar) findViewById(R.id.rbFeedback);
         rbFeedback.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {

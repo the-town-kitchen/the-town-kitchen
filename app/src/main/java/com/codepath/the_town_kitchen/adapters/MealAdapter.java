@@ -26,7 +26,6 @@ public class MealAdapter extends ArrayAdapter<Meal> {
     private IActionClickListener actionClickListener;
     private static class ViewHolder {
         public ImageView ivImage;
-        public TextView tvName;
         public TextView tvDescription;
         public TextView tvPrice;
         public ImageButton ibMinus;
@@ -50,7 +49,6 @@ public class MealAdapter extends ArrayAdapter<Meal> {
             LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.item_meal, parent, false);
             viewHolder.ivImage = (ImageView)convertView.findViewById(R.id.ivImage);
-            viewHolder.tvName = (TextView)convertView.findViewById(R.id.tvName);
             viewHolder.tvDescription = (TextView)convertView.findViewById(R.id.tvDescription);
             viewHolder.tvPrice =  (TextView)convertView.findViewById(R.id.tvPrice);
             viewHolder.ibMinus = (ImageButton) convertView.findViewById(R.id.ibMinus);
@@ -62,7 +60,6 @@ public class MealAdapter extends ArrayAdapter<Meal> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.tvName.setText(meal.getName());
         viewHolder.tvDescription.setText(meal.getDescription());
         viewHolder.tvPrice.setText("$" + meal.getPrice());
 
