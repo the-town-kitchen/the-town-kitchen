@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-    <ImageView
+<android.support.v7.widget.CardView
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    card_view:cardCornerRadius="8dp"
+    card_view:cardElevation="8dp">
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
             android:id="@+id/ivImage"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -14,7 +22,7 @@
             android:contentDescription="@string/photo"
             />
 
-    <RelativeLayout
+        <RelativeLayout
             android:id="@+id/rlContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,7 +30,7 @@
             android:layout_alignBottom="@+id/ivImage"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:background="#8888">
-        <TextView
+            <TextView
                 android:id="@+id/tvDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -33,8 +41,8 @@
                 android:layout_marginLeft="@dimen/activity_small_margin"
                 android:paddingTop="@dimen/activity_normal_margin"
                 android:paddingBottom="@dimen/activity_normal_margin"/>
-    </RelativeLayout>
-    <RelativeLayout
+        </RelativeLayout>
+        <RelativeLayout
             android:id="@+id/rlOptions"
             android:layout_below="@id/rlContent"
             android:layout_width="wrap_content"
@@ -43,7 +51,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp">
 
-        <ImageButton
+            <ImageButton
                 android:id="@+id/ibMinus"
                 android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
@@ -52,7 +60,7 @@
                 android:src="@drawable/ic_remove_circle"
                 android:layout_marginRight="@dimen/padding_big"
                 />
-        <TextView
+            <TextView
                 android:id="@+id/tvCounts"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -65,7 +73,7 @@
                 android:layout_marginRight="@dimen/padding_big"
                 android:layout_gravity="center_vertical" />
 
-        <ImageButton
+            <ImageButton
                 android:id="@+id/ibPlus"
                 android:layout_marginTop="10dp"
                 android:layout_toRightOf="@id/tvCounts"
@@ -74,9 +82,9 @@
                 android:background="@null"
                 android:src="@drawable/ic_add_circle"
                 />
-    </RelativeLayout>
+        </RelativeLayout>
 
-    <TextView
+        <TextView
             android:id="@+id/tvPrice"
             tools:text="$11.00"
             android:layout_toRightOf="@id/rlOptions"
@@ -90,4 +98,6 @@
             android:textSize="19sp"
             />
 
-</RelativeLayout>
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
