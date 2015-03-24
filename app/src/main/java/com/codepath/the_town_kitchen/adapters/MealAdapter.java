@@ -10,8 +10,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.codepath.the_town_kitchen.UIUtility;
 import com.codepath.the_town_kitchen.R;
+import com.codepath.the_town_kitchen.UIUtility;
 import com.codepath.the_town_kitchen.models.Meal;
 import com.squareup.picasso.Picasso;
 
@@ -64,36 +64,23 @@ public class MealAdapter extends ArrayAdapter<Meal> {
         viewHolder.tvPrice.setText("$" + meal.getPrice());
 
         viewHolder.tvCounts.setText(meal.quantityOrdered + "");
+
+
+        SetCountColor(meal.quantityOrdered > 0, viewHolder);
         viewHolder.ibMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int counts = Integer.parseInt(viewHolder.tvCounts.getText().toString());
-                if (counts > 0) {
-                     counts = counts -1;
-                    viewHolder.tvCounts.setText(counts + "");
-                    viewHolder.tvCounts.setTextColor(Color.parseColor("#009688"));
-                    actionClickListener.onActionClicked(position, counts);
-                } else {
-                    viewHolder.tvCounts.setTextColor(Color.parseColor("#727272"));
-                }
+                iconClicked(viewHolder, position, false);
             }
         });
 
         viewHolder.ibPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int counts = Integer.parseInt(viewHolder.tvCounts.getText().toString());
-                counts = counts + 1;
-                viewHolder.tvCounts.setText(counts +"" );
-                if (counts > 0) {
-                    viewHolder.tvCounts.setTextColor(Color.parseColor("#009688"));
-                } else {
-                    viewHolder.tvCounts.setTextColor(Color.parseColor("#727272"));
-                }
-                actionClickListener.onActionClicked(position, counts);
-
+                iconClicked(viewHolder, position, true);
             }
         });
+
         viewHolder.ivImage.setImageResource(0);
 
         int deviceWidth = UIUtility.getDisplayWidth(getContext());
@@ -101,6 +88,25 @@ public class MealAdapter extends ArrayAdapter<Meal> {
         return convertView;
     }
 
+    private void iconClicked(ViewHolder viewHolder, int position, boolean isAdded) {
+        int counts = Integer.parseInt(viewHolder.tvCounts.getText().toString());
+        if(isAdded)  counts = counts + 1;
+        else if (counts > 0) {
+            counts = counts -1;
+        }
+        SetCountColor(counts > 0, viewHolder);
+        viewHolder.tvCounts.setText(counts + "");
+        actionClickListener.onActionClicked(position, counts);
+    }
 
+    private void SetCountColor(boolean isEmpty, ViewHolder viewHolder){
+
+        if (isEmpty) {
+            viewHolder.tvCounts.setTextColor(Color.parseColor("#009688"));
+        } else {
+            viewHolder.tvCounts.setTextColor(Color.parseColor("#727272"));
+        }
+        
+    }
 
 }
