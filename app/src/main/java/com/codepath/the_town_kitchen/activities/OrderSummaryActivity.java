@@ -14,10 +14,12 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.codepath.the_town_kitchen.R;
 import com.codepath.the_town_kitchen.TheTownKitchenApplication;
+import com.codepath.the_town_kitchen.UIUtility;
 import com.codepath.the_town_kitchen.adapters.OrderItemAdapter;
 import com.codepath.the_town_kitchen.fragments.ProgressBarDialog;
 import com.codepath.the_town_kitchen.models.Order;
@@ -43,7 +45,7 @@ public class OrderSummaryActivity extends TheTownKitchenBaseActivity {
     private TextView tvDiscount;
     private Order orderToSave;
     private TextView tvDiscountlabel;
-
+    private RelativeLayout llDiscount;
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +81,7 @@ public class OrderSummaryActivity extends TheTownKitchenBaseActivity {
         tvTax= (TextView) findViewById(R.id.tvTax);
         tvDiscount= (TextView) findViewById(R.id.tvDiscount);
         tvDiscountlabel =  (TextView) findViewById(R.id.tvDiscountlabel);
+        llDiscount = (RelativeLayout) findViewById(R.id.llDiscount);
         //order items
         lvOrderItems = (ListView) findViewById(R.id.lvOrderItems);
         tvDeliveryTime = (TextView) findViewById(R.id.tvDeliveryTime);
@@ -168,8 +171,9 @@ public class OrderSummaryActivity extends TheTownKitchenBaseActivity {
         tvDiscount.setText("$-" + new DecimalFormat("##.##").format(orderToSave.getCost() * 0.15));
         tvDiscountlabel.setVisibility(View.VISIBLE);
         tvDiscount.setVisibility(View.VISIBLE);
-        orderToSave.setCost(orderToSave.getCost() * 0.85 );
-        tvOrderTotal.setText("$" +  new DecimalFormat("##.##").format(orderToSave.getCost()));
+        orderToSave.setCost(orderToSave.getCost() * 0.85);
+        tvOrderTotal.setText("$" + new DecimalFormat("##.##").format(orderToSave.getCost()));
+        UIUtility.expand(llDiscount);
 
         etCouponCode.setText("");
     }

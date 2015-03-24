@@ -69,29 +69,37 @@
             android:layout_alignParentRight="true"
             android:layout_marginTop="@dimen/activity_large_margin"/>
 
-    <TextView
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/llDiscount"
+        android:layout_below="@+id/tvTaxLabel"
+        android:layout_marginTop="@dimen/activity_large_margin"
+        android:visibility="gone"
+        >
+        <TextView
             android:id="@+id/tvDiscountlabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/discount"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_medium"
-            android:layout_below="@+id/tvTaxLabel"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:visibility="gone"
-            android:layout_marginTop="@dimen/activity_large_margin"/>
+          />
 
-    <TextView
+        <TextView
             android:id="@+id/tvDiscount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_medium"
-            android:layout_alignBottom="@+id/tvDiscountlabel"
             android:layout_alignParentRight="true"
-            android:visibility="gone"
-            android:layout_marginTop="@dimen/activity_large_margin"/>
+            android:layout_alignBottom="@+id/tvDiscountlabel"
+            android:layout_alignParentEnd="false"/>
+        
+        </RelativeLayout>
+   
 
     <TextView
             android:id="@+id/tvTotalLabel"
@@ -100,7 +108,7 @@
             android:text="@string/order_total"
             android:textSize="@dimen/text_size_medium"
             android:textColor="@color/black"
-            android:layout_below="@+id/tvDiscountlabel"
+            android:layout_below="@+id/llDiscount"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginTop="@dimen/activity_large_margin"/>
