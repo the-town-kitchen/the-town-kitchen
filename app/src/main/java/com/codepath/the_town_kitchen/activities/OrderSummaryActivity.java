@@ -81,25 +81,25 @@ public class OrderSummaryActivity extends ActionBarActivity {
         //order items
         lvOrderItems = (ListView) findViewById(R.id.lvOrderItems);
         tvDeliveryTime = (TextView) findViewById(R.id.tvDeliveryTime);
-        Order.getOrderByDate(TheTownKitchenApplication.orderDate, new Order.IOrderReceivedListener() {
+        Order.getLastOrderByDate(TheTownKitchenApplication.orderDate, new Order.IOrderReceivedListener() {
             @Override
-            public void handle(Order order, List<OrderItem> orderItems) {
-                if (order != null) {
-                    tvDeliveryTime.setText(order.getDate() + " " + order.getTime());
-
+            public void handle(Order orderFromParse, List<OrderItem> orderItemsFromParse) {
+                if (orderFromParse != null) {
+                    tvDeliveryTime.setText(orderFromParse.getDate() + " " + orderFromParse.getTime());
+                    orderItems = orderItemsFromParse;
                     if (orderItems == null)
                         orderItems = new ArrayList<>();
                     orderItemAdapter = new OrderItemAdapter(OrderSummaryActivity.this, orderItems, null);
                     lvOrderItems.setAdapter(orderItemAdapter);
-                    double subTotal = order.getCost();
-                    double tax = order.getCost() * 0.09;
+                    double subTotal = orderFromParse.getCost();
+                    double tax = orderFromParse.getCost() * 0.09;
                     tvSubTotal.setText("$" + subTotal);
                     tvTax.setText("$" + new DecimalFormat("##.##").format(tax));
-                    tvOrderTotal.setText("$" +  new DecimalFormat("##.##").format(subTotal + tax));
-                    tvAddress.setText(order.getDeliveryLocation());
+                    tvOrderTotal.setText("$" + new DecimalFormat("##.##").format(subTotal + tax));
+                    tvAddress.setText(orderFromParse.getDeliveryLocation());
 
 
-                    orderToSave = order;
+                    orderToSave = orderFromParse;
                 }
             }
         });
@@ -136,8 +136,7 @@ public class OrderSummaryActivity extends ActionBarActivity {
         progressBarDialog.show(fm, "fragment_progress_bar");
 
 
-        Handler handler = null;
-        handler = new Handler();
+        Handler handler = new Handler();
         handler.postDelayed(new Runnable(){
             public void run(){
                 saveOrder();
@@ -148,6 +147,9 @@ public class OrderSummaryActivity extends ActionBarActivity {
     }
 
     private void saveOrder() {
+        for(OrderItem orderItem: orderItems){
+            orderItem.getMeal().quantityOrdered = 0;
+        }
         orderToSave.setIsPlaced(true);
         orderToSave.saveInBackground();
     }

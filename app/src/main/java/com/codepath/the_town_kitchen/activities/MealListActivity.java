@@ -22,14 +22,12 @@ import com.codepath.the_town_kitchen.adapters.MealAdapter;
 import com.codepath.the_town_kitchen.models.Meal;
 import com.codepath.the_town_kitchen.models.Order;
 import com.codepath.the_town_kitchen.models.OrderItem;
-import com.codepath.the_town_kitchen.models.User;
 import com.facebook.widget.ProfilePictureView;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.parse.ParseException;
 import com.parse.SaveCallback;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
-import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -59,6 +57,7 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
 
     private String orderId;
 
+    private Order orderToSave;
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,47 +72,45 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(this.getResources().getColor(R.color.dark_primary_red));
 
-        showFeedbackIfApplicable();
-
         setupOrderCounts();
+
         meals = new ArrayList<>();
         mealAdapter = new MealAdapter(this, meals, this);
         lvList = (ListView) findViewById(R.id.lvList);
         lvList.setAdapter(mealAdapter);
-        Meal.fromParse(mealsReceived);
         calendar = Calendar.getInstance();
         datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
         timePickerDialog = TimePickerDialog.newInstance(this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false, false);
 
     }
 
-    private void showFeedbackIfApplicable() {
-        Order.getUsersLastOrder(new Order.IOrderReceivedListener() {
-            @Override
-            public void handle(Order order, List<OrderItem> orderItems) {
-                if (order != null && order.getIsDelivered()) {
-
-                    if (order.getFeedbackRating() == 0) {
-                        Intent i = new Intent(MealListActivity.this, FeedbackActivity.class);
-                        startActivity(i);
-                    }
-                }
-            }
-        });
-    }
 
     private List<OrderItem> items = new ArrayList<>();
     private void setupOrderCounts(){
-        Order.getOrderByDate(tvCalendar.getText().toString(), new Order.IOrderReceivedListener() {
+        Order.getLastOrderByDate(tvCalendar.getText().toString(), new Order.IOrderReceivedListener() {
             @Override
             public void handle(Order order, List<OrderItem> orderItems) {
                 if (order != null) {
-                    tvCount.setText(order.getQuantity() + "");
-                    items = orderItems;
-                    order.setOrderItems(orderItems);
-                    TheTownKitchenApplication.getOrder().setCurrentOrder(order);
-                    Meal.fromParse(mealsReceived);
+                    Log.d(TAG, "order " + order.getObjectId());
+                    if (!order.getIsPlaced()) {
+                        tvCount.setText(order.getQuantity() + "");
+                        items = orderItems;
+                        order.setOrderItems(orderItems);
+                        TheTownKitchenApplication.getOrder().setCurrentOrder(order);
+                        orderToSave = order;
+                    } else if (order.getIsDelivered() && order.getFeedbackRating() == 0) {
+                        Intent i = new Intent(MealListActivity.this, FeedbackActivity.class);
+                        startActivity(i);
+                    }
+                } else {
+                    Order.createNewOrder(new Order.IOrderReceivedListener() {
+                        @Override
+                        public void handle(Order order, List<OrderItem> orderItems) {
+                            orderToSave = order;
+                        }
+                    });
                 }
+                Meal.fromParse(mealsReceived);
             }
         });
 
@@ -122,19 +119,28 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
     private Meal.IMealsReceivedListener mealsReceived = new Meal.IMealsReceivedListener() {
         @Override
         public void handle(List<Meal> parseMeals) {
-            meals.clear();
-            for(OrderItem item: items){
-                int index = parseMeals.indexOf(item.getMeal());
 
-                if(index > -1 ){
-                    Log.d(TAG, "this meal has orders " + index);
-                    Meal meal = parseMeals.get(index);
-                    meal.quantityOrdered = item.getQuantity();
+            Log.d(TAG,"get meal list");
+            meals.clear();
+
+            if(orderToSave == null || items == null || items.size() == 0){
+                for(Meal meal : parseMeals){
+                    meal.quantityOrdered = 0;
                 }
+            }else {
+                for (OrderItem item : items) {
+                    int index = parseMeals.indexOf(item.getMeal());
+
+                    if (index > -1) {
+                        Log.d(TAG, "this meal has orders " + index);
+                        Meal meal = parseMeals.get(index);
+                        meal.quantityOrdered = item.getQuantity();
+                    }
+                }
+               
             }
             meals.addAll(parseMeals);
             mealAdapter.notifyDataSetChanged();
-
         }
     };
 
@@ -151,6 +157,7 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
 
         actionBar.setTitle("");
         tvCount = (TextView) toolbar.findViewById(R.id.tvCount);
+        tvCount.setText("0");
         imgCalendar = (ImageView) toolbar.findViewById(R.id.icon_calendar);
         imgCart = (ImageView) toolbar.findViewById(R.id.icon_cart);
         imgCalendar.setOnClickListener(new View.OnClickListener() {
@@ -198,7 +205,6 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
 //        }
 //    }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -228,33 +234,18 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
 
     @Override
     public void onTimeSet(RadialPickerLayout view, final int hourOfDay, final int minute) {
-        Order.getOrderByDateWithoutItems(tvCalendar.getText().toString(), new Order.IOrderReceivedListener() {
-            @Override
-            public void handle(final Order order, List<OrderItem> orderItems) {
+        if( orderToSave != null) {
+            orderToSave.setTime(hourOfDay + ":" + minute);
 
-                if(order != null){
-
-                    order.setTime( hourOfDay + ":" + minute);
-                    order.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-//                            startOrderSummaryActivity();
-                            orderId = order.getObjectId();
-                            startDeliveryLocationActivity(orderId);
-                        }
-                    });
-                    order.pinInBackground();
+            orderToSave.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    orderId = orderToSave.getObjectId();
+                    startDeliveryLocationActivity(orderId);
                 }
+            });
+        }
 
-            }
-
-        });
-
-    }
-
-    private void startOrderSummaryActivity() {
-        Intent i = new Intent(MealListActivity.this, OrderSummaryActivity.class);
-        startActivity(i);
     }
 
     private void startDeliveryLocationActivity(String orderId) {
@@ -264,16 +255,28 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
     }
 
     @Override
-    public void onActionClicked(int position, int count) {
+    public void onActionClicked(int position, final int count) {
+        final Meal meal = meals.get(position);
+        meal.quantityOrdered = count;
+        if(orderToSave == null){
+           Order.createNewOrder(new Order.IOrderReceivedListener() {
+                @Override
+                public void handle(Order order, List<OrderItem> orderItems) {
+                    orderToSave = order;
+                    updateOrder(meal, count);
+                }
+            });
+        }
 
-        Meal meal = meals.get(position);
-        String date = tvCalendar.getText().toString();
-        Order.update(date, meal, count, new Order.IOrderUpdatedListener() {
-            @Override
-            public void handle(int count) {
-                tvCount.setText(count + "");
-            }
-        });
+       else {
+            updateOrder(meal, count);
+        }
 
     }
+
+    private void updateOrder(Meal meal, int count) {
+        orderToSave.update(meal, count);
+        tvCount.setText(orderToSave.getQuantity()+"");
+    }
+
 }
