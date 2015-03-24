@@ -3,7 +3,6 @@ package com.codepath.the_town_kitchen.activities;
 import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -16,7 +15,7 @@ import com.codepath.the_town_kitchen.models.OrderItem;
 
 import java.util.List;
 
-public class FeedbackActivity extends ActionBarActivity {
+public class FeedbackActivity extends TheTownKitchenBaseActivity {
     RatingBar rbFeedback;
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)

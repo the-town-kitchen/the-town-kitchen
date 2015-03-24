@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +27,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderSummaryActivity extends ActionBarActivity {
+public class OrderSummaryActivity extends TheTownKitchenBaseActivity {
     Button bSubmitOrder;
     Button bPaymentInfo;
     ProgressBarDialog progressBarDialog;
@@ -70,6 +69,8 @@ public class OrderSummaryActivity extends ActionBarActivity {
             public void onClick(View v) {
                 Intent i = new Intent(OrderSummaryActivity.this, PaymentInfoActivity.class);
                 startActivity(i);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+
             }
         });
         tvOrderTotal = (TextView) findViewById(R.id.tvOrderTotal);
@@ -157,6 +158,8 @@ public class OrderSummaryActivity extends ActionBarActivity {
     private void startMealListActivity(){
         Intent startIntent = new Intent(this, MealListActivity.class);
         this.startActivity(startIntent);
+        overridePendingTransition(R.anim.right_in, R.anim.left_out);
+
     }
 
     public void onCouponCodeSubmit(View view) {

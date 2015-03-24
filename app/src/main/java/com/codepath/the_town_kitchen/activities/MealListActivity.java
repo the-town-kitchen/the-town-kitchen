@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -34,7 +33,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class MealListActivity extends ActionBarActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, MealAdapter.IActionClickListener {
+public class MealListActivity extends TheTownKitchenBaseActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, MealAdapter.IActionClickListener {
     private ProfilePictureView profilePictureView;
     private ImageView ivProfile;
     private TextView tvUserName, tvEmail;
@@ -101,6 +100,8 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
                     } else if (order.getIsDelivered() && order.getFeedbackRating() == 0) {
                         Intent i = new Intent(MealListActivity.this, FeedbackActivity.class);
                         startActivity(i);
+                        overridePendingTransition(R.anim.right_in, R.anim.left_out);
+
                     }
                 } else {
                     Order.createNewOrder(new Order.IOrderReceivedListener() {
@@ -252,6 +253,7 @@ public class MealListActivity extends ActionBarActivity implements DatePickerDia
         Intent i = new Intent(MealListActivity.this, DeliveryLocationActivity.class);
         i.putExtra("orderId", orderId);
         startActivity(i);
+        overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }
 
     @Override

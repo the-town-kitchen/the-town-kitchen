@@ -280,6 +280,7 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener,
             TheTownKitchenApplication.getCurrentUser().setUser(user);
             Intent intent = new Intent(LoginActivity.this, MealListActivity.class);
             startActivity(intent);
+            overridePendingTransition(R.anim.right_in, R.anim.left_out);
         }
     };
     private void setCurrentUser(final User user) {

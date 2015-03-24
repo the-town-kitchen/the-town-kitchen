@@ -2,9 +2,7 @@ package com.codepath.the_town_kitchen.activities;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Address;
@@ -16,26 +14,15 @@ import android.os.SystemClock;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.BounceInterpolator;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.the_town_kitchen.R;
 import com.codepath.the_town_kitchen.adapters.DeliveryPinAdapter;
 import com.codepath.the_town_kitchen.models.Order;
-import com.parse.FindCallback;
-import com.parse.ParseException;
-import com.parse.ParseObject;
-import com.parse.ParseQuery;
-
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -52,10 +39,12 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Created by paulina on 3/7/15.
@@ -126,6 +115,8 @@ public class DeliveryLocationActivity extends FragmentActivity implements
                 i.putExtra("deliveryLocation", deliveryLocation);
                 updateOrder();
                 startActivity(i);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+
             }
         });
 
@@ -457,6 +448,12 @@ public class DeliveryLocationActivity extends FragmentActivity implements
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.left_in, R.anim.right_out);
     }
 }
 

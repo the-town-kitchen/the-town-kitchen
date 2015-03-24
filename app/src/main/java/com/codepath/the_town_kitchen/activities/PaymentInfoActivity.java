@@ -4,7 +4,6 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,7 +20,7 @@ import com.stripe.android.model.Card;
 import com.stripe.android.model.Token;
 import com.stripe.exception.AuthenticationException;
 
-public class PaymentInfoActivity extends ActionBarActivity {
+public class PaymentInfoActivity extends TheTownKitchenBaseActivity {
     Button bSavePayment;
     EditText etCreditCardNum;
     EditText etExpirationYear;
@@ -74,6 +73,8 @@ public class PaymentInfoActivity extends ActionBarActivity {
 
                     Intent i = new Intent(PaymentInfoActivity.this, OrderSummaryActivity.class);
                     startActivity(i);
+                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
+
                 }
             }
         });
