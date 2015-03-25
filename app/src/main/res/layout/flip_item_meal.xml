@@ -21,44 +21,16 @@
                 android:layout_height="match_parent"
                 android:clickable="true"
                 android:id="@+id/vfFlipper">
-                <ImageView
-                    android:id="@+id/ivImage"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:cropToPadding="false"
-                    android:adjustViewBounds="true"
-                    android:minHeight="50dp"
-                    android:scaleType="fitXY"
-                    android:contentDescription="@string/photo"
-                    />
+
+                <include android:id="@+id/notelist" layout="@layout/item_meal" />
                 <include android:id="@+id/notelist" layout="@layout/item_meal_person" />
+
             </ViewFlipper>
 
 
-
-            <RelativeLayout
-                android:id="@+id/rlContent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_alignBottom="@+id/vfFlipper"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:background="#8888">
-                <TextView
-                    android:id="@+id/tvDescription"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:layout_marginRight="@dimen/activity_small_margin"
-                    android:layout_marginLeft="@dimen/activity_small_margin"
-                    android:paddingTop="@dimen/activity_normal_margin"
-                    android:paddingBottom="@dimen/activity_normal_margin"/>
-            </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/rlOptions"
-                android:layout_below="@id/rlContent"
+                android:layout_below="@id/vfFlipper"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -116,15 +88,3 @@
 
     </android.support.v7.widget.CardView>
 </LinearLayout>
-
-
-<!--<?xml version="1.0" encoding="utf-8"?>-->
-<!--<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:clickable="true"-->
-    <!--android:id="@+id/vfFlipper">-->
-    <!--<include android:id="@+id/notelist" layout="@layout/item_meal" />-->
-    <!--7.-->
-    <!--<include android:id="@+id/notelist" layout="@layout/item_meal_person" />-->
-<!--</ViewFlipper>-->
