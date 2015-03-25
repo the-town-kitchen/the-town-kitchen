@@ -10,8 +10,6 @@ import android.support.v4.app.FragmentManager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -56,8 +54,6 @@ public class OrderSummaryActivity extends TheTownKitchenBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_summary);
-
-        setStatusBar();
 
         bSubmitOrder = (Button) findViewById(R.id.bSubmitOrder);
         bSubmitOrder.setOnClickListener(new View.OnClickListener() {
@@ -106,8 +102,8 @@ public class OrderSummaryActivity extends TheTownKitchenBaseActivity {
                     tvOrderTotal.setText("$" + new DecimalFormat("##.##").format(subTotal + tax));
 
                     String deliveryLocation = orderFromParse.getDeliveryLocation();
-                    if (orderFromParse.getDeliveryLocation().contains("USA")) {
-                        deliveryLocation = orderFromParse.getDeliveryLocation().replace("USA", "");
+                    if (deliveryLocation!= null && deliveryLocation.contains("USA")) {
+                        deliveryLocation = deliveryLocation.replace("USA", "");
                     }
                     tvAddress.setText(deliveryLocation);
 
@@ -234,11 +230,4 @@ public class OrderSummaryActivity extends TheTownKitchenBaseActivity {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void setStatusBar() {
-        Window window = this.getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.setStatusBarColor(this.getResources().getColor(R.color.dark_primary_red));
-    }
 }

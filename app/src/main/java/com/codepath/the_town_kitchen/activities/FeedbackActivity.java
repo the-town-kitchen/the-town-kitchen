@@ -1,12 +1,8 @@
 package com.codepath.the_town_kitchen.activities;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.RatingBar;
 
 import com.codepath.the_town_kitchen.R;
@@ -17,39 +13,28 @@ import java.util.List;
 
 public class FeedbackActivity extends TheTownKitchenBaseActivity {
     RatingBar rbFeedback;
+    private String orderId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
+        orderId = getIntent().getStringExtra("orderId");
 
-        setStatusBar();
-        
         rbFeedback = (RatingBar) findViewById(R.id.rbFeedback);
         rbFeedback.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
 
 
             @Override
             public void onRatingChanged(RatingBar ratingBar, final float rating, boolean fromUser) {
-                Order.getUsersLastOrder(new Order.IOrderReceivedListener() {
+                Order.getOrderById(orderId, new Order.IOrderReceivedListener() {
                     @Override
                     public void handle(Order order, List<OrderItem> orderItems) {
-                        if (order != null) {
-//                            Feedback feedback = new Feedback();
-//                            feedback.setRating(Math.round(rating));
-//                            feedback.put("parent", order);
-//                            feedback.saveInBackground();
-
-                            order.setFeedbackRating(Math.round(rating));
-                            order.saveInBackground();
-
-                            finishActivity();
-                        }
+                        order.setFeedbackRating(Math.round(rating));
+                        order.saveInBackground();
+                        finishActivity();
                     }
                 });
-
-
-
 
             }
         });
@@ -82,11 +67,4 @@ public class FeedbackActivity extends TheTownKitchenBaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    private void setStatusBar() {
-        Window window = this.getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.setStatusBarColor(this.getResources().getColor(R.color.dark_primary_red));
-    }
 }

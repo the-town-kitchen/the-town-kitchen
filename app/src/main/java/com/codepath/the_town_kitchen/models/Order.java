@@ -283,6 +283,20 @@ public class Order extends ParseObject {
         this.setCost(totalCost);
     }
 
+    public static void getOrderById(String id, final IOrderReceivedListener orderReceivedListener) {
+        ParseQuery<Order> query = ParseQuery.getQuery("Order");
+        query.getInBackground(id, new GetCallback<Order>() {
+            public void done(Order order, ParseException e) {
+                if (e == null) {
+
+                    orderReceivedListener.handle(order, null);
+                    
+                } else {
+                    // something went wrong
+                }
+            }
+        });
+    }
 
     private Order order;
 
