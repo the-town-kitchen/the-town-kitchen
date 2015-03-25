@@ -1,4 +1,4 @@
-package com.codepath.the_town_kitchen;
+package com.codepath.the_town_kitchen.utilities;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
