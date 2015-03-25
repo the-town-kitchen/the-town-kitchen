@@ -106,13 +106,14 @@ public class User extends ParseObject {
         if(user.profileImageUrl != null && !user.profileImageUrl.isEmpty()) {
             parseUser.put("profileImageUrl", user.profileImageUrl);
         }
-        parseUser.saveInBackground();
-        parseUser.pinInBackground(new SaveCallback() {
-            @Override
-            public void done(ParseException e) {
-                userLoadedListener.handle((User) parseUser);
-            }
-        });
+        if(parseUser.get("email") != null && !parseUser.get("email").toString().isEmpty()) {
+            parseUser.saveInBackground(new SaveCallback() {
+                @Override
+                public void done(ParseException e) {
+                    userLoadedListener.handle((User) parseUser);
+                }
+            });
+        }
 
     }
 
