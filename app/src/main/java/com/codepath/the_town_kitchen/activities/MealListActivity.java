@@ -201,9 +201,9 @@ public class MealListActivity extends TheTownKitchenBaseActivity implements Date
                 R.layout.drawer_nav_item, R.id.fragment_placeholder);
 
         // Add nav items
-        dlDrawer.addNavItem("Profile", "Profile", ProfileFragment.class);
-        dlDrawer.addNavItem("Current Menu", "Current Menu", MealListFragment.class);
-        dlDrawer.addNavItem("About", "About", AboutFragment.class);
+        dlDrawer.addNavItem("Profile", R.mipmap.ic_launcher, "Profile", ProfileFragment.class);
+        dlDrawer.addNavItem("Current Menu",  R.id.icon_calendar, "Current Menu", MealListFragment.class);
+        dlDrawer.addNavItem("About",  R.id.icon_calendar, "About", AboutFragment.class);
     }
 
     @Override
