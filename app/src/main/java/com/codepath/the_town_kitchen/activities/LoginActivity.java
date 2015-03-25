@@ -4,16 +4,12 @@ package com.codepath.the_town_kitchen.activities;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.MediaController;
-import android.widget.VideoView;
 
 import com.codepath.the_town_kitchen.R;
 import com.codepath.the_town_kitchen.TheTownKitchenApplication;
@@ -66,26 +62,26 @@ public class LoginActivity extends TheTownKitchenBaseActivity implements OnClick
         uiHelper.onCreate(savedInstanceState);
 
 
-        /* video background */
-        final Uri url = Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.cookingbackground);
-        final VideoView mVideoView = (VideoView) findViewById(R.id.video);
-        mVideoView.setVideoURI(url);
-        MediaController mediaController = new MediaController(this);
-        mediaController.setAnchorView(mVideoView);
-        mVideoView.setMediaController(mediaController);
-        mVideoView.requestFocus();
-        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            public void onPrepared(MediaPlayer mp) {
-                mp.setLooping(true);
-                mVideoView.start();
-            }
-        });
-        mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                mVideoView.resume();
-            }
-        });
+//        /* video background */
+//        final Uri url = Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.cookingbackground);
+//        final VideoView mVideoView = (VideoView) findViewById(R.id.video);
+//        mVideoView.setVideoURI(url);
+//        MediaController mediaController = new MediaController(this);
+//        mediaController.setAnchorView(mVideoView);
+//        mVideoView.setMediaController(mediaController);
+//        mVideoView.requestFocus();
+//        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//            public void onPrepared(MediaPlayer mp) {
+//                mp.setLooping(true);
+//                mVideoView.start();
+//            }
+//        });
+//        mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//            @Override
+//            public void onCompletion(MediaPlayer mp) {
+//                mVideoView.resume();
+//            }
+//        });
 
         facebookLoginBtn = (LoginButton) findViewById(R.id.fb_login_button);
         facebookLoginBtn.setApplicationId(getResources().getString(R.string.FACEBOOK_APP_ID));

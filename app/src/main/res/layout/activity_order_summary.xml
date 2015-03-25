@@ -21,9 +21,21 @@
     <ListView
             android:id="@+id/lvOrderItems"
             android:textSize="@dimen/text_size_medium"
+            android:textColor="@color/black"
+            android:divider="@null"
+            android:dividerHeight="0dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="120dp"
             android:layout_below="@+id/topLabel"/>
+
+    <View
+            android:id="@+id/vDivider"
+            android:layout_below="@id/lvOrderItems"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/divider_color" />
 
     <TextView
             android:id="@+id/tvSubTotalLabel"
@@ -31,8 +43,8 @@
             android:layout_height="wrap_content"
             android:text="@string/order_sub_total"
             android:textSize="@dimen/text_size_medium"
-            android:textColor="@color/black"
-            android:layout_below="@+id/lvOrderItems"
+            android:textColor="@color/secondary_gray"
+            android:layout_below="@+id/vDivider"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginTop="@dimen/activity_large_margin"/>
@@ -41,7 +53,7 @@
             android:id="@+id/tvSubTotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
+            android:textColor="@color/secondary_gray"
             android:textSize="@dimen/text_size_medium"
             android:layout_alignBottom="@+id/tvSubTotalLabel"
             android:layout_alignParentRight="true"
@@ -53,18 +65,18 @@
             android:layout_height="wrap_content"
             android:text="@string/tax"
             android:textSize="@dimen/text_size_medium"
-            android:textColor="@color/black"
+            android:textColor="@color/secondary_gray"
             android:layout_below="@+id/tvSubTotalLabel"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginTop="@dimen/activity_large_margin"/>
 
     <TextView
+            android:id="@+id/tvTax"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tvTax"
             android:textSize="@dimen/text_size_medium"
-            android:textColor="@color/black"
+            android:textColor="@color/secondary_gray"
             android:layout_alignBottom="@+id/tvTaxLabel"
             android:layout_alignParentRight="true"
             android:layout_marginTop="@dimen/activity_large_margin"/>
@@ -108,54 +120,61 @@
             android:text="@string/order_total"
             android:textSize="@dimen/text_size_medium"
             android:textColor="@color/black"
+            android:textStyle="bold"
             android:layout_below="@+id/llDiscount"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="@dimen/activity_large_margin"/>
+            android:layout_marginTop="@dimen/activity_large_margin"
+            android:layout_marginBottom="12dp"/>
 
     <TextView
             android:id="@+id/tvOrderTotal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
+            android:textStyle="bold"
             android:textSize="@dimen/text_size_medium"
             android:layout_alignBottom="@+id/tvTotalLabel"
             android:layout_alignParentRight="true"
             android:layout_marginTop="@dimen/activity_large_margin"/>
+
+
+    <Button
+            android:id="@+id/bSubmitCoupon"
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:background="@color/divider_color"
+            android:text="@string/submit_coupon"
+            android:textSize="@dimen/text_size_small"
+            android:textColor="@color/white"
+            android:layout_below="@+id/tvTotalLabel"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/activity_large_margin"
+            android:onClick="onCouponCodeSubmit"/>
 
     <EditText
             android:id="@+id/etCouponCode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
-            android:textSize="@dimen/text_size_medium"
+            android:textSize="@dimen/text_size_small"
             android:layout_below="@+id/tvTotalLabel"
-            android:layout_centerHorizontal="true"
             android:hint="coupon code"
             android:layout_alignBottom="@+id/bSubmitCoupon"
-            android:layout_marginTop="@dimen/activity_large_margin"/>
-
-    <Button
-            android:id="@+id/bSubmitCoupon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/submit_coupon"
-            android:textSize="@dimen/text_size_medium"
-            android:layout_below="@+id/tvTotalLabel"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="@dimen/activity_large_margin"
-            android:onClick="onCouponCodeSubmit"/>
+            android:layout_toLeftOf="@id/bSubmitCoupon"
+            android:layout_marginRight="5dp"/>
 
     <RelativeLayout
             android:id="@+id/rlLocation"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="15dp"
             android:layout_below="@+id/etCouponCode"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
 
         <ImageView
                 android:id="@+id/ivLocationIcon"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="10dp"
                 android:background="@drawable/ic_place"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -174,7 +193,7 @@
         <TextView
                 android:id="@+id/tvAddress"
                 tools:text="12345 Android Drive"
-                android:layout_marginLeft="27dp"
+                android:layout_marginLeft="32dp"
                 android:layout_marginBottom="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -188,13 +207,13 @@
             android:id="@+id/rlTime"
             android:layout_below="@+id/rlLocation"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
 
         <ImageView
                 android:id="@+id/ivTimeIcon"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="10dp"
                 android:layout_marginBottom="20dp"
-
                 android:background="@drawable/ic_access_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -203,7 +222,7 @@
                 android:id="@+id/tvDeliveryTimeLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Delivery Time "
+                android:text="On "
                 android:fontFamily="sans-serif"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_medium"
@@ -215,11 +234,11 @@
                 android:id="@+id/tvDeliveryTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="30 minutes"
+                tools:text="March 25, 2015 at 3:00 PM"
                 android:fontFamily="sans-serif"
                 android:textColor="@color/black"
                 android:textSize="@dimen/text_size_medium"
-                android:layout_marginRight="3dp"
+                android:layout_marginRight="10dp"
                 android:layout_toRightOf="@+id/tvDeliveryTimeLabel"
                 android:layout_alignBottom="@id/tvDeliveryTimeLabel"/>
 
@@ -233,7 +252,7 @@
 
         <ImageView
                 android:id="@+id/ivCreditCardIcon"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="10dp"
                 android:background="@drawable/ic_credit_card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -261,6 +280,15 @@
                 android:layout_toRightOf="@+id/tvPayWithLabel"
                 android:layout_alignBottom="@id/tvPayWithLabel"/>
 
+        <ImageView
+                android:id="@+id/ivEdit"
+                android:layout_marginLeft="10dp"
+                android:layout_toRightOf="@id/tvCreditCardInfo"
+                android:layout_alignBottom="@id/ivCreditCardIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_mode_edit"/>
+
     </RelativeLayout>
 
     <Button
@@ -275,14 +303,4 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
 
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/edit_payment_info"
-            android:textColor="@color/white"
-            android:id="@+id/bPaymentInfo"
-            android:layout_above="@id/bSubmitOrder"
-            android:layout_marginBottom="7dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
 </RelativeLayout>

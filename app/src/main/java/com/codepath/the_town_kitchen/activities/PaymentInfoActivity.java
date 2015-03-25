@@ -25,13 +25,11 @@ public class PaymentInfoActivity extends TheTownKitchenBaseActivity {
     EditText etExpirationMonth;
     EditText etCvc;
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_info);
         setupViewComponents();
-
 
         bSavePayment.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -144,4 +142,5 @@ public class PaymentInfoActivity extends TheTownKitchenBaseActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

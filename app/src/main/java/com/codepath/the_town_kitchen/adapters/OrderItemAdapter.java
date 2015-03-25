@@ -54,7 +54,7 @@ public class OrderItemAdapter extends ArrayAdapter<OrderItem> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.tvMealName.setText(orderItem.getMeal().getName());
+        viewHolder.tvMealName.setText(orderItem.getMeal().getDescription());
         viewHolder.tvQuantity.setText(orderItem.getQuantity() + "");
         viewHolder.tvPrice.setText("$" + orderItem.getMeal().getPrice());
         viewHolder.ivMealImage.setImageResource(0);

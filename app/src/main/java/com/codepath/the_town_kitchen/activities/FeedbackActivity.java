@@ -1,7 +1,5 @@
 package com.codepath.the_town_kitchen.activities;
 
-import android.annotation.TargetApi;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,12 +15,12 @@ public class FeedbackActivity extends TheTownKitchenBaseActivity {
     RatingBar rbFeedback;
     private String orderId;
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
         orderId = getIntent().getStringExtra("orderId");
+
         rbFeedback = (RatingBar) findViewById(R.id.rbFeedback);
         rbFeedback.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
 
@@ -68,4 +66,5 @@ public class FeedbackActivity extends TheTownKitchenBaseActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

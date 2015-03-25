@@ -48,6 +48,7 @@ public class MealListActivity extends TheTownKitchenBaseActivity implements Date
         setContentView(R.layout.activity_meal_list);
         setupToolbar();
         setupOrderCounts();
+
         getSupportActionBar().setDisplayUseLogoEnabled(false);
 
         fragment = new  MealListFragment();
@@ -178,6 +179,7 @@ public class MealListActivity extends TheTownKitchenBaseActivity implements Date
         startActivity(i);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }
+
 
 
 }
