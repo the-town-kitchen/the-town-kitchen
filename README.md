@@ -14,21 +14,21 @@ This Android app will:
 
 ## User Stories
 
- * [ ] Login with Google+ account via OAuth
-  	* [ ] *Optional:* Login with username/password and/or facebook
- * [ ] User can see list of available meals for a particular day.
+ * [x] Login with Google+ account via OAuth
+  	* [x] *Optional:* Login with username/password and/or facebook
+ * [x] User can see list of available meals for a particular day.
   	* [ ] User can open a calendar modal and select other days to view meals.
- * [ ] User can select quantities of each meal they want. 
-   	* [ ] User can see how many meals are in their cart by the cart icon on the top-righthand corner of the actionbar.
- * [ ] User can select delivery location. (Defaults to user's current location using gps)
-    * [ ] User can change delivery location by dragging the location pin.
- * [ ] User can see the order summary before submitting the order.
-    * User can go back and edit their order.
-   	* *Optional:* User can enter a coupon code for their order.
- * [ ] User can enter their credit card information.
-   	* [ ] User is given option to save their credit card information so they won't have to enter it again.
- * [ ] User sees a "Your order's on its way!" message and graphic for a short duration after submitting order.
- * [ ] User can submit feedback once their order has arrived.
+ * [x] User can select quantities of each meal they want. 
+   	* [x] User can see how many meals are in their cart by the cart icon on the top-righthand corner of the actionbar.
+ * [x] User can select delivery location. (Defaults to user's current location using gps)
+    * [x] User can change delivery location by dragging the location pin.
+ * [x] User can see the order summary before submitting the order.
+    * [x] User can go back and edit their order.
+   	* [x] *Optional:* User can enter a coupon code for their order.
+ * [x] User can enter their credit card information.
+   	* [x] User is given option to save their credit card information so they won't have to enter it again.
+ * [x] User sees a "Your order's on its way!" message and graphic for a short duration after submitting order.
+ * [x] User can submit feedback once their order has arrived.
 
 ## Mockups
 

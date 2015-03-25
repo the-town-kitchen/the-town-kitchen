@@ -1,23 +1,76 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.codepath.the_town_kitchen.activities.FeedbackActivity">
+<com.codepath.the_town_kitchen.FragmentNavigationDrawer
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/feedback_question"
-        android:id="@+id/tvFeedbackRequest"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            android:orientation="vertical">
 
-    <RatingBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/rbFeedback"
-        android:layout_below="@+id/tvFeedbackRequest"
-        android:layout_centerHorizontal="true" />
-</RelativeLayout>
+        <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/toolbar_height"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:background="@color/primary_red"
+                android:minHeight="@dimen/toolbar_height">
+
+            <TextView
+                    android:id="@+id/tvChooseDeliveryLocation"
+                    android:text="@string/the_town_kitchen"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_medium"
+                    android:gravity="center_horizontal"
+                    android:layout_marginLeft="130dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+        </android.support.v7.widget.Toolbar>
+
+        <RelativeLayout android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/white"
+                        tools:context="com.codepath.the_town_kitchen.activities.FeedbackActivity">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/feedback_prompt"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_medium"
+                    android:layout_marginBottom="5dp"
+                    android:id="@+id/tvFeedbackRequest"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true" />
+
+            <RatingBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rbFeedback"
+                    android:layout_below="@+id/tvFeedbackRequest"
+                    android:layout_centerHorizontal="true" />
+
+            <Button
+                    android:id="@+id/bSubmitOrder"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/submit_feedback"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_medium"
+                    android:background="@color/accent_teal"
+                    android:layout_alignParentBottom="true"
+                    android:padding="15dp"
+                    android:drawableLeft="@drawable/ic_check"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</com.codepath.the_town_kitchen.FragmentNavigationDrawer>
+
+

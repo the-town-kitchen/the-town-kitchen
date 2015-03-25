@@ -22,18 +22,6 @@
                 android:background="@color/primary_red"
                 android:minHeight="@dimen/toolbar_height">
 
-            <com.devspark.robototextview.widget.RobotoTextView
-                    android:id="@+id/tvCalendar"
-                    android:visibility="gone"
-                    android:gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/today"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    app:typeface="roboto_medium"
-                    android:background="@color/primary_red"/>
-
             <TextView
                     android:id="@+id/tvChooseDeliveryLocation"
                     android:text="@string/order_summary"

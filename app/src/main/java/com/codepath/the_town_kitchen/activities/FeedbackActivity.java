@@ -1,5 +1,9 @@
 package com.codepath.the_town_kitchen.activities;
 
+import android.annotation.TargetApi;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -38,6 +42,8 @@ public class FeedbackActivity extends TheTownKitchenBaseActivity {
 
             }
         });
+
+        setupStars();
     }
 
     private void finishActivity(){
@@ -65,6 +71,12 @@ public class FeedbackActivity extends TheTownKitchenBaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setupStars() {
+        Drawable stars = rbFeedback.getProgressDrawable();
+        stars.setTint(getResources().getColor(R.color.primary_red));
     }
 
 }
