@@ -35,10 +35,11 @@ public class MealListFragment extends Fragment implements  MealAdapter.IActionCl
     private String orderId;
 
     private Order orderToSave;
+private  ICountUpdateListener countUpdateListener;
 
-
-    public MealListFragment() {
+    public MealListFragment(ICountUpdateListener countUpdateListener) {
         // Required empty public constructor
+        this.countUpdateListener = countUpdateListener;
     }
 
 
@@ -47,6 +48,7 @@ public class MealListFragment extends Fragment implements  MealAdapter.IActionCl
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        Log.d(TAG, "mealList fragment onCreatView");
         View view =  inflater.inflate(R.layout.fragment_meal_list, container, false);
         meals = new ArrayList<>();
         mealAdapter = new MealAdapter(getActivity(), meals, this);
@@ -61,10 +63,9 @@ public class MealListFragment extends Fragment implements  MealAdapter.IActionCl
     private Meal.IMealsReceivedListener mealsReceived = new Meal.IMealsReceivedListener() {
         @Override
         public void handle(List<Meal> parseMeals) {
-
-            Log.d(TAG,"get meal list");
+          
             meals.clear();
-
+            Log.d(TAG,"get meal list" + parseMeals.size());
             if(orderToSave == null || items == null || items.size() == 0){
                 for(Meal meal : parseMeals){
                     meal.quantityOrdered = 0;
@@ -98,16 +99,22 @@ public class MealListFragment extends Fragment implements  MealAdapter.IActionCl
                 public void handle(Order order, List<OrderItem> orderItems) {
                     orderToSave = order;
                     updateOrder(meal, count);
+                    countUpdateListener.handle(orderToSave.getQuantity());
                 }
             });
         }
 
         else {
             updateOrder(meal, count);
+            countUpdateListener.handle(orderToSave.getQuantity());
         }
 
     }
 
+    public interface ICountUpdateListener{
+        void handle(int count);
+        
+    }
     private void updateOrder(Meal meal, int count) {
         orderToSave.update(meal, count);
     }
@@ -128,6 +135,7 @@ public class MealListFragment extends Fragment implements  MealAdapter.IActionCl
 
     public void getMeals(Order order) {
         orderToSave = order;
+        items = order.getOrderItems();
         Meal.fromParse(mealsReceived);
     }
 }

@@ -47,11 +47,16 @@ public class MealListActivity extends TheTownKitchenBaseActivity implements Date
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meal_list);
         setupToolbar();
-        setupOrderCounts();
+
 
         getSupportActionBar().setDisplayUseLogoEnabled(false);
 
-        fragment = new  MealListFragment();
+        fragment = new  MealListFragment(new MealListFragment.ICountUpdateListener() {
+            @Override
+            public void handle(int count) {
+                tvCount.setText("" + count);
+            }
+        });
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_placeholder, fragment)
@@ -60,7 +65,7 @@ public class MealListActivity extends TheTownKitchenBaseActivity implements Date
         calendar = Calendar.getInstance();
         datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
         timePickerDialog = TimePickerDialog.newInstance(this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false, false);
-
+        setupOrderCounts();
     }
 
     private void setupOrderCounts(){
@@ -81,6 +86,9 @@ public class MealListActivity extends TheTownKitchenBaseActivity implements Date
                         i.putExtra("orderId", order.getObjectId());
                         startActivity(i);
                         overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    }
+                    else {
+                        createNewOrder();
                     }
                 } else {
                     createNewOrder();
