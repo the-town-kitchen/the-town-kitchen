@@ -39,7 +39,7 @@
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_size_medium"
                         android:gravity="center_horizontal"
-                        android:layout_marginLeft="100dp"
+                        android:layout_marginLeft="85dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 

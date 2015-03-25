@@ -6,7 +6,7 @@
 
     <ImageView
             android:id="@+id/ivIcon"
-            android:background="@color/white"
+            android:background="@null"
             android:layout_width="25dp"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -17,6 +17,7 @@
     <TextView
             android:id="@+id/tvTitle"
             android:textColor="@color/white"
+            android:textSize="@dimen/text_size_medium"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/ivIcon"
