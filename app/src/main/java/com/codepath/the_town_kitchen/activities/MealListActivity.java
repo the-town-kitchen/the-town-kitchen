@@ -94,7 +94,7 @@ public class MealListActivity extends TheTownKitchenBaseActivity implements Date
                         startActivity(i);
                         overridePendingTransition(R.anim.right_in, R.anim.left_out);
                     }
-                    else {
+                    else {//order is placed but not delivered,TODO show the order
                         createNewOrder();
                     }
                 } else {
