@@ -39,10 +39,9 @@ dependencies {
     compile 'com.google.android.gms:play-services:6.5.87'
     // ActiveAndroid for simple persistence with an ORM
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
-    compile('com.facebook.android:facebook-android-sdk:3.21.1'){
-        exclude module: 'bolts-android'
-    }
+    compile 'com.facebook.android:facebook-android-sdk:3.21.1'
     compile 'com.github.flavienlaurent.datetimepicker:library:0.0.2'
+    compile 'com.parse.bolts:bolts-android:1.+'
     compile 'com.github.johnkil.android-robototextview:robototextview:2.3.0'
     compile fileTree(dir: 'libs', include: 'Parse-*.jar')
     compile 'com.stripe:stripe-android:+'
