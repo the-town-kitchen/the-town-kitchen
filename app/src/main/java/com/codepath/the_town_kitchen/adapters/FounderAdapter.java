@@ -2,7 +2,6 @@ package com.codepath.the_town_kitchen.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +31,7 @@ public class FounderAdapter extends RecyclerView.Adapter<FounderAdapter.VH> {
     // Inflate the view based on the viewType provided.
     @Override
     public VH onCreateViewHolder(ViewGroup parent, int viewType) {
-        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_contact, parent, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_founder, parent, false);
         return new VH(itemView, mContext);
     }
 
@@ -44,7 +43,6 @@ public class FounderAdapter extends RecyclerView.Adapter<FounderAdapter.VH> {
         holder.rootView.setTag(founder);
         holder.tvName.setText(founder.getName());
         holder.tvRole.setText(founder.getRole());
-        Log.d("Founder", "found name " + founder.getName());
         Picasso.with(mContext).load(founder.getImageUrl()).into(holder.ivProfile);
     }
 
