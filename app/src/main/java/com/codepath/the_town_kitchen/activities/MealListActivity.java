@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.codepath.the_town_kitchen.R;
 import com.codepath.the_town_kitchen.TheTownKitchenApplication;
+import com.codepath.the_town_kitchen.UIUtility;
 import com.codepath.the_town_kitchen.fragments.MealListFragment;
 import com.codepath.the_town_kitchen.models.Order;
 import com.codepath.the_town_kitchen.models.OrderItem;
@@ -53,8 +54,14 @@ public class MealListActivity extends TheTownKitchenBaseActivity implements Date
 
         fragment = new  MealListFragment(new MealListFragment.ICountUpdateListener() {
             @Override
-            public void handle(int count) {
-                tvCount.setText("" + count);
+            public void handle(final int count) {
+                UIUtility.grow(tvCount, new UIUtility.IAnimationEndListener() {
+                    @Override
+                    public void handle(View v) {
+                        ((TextView) v).setText(count + "");
+                        UIUtility.shrink(v);
+                    }
+                });
             }
         });
         getSupportFragmentManager()

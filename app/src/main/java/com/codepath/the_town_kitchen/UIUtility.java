@@ -8,6 +8,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.view.animation.Transformation;
 
 public class UIUtility {
@@ -101,4 +102,41 @@ public class UIUtility {
         animAlpha.setDuration(duration);
         animAlpha.start();
     }
+
+
+    public static void grow(final View v, final IAnimationEndListener animationEndListener) {
+        final ScaleAnimation growAnim = new ScaleAnimation(1.0f, 1.1f, 1.0f, 1.1f);
+        growAnim.setDuration(500);
+
+
+        growAnim.setAnimationListener(new Animation.AnimationListener()
+        {
+            @Override
+            public void onAnimationStart(Animation animation){}
+
+            @Override
+            public void onAnimationRepeat(Animation animation){}
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+              animationEndListener.handle(v);
+            }
+        });
+        v.setAnimation(growAnim);
+        v.startAnimation(growAnim);
+    }
+
+    public static void shrink(final View v) {
+        final ScaleAnimation shrinkAnim = new ScaleAnimation(1.1f, 1.0f, 1.1f, 1.0f);
+        shrinkAnim.setDuration(500);
+
+        v.setAnimation(shrinkAnim);
+        shrinkAnim.start();
+    }
+
+     public interface IAnimationEndListener{
+         void handle(View v);
+         
+     }
+
 }
