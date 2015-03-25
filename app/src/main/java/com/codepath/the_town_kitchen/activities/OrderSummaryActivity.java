@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 import com.codepath.the_town_kitchen.R;
 import com.codepath.the_town_kitchen.TheTownKitchenApplication;
-import com.codepath.the_town_kitchen.UIUtility;
+import com.codepath.the_town_kitchen.utilities.UIUtility;
 import com.codepath.the_town_kitchen.adapters.OrderItemAdapter;
 import com.codepath.the_town_kitchen.fragments.ProgressBarDialog;
 import com.codepath.the_town_kitchen.models.Order;

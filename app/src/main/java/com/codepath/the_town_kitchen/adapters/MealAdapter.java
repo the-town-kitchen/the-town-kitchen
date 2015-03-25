@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.the_town_kitchen.R;
-import com.codepath.the_town_kitchen.UIUtility;
+import com.codepath.the_town_kitchen.utilities.UIUtility;
 import com.codepath.the_town_kitchen.models.Meal;
 import com.squareup.picasso.Picasso;
 
