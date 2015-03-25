@@ -1,9 +1,6 @@
 package com.codepath.the_town_kitchen.activities;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.IntentSender;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
@@ -19,17 +16,14 @@ import android.widget.TextView;
 
 import com.codepath.the_town_kitchen.R;
 import com.codepath.the_town_kitchen.TheTownKitchenApplication;
-import com.codepath.the_town_kitchen.utilities.UIUtility;
 import com.codepath.the_town_kitchen.adapters.OrderItemAdapter;
 import com.codepath.the_town_kitchen.fragments.ProgressBarDialog;
 import com.codepath.the_town_kitchen.models.Order;
 import com.codepath.the_town_kitchen.models.OrderItem;
+import com.codepath.the_town_kitchen.utilities.UIUtility;
 
 import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class OrderSummaryActivity extends TheTownKitchenBaseActivity {
@@ -153,8 +147,10 @@ public class OrderSummaryActivity extends TheTownKitchenBaseActivity {
     }
 
     private void saveOrder() {
-        for(OrderItem orderItem: orderItems){
-            orderItem.getMeal().quantityOrdered = 0;
+        if(orderItems != null) {
+            for (OrderItem orderItem : orderItems) {
+                orderItem.getMeal().quantityOrdered = 0;
+            }
         }
         orderToSave.setIsPlaced(true);
         orderToSave.saveInBackground();

@@ -2,6 +2,7 @@ package com.codepath.the_town_kitchen.fragments;
 
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -35,13 +36,22 @@ public class MealListFragment extends Fragment implements  MealAdapter.IActionCl
     private String orderId;
 
     private Order orderToSave;
-private  ICountUpdateListener countUpdateListener;
+    private  ICountUpdateListener countUpdateListener;
 
-    public MealListFragment(ICountUpdateListener countUpdateListener) {
+    public MealListFragment() {
         // Required empty public constructor
-        this.countUpdateListener = countUpdateListener;
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        try {
+            countUpdateListener = (ICountUpdateListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement ICountUpdateListener");
+        }
+    }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
