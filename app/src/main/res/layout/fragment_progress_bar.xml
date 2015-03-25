@@ -2,16 +2,19 @@
 <LinearLayout
     android:id="@+id/edit_name"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/white"
+    android:padding="@dimen/activity_large_margin"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:orientation="vertical">
 
-
     <TextView
         android:id="@+id/tvTitle"
+        android:background="@color/white"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textSize="@dimen/text_size_medium"
         android:text="@string/order_processing"/>
 
     <ProgressBar
@@ -21,4 +24,5 @@
         android:layout_marginTop="@dimen/space_medium"
         android:layout_gravity="center"
         android:visibility="visible"/>
+
 </LinearLayout>

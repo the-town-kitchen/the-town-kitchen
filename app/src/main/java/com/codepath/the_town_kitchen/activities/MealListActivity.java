@@ -1,9 +1,7 @@
 package com.codepath.the_town_kitchen.activities;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -14,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.codepath.the_town_kitchen.FragmentNavigationDrawer;
 import com.codepath.the_town_kitchen.R;
@@ -49,6 +48,7 @@ public class MealListActivity extends TheTownKitchenBaseActivity implements Date
     private TimePickerDialog timePickerDialog;
 
     private FragmentNavigationDrawer dlDrawer;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +111,7 @@ public class MealListActivity extends TheTownKitchenBaseActivity implements Date
     }
 
     private void setupToolbar() {
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         tvCalendar = (TextView) toolbar.findViewById(R.id.tvCalendar);
         java.text.DateFormat df = new SimpleDateFormat("yyyy-MM-d");
         String date = df.format(Calendar.getInstance().getTime());
@@ -158,10 +158,13 @@ public class MealListActivity extends TheTownKitchenBaseActivity implements Date
 
     @Override
     public void onTimeSet(RadialPickerLayout view, final int hourOfDay, final int minute) {
-        fragment.setTime(hourOfDay, minute);
-        startDeliveryLocationActivity(
-                TheTownKitchenApplication.getOrder().getCurrentOrder().getObjectId());
-       
+        if (tvCount.getText().equals("0")) {
+            Toast.makeText(getApplicationContext(), "You haven't added any items to your cart!", Toast.LENGTH_LONG).show();
+        } else {
+            fragment.setTime(hourOfDay, minute);
+            startDeliveryLocationActivity(
+                    TheTownKitchenApplication.getOrder().getCurrentOrder().getObjectId());
+        }
     }
 
     private void startDeliveryLocationActivity(String orderId) {
@@ -175,7 +178,6 @@ public class MealListActivity extends TheTownKitchenBaseActivity implements Date
     private void setupNavDrawer() {
 
         // Set a Toolbar to replace the ActionBar.
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // Find our drawer view
