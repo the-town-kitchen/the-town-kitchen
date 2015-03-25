@@ -2,18 +2,24 @@ package com.codepath.the_town_kitchen.activities;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.codepath.the_town_kitchen.FragmentNavigationDrawer;
 import com.codepath.the_town_kitchen.R;
 import com.codepath.the_town_kitchen.TheTownKitchenApplication;
+import com.codepath.the_town_kitchen.fragments.AboutFragment;
+import com.codepath.the_town_kitchen.fragments.ProfileFragment;
 import com.codepath.the_town_kitchen.utilities.UIUtility;
 import com.codepath.the_town_kitchen.fragments.MealListFragment;
 import com.codepath.the_town_kitchen.models.Order;
@@ -42,6 +48,8 @@ public class MealListActivity extends TheTownKitchenBaseActivity implements Date
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
 
+    private FragmentNavigationDrawer dlDrawer;
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +57,10 @@ public class MealListActivity extends TheTownKitchenBaseActivity implements Date
         setContentView(R.layout.activity_meal_list);
         setupToolbar();
 
+        setupNavDrawer();
 
-        getSupportActionBar().setDisplayUseLogoEnabled(false);
+
+//        getSupportActionBar().setDisplayUseLogoEnabled(false);
 
         fragment = new  MealListFragment(new MealListFragment.ICountUpdateListener() {
             @Override
@@ -76,32 +86,33 @@ public class MealListActivity extends TheTownKitchenBaseActivity implements Date
     }
 
     private void setupOrderCounts(){
-        Order.getLastOrderByDate(tvCalendar.getText().toString(), new Order.IOrderReceivedListener() {
-            @Override
-            public void handle(Order order, List<OrderItem> orderItems) {
-                if (order != null) {
-                    if (!order.getIsPlaced()) { 
-                        order.setOrderItems(orderItems);
-                        TheTownKitchenApplication.getOrder().setCurrentOrder(order);
+        Order.getLastOrderByDate(tvCalendar.getText().toString(),
+                new Order.IOrderReceivedListener() {
+                    @Override
+                    public void handle(Order order, List<OrderItem> orderItems) {
+                        if (order != null) {
+                            if (!order.getIsPlaced()) {
+                                order.setOrderItems(orderItems);
+                                TheTownKitchenApplication.getOrder().setCurrentOrder(order);
 
-                        tvCount.setText(order.getQuantity() + "");                    
-                        fragment.getMeals(order);
-                      
-                    } else if (order.getIsDelivered() && order.getFeedbackRating() == 0) {
-                        createNewOrder();
-                        Intent i = new Intent(MealListActivity.this, FeedbackActivity.class);
-                        i.putExtra("orderId", order.getObjectId());
-                        startActivity(i);
-                        overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                                tvCount.setText(order.getQuantity() + "");
+                                fragment.getMeals(order);
+
+                            } else if (order.getIsDelivered() && order.getFeedbackRating() == 0) {
+                                createNewOrder();
+                                Intent i = new Intent(MealListActivity.this,
+                                        FeedbackActivity.class);
+                                i.putExtra("orderId", order.getObjectId());
+                                startActivity(i);
+                                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                            } else {//order is placed but not delivered,TODO show the order
+                                createNewOrder();
+                            }
+                        } else {
+                            createNewOrder();
+                        }
                     }
-                    else {//order is placed but not delivered,TODO show the order
-                        createNewOrder();
-                    }
-                } else {
-                    createNewOrder();
-                }
-            }
-        });
+                });
 
     }
 
@@ -154,25 +165,6 @@ public class MealListActivity extends TheTownKitchenBaseActivity implements Date
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_meal_list, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-
-        return super.onOptionsItemSelected(item);
-    }
-
-
-    @Override
     public void onDateSet(DatePickerDialog datePickerDialog, int year, int month, int day) {
         String newDate = year + "-" + (month + 1) + "-" + day;
         tvCalendar.setText(newDate);
@@ -183,7 +175,8 @@ public class MealListActivity extends TheTownKitchenBaseActivity implements Date
     @Override
     public void onTimeSet(RadialPickerLayout view, final int hourOfDay, final int minute) {
         fragment.setTime(hourOfDay, minute);
-        startDeliveryLocationActivity(TheTownKitchenApplication.getOrder().getCurrentOrder().getObjectId());
+        startDeliveryLocationActivity(
+                TheTownKitchenApplication.getOrder().getCurrentOrder().getObjectId());
        
     }
 
@@ -195,6 +188,65 @@ public class MealListActivity extends TheTownKitchenBaseActivity implements Date
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }
 
+    private void setupNavDrawer() {
 
+        // Set a Toolbar to replace the ActionBar.
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Find our drawer view
+        dlDrawer = (FragmentNavigationDrawer) findViewById(R.id.drawer_layout);
+        // Setup drawer view
+        dlDrawer.setupDrawerConfiguration((ListView) findViewById(R.id.lvDrawer), toolbar,
+                R.layout.drawer_nav_item, R.id.fragment_placeholder);
+
+        // Add nav items
+        dlDrawer.addNavItem("Profile", "Profile", ProfileFragment.class);
+        dlDrawer.addNavItem("Current Menu", "Current Menu", MealListFragment.class);
+        dlDrawer.addNavItem("About", "About", AboutFragment.class);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // If the nav drawer is open, hide action items related to the content
+        if (dlDrawer.isDrawerOpen()) {
+            // Uncomment to hide menu items
+            // menu.findItem(R.id.mi_test).setVisible(false);
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        // Uncomment to inflate menu items to Action Bar
+        // inflater.inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // The action bar home/up action should open or close the drawer.
+        // ActionBarDrawerToggle will take care of this.
+        if (dlDrawer.getDrawerToggle().onOptionsItemSelected(item)) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        dlDrawer.getDrawerToggle().syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggles
+        dlDrawer.getDrawerToggle().onConfigurationChanged(newConfig);
+    }
 
 }
