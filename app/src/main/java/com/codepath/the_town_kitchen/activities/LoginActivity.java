@@ -4,12 +4,17 @@ package com.codepath.the_town_kitchen.activities;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.IntentSender.SendIntentException;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.MediaController;
+import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.codepath.the_town_kitchen.R;
 import com.codepath.the_town_kitchen.TheTownKitchenApplication;
@@ -61,27 +66,26 @@ public class LoginActivity extends TheTownKitchenBaseActivity implements OnClick
         uiHelper = new UiLifecycleHelper(this, callback);
         uiHelper.onCreate(savedInstanceState);
 
-
-//        /* video background */
-//        final Uri url = Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.cookingbackground);
-//        final VideoView mVideoView = (VideoView) findViewById(R.id.video);
-//        mVideoView.setVideoURI(url);
-//        MediaController mediaController = new MediaController(this);
-//        mediaController.setAnchorView(mVideoView);
-//        mVideoView.setMediaController(mediaController);
-//        mVideoView.requestFocus();
-//        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-//            public void onPrepared(MediaPlayer mp) {
-//                mp.setLooping(true);
-//                mVideoView.start();
-//            }
-//        });
-//        mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-//            @Override
-//            public void onCompletion(MediaPlayer mp) {
-//                mVideoView.resume();
-//            }
-//        });
+        /* video background */
+        final Uri url = Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.cookingbackground);
+        final VideoView mVideoView = (VideoView) findViewById(R.id.video);
+        mVideoView.setVideoURI(url);
+        MediaController mediaController = new MediaController(this);
+        mediaController.setAnchorView(mVideoView);
+        mVideoView.setMediaController(mediaController);
+        mVideoView.requestFocus();
+        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            public void onPrepared(MediaPlayer mp) {
+                mp.setLooping(true);
+                mVideoView.start();
+            }
+        });
+        mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                mVideoView.resume();
+            }
+        });
 
         facebookLoginBtn = (LoginButton) findViewById(R.id.fb_login_button);
         facebookLoginBtn.setApplicationId(getResources().getString(R.string.FACEBOOK_APP_ID));
@@ -92,6 +96,7 @@ public class LoginActivity extends TheTownKitchenBaseActivity implements OnClick
 
         googleLoginBtn = (SignInButton) findViewById(R.id.google_login_button);
         googleLoginBtn.setOnClickListener(this);
+        setGooglePlusButtonText(googleLoginBtn);
 
         mGoogleApiClient = GoogleApi.getGoogleClient(this,this,this);
 
@@ -289,11 +294,23 @@ public class LoginActivity extends TheTownKitchenBaseActivity implements OnClick
 
     }
 
-
     private Session.StatusCallback callback =  new Session.StatusCallback() {
         @Override
         public void call(Session session, SessionState state, Exception exception) {
             onSessionStateChange(session, state, exception);
         }
     };
+
+    protected void setGooglePlusButtonText(SignInButton signInButton) {
+        for (int i = 0; i < signInButton.getChildCount(); i++) {
+            View v = signInButton.getChildAt(i);
+
+            if (v instanceof TextView) {
+                TextView tv = (TextView) v;
+                tv.setText("LOG IN WITH GOOGLE+");
+                tv.setTextSize(16);
+                return;
+            }
+        }
+    }
 }
