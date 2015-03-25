@@ -1,19 +1,24 @@
 <!-- fragment_progress_bar.xml -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:id="@+id/edit_name"
-    android:layout_width="wrap_content" android:layout_height="wrap_content"
-    android:layout_gravity="center" android:orientation="vertical"  >
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:orientation="vertical">
 
 
     <TextView
+        android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/order_processing"
-        android:id="@+id/tvTitle" />
+        android:text="@string/order_processing"/>
 
     <ProgressBar
         android:id="@+id/pbLoading"
-        android:visibility="visible"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/space_medium"
+        android:layout_gravity="center"
+        android:visibility="visible"/>
 </LinearLayout>

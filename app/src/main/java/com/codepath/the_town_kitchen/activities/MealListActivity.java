@@ -32,7 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
-public class MealListActivity extends TheTownKitchenBaseActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+public class MealListActivity extends TheTownKitchenBaseActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, MealListFragment.ICountUpdateListener{
   
     private TextView tvCount;
     private TextView tvCalendar;
@@ -57,18 +57,7 @@ public class MealListActivity extends TheTownKitchenBaseActivity implements Date
         setupToolbar();
         setupNavDrawer();
 
-        fragment = new  MealListFragment(new MealListFragment.ICountUpdateListener() {
-            @Override
-            public void handle(final int count) {
-                UIUtility.grow(tvCount, new UIUtility.IAnimationEndListener() {
-                    @Override
-                    public void handle(View v) {
-                        ((TextView) v).setText(count + "");
-                        UIUtility.shrink(v);
-                    }
-                });
-            }
-        });
+        fragment = new  MealListFragment();
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_placeholder, fragment)
@@ -197,8 +186,8 @@ public class MealListActivity extends TheTownKitchenBaseActivity implements Date
 
         // Add nav items
         dlDrawer.addNavItem("Profile", R.mipmap.ic_profile, "Profile", ProfileFragment.class);
-        dlDrawer.addNavItem("Current Menu",  R.mipmap.ic_menu, "Current Menu", MealListFragment.class);
-        dlDrawer.addNavItem("About",  R.mipmap.ic_about, "About", AboutFragment.class);
+        dlDrawer.addNavItem("Current Menu", R.mipmap.ic_menu, "Current Menu", MealListFragment.class);
+        dlDrawer.addNavItem("About", R.mipmap.ic_about, "About", AboutFragment.class);
     }
 
     @Override
@@ -244,4 +233,14 @@ public class MealListActivity extends TheTownKitchenBaseActivity implements Date
         dlDrawer.getDrawerToggle().onConfigurationChanged(newConfig);
     }
 
+    @Override
+    public void handle(final int count) {
+        UIUtility.grow(tvCount, new UIUtility.IAnimationEndListener() {
+            @Override
+            public void handle(View v) {
+                ((TextView) v).setText(count + "");
+                UIUtility.shrink(v);
+            }
+        });
+    }
 }
