@@ -9,8 +9,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ViewAnimator;
 
 import com.codepath.the_town_kitchen.R;
+import com.codepath.the_town_kitchen.utilities.AnimationFactory;
 import com.codepath.the_town_kitchen.utilities.UIUtility;
 import com.codepath.the_town_kitchen.models.Meal;
 import com.squareup.picasso.Picasso;
@@ -31,6 +33,8 @@ public class MealAdapter extends ArrayAdapter<Meal> {
         public ImageButton ibMinus;
         public ImageButton ibPlus;
         public TextView tvCounts;
+        public TextView tvTest;
+        public ViewAnimator viewAnimator;
                 
     }
 
@@ -47,13 +51,15 @@ public class MealAdapter extends ArrayAdapter<Meal> {
         if (convertView == null) {
             viewHolder = new ViewHolder();
             LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.item_meal, parent, false);
+            convertView = inflater.inflate(R.layout.flip_item_meal, parent, false);
             viewHolder.ivImage = (ImageView)convertView.findViewById(R.id.ivImage);
             viewHolder.tvDescription = (TextView)convertView.findViewById(R.id.tvDescription);
             viewHolder.tvPrice =  (TextView)convertView.findViewById(R.id.tvPrice);
             viewHolder.ibMinus = (ImageButton) convertView.findViewById(R.id.ibMinus);
             viewHolder.ibPlus = (ImageButton) convertView.findViewById(R.id.ibPlus);
             viewHolder.tvCounts = (TextView) convertView.findViewById(R.id.tvCounts);
+            viewHolder.tvTest = (TextView) convertView.findViewById(R.id.tvTest);
+            viewHolder.viewAnimator = (ViewAnimator) convertView.findViewById(R.id.vfFlipper);
             convertView.setTag(viewHolder);
             
         } else {
@@ -82,6 +88,20 @@ public class MealAdapter extends ArrayAdapter<Meal> {
         });
 
         viewHolder.ivImage.setImageResource(0);
+
+        viewHolder.ivImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AnimationFactory.flipTransition(viewHolder.viewAnimator, AnimationFactory.FlipDirection.LEFT_RIGHT);
+            }
+        });
+
+        viewHolder.tvTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AnimationFactory.flipTransition(viewHolder.viewAnimator, AnimationFactory.FlipDirection.LEFT_RIGHT);
+            }
+        });
 
         int deviceWidth = UIUtility.getDisplayWidth(getContext());
         Picasso.with(getContext()).load(meal.getImageUrl()).resize(deviceWidth, 0).into(viewHolder.ivImage);

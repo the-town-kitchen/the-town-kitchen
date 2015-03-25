@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:clipChildren="false"
+    android:clipToPadding="false" >
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/card_view">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:id="@+id/vfFlipper">
+                <ImageView
+                    android:id="@+id/ivImage"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:cropToPadding="false"
+                    android:adjustViewBounds="true"
+                    android:minHeight="50dp"
+                    android:scaleType="fitXY"
+                    android:contentDescription="@string/photo"
+                    />
+                <include android:id="@+id/notelist" layout="@layout/item_meal_person" />
+            </ViewFlipper>
+
+
+
+            <RelativeLayout
+                android:id="@+id/rlContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_alignBottom="@+id/vfFlipper"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:background="#8888">
+                <TextView
+                    android:id="@+id/tvDescription"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:layout_marginRight="@dimen/activity_small_margin"
+                    android:layout_marginLeft="@dimen/activity_small_margin"
+                    android:paddingTop="@dimen/activity_normal_margin"
+                    android:paddingBottom="@dimen/activity_normal_margin"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/rlOptions"
+                android:layout_below="@id/rlContent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp">
+
+                <ImageButton
+                    android:id="@+id/ibMinus"
+                    android:layout_marginTop="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:src="@drawable/ic_remove_circle"
+                    android:layout_marginRight="@dimen/padding_big"
+                    />
+                <TextView
+                    android:id="@+id/tvCounts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline = "@+id/ibMinus"
+                    android:text="0"
+                    android:textSize="35sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/secondary_gray"
+                    android:layout_toRightOf="@id/ibMinus"
+                    android:layout_marginRight="@dimen/padding_big"
+                    android:layout_gravity="center_vertical" />
+
+                <ImageButton
+                    android:id="@+id/ibPlus"
+                    android:layout_marginTop="10dp"
+                    android:layout_toRightOf="@id/tvCounts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:src="@drawable/ic_add_circle"
+                    />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tvPrice"
+                tools:text="$11.00"
+                android:layout_toRightOf="@id/rlOptions"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/rlOptions"
+                android:layout_marginLeft="35dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/black"
+                android:textSize="19sp"
+                />
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>
+
+
+<!--<?xml version="1.0" encoding="utf-8"?>-->
+<!--<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:clickable="true"-->
+    <!--android:id="@+id/vfFlipper">-->
+    <!--<include android:id="@+id/notelist" layout="@layout/item_meal" />-->
+    <!--7.-->
+    <!--<include android:id="@+id/notelist" layout="@layout/item_meal_person" />-->
+<!--</ViewFlipper>-->
