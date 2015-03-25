@@ -1,14 +1,10 @@
 package com.codepath.the_town_kitchen.activities;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -52,15 +48,15 @@ public class PaymentInfoActivity extends TheTownKitchenBaseActivity {
 
                 String cvc = etCvc.getText().toString();
 
-                int cardExpMonth = 0;
-                int cardExpYear = 0;
-                if(!etExpirationMonthYear.getText().toString().matches("")) {
-                    String[] monthYear = etExpirationMonthYear.getText().toString().split("/");
-                    if (!(monthYear.length < 2)) {
-                        cardExpMonth = Integer.parseInt(monthYear[0]);
-                        cardExpYear = Integer.parseInt(monthYear[1]);
-                    }
-                }
+                int cardExpMonth = 3;
+                int cardExpYear = 18;
+//                if(!etExpirationMonthYear.getText().toString().matches("")) {
+//                    String[] monthYear = etExpirationMonthYear.getText().toString().split("/");
+//                    if (!(monthYear.length < 2)) {
+//                        cardExpMonth = Integer.parseInt(monthYear[0]);
+//                        cardExpYear = Integer.parseInt(monthYear[1]);
+//                    }
+//                }
 
                 if(verifyCreditCard(creditCardNumber,cardExpMonth,cardExpYear,cvc)) {
 
