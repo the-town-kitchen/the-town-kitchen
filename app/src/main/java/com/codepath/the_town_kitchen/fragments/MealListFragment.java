@@ -3,6 +3,7 @@ package com.codepath.the_town_kitchen.fragments;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.codepath.the_town_kitchen.R;
+import com.codepath.the_town_kitchen.TheTownKitchenApplication;
+import com.codepath.the_town_kitchen.activities.FeedbackActivity;
 import com.codepath.the_town_kitchen.adapters.MealAdapter;
 import com.codepath.the_town_kitchen.models.Meal;
 import com.codepath.the_town_kitchen.models.Order;
@@ -51,6 +54,7 @@ public class MealListFragment extends Fragment implements  MealAdapter.IActionCl
             throw new ClassCastException(activity.toString()
                     + " must implement ICountUpdateListener");
         }
+        setupOrderCounts();
     }
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -65,6 +69,47 @@ public class MealListFragment extends Fragment implements  MealAdapter.IActionCl
         lvList = (ListView) view.findViewById(R.id.lvList);
         lvList.setAdapter(mealAdapter);
       return view;
+    }
+
+    private void setupOrderCounts(){
+        Order.getLastOrderByDate(TheTownKitchenApplication.orderDate,
+                new Order.IOrderReceivedListener() {
+                    @Override
+                    public void handle(Order order, List<OrderItem> orderItems) {
+                        if (order != null) {
+                            if (!order.getIsPlaced()) {
+                                order.setOrderItems(orderItems);
+                                TheTownKitchenApplication.getOrder().setCurrentOrder(order);
+                                countUpdateListener.handle(order.getQuantity());
+                              
+                               getMeals(order);
+
+                            } else if (order.getIsDelivered() && order.getFeedbackRating() == 0) {
+                                createNewOrder();
+                                Intent i = new Intent(getActivity(),
+                                        FeedbackActivity.class);
+                                i.putExtra("orderId", order.getObjectId());
+                                startActivity(i);
+                                getActivity().overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                            } else {//order is placed but not delivered,TODO show the order
+                                createNewOrder();
+                            }
+                        } else {
+                            createNewOrder();
+                        }
+                    }
+                });
+
+    }
+
+    private void createNewOrder() {
+        Order.createNewOrder(new Order.IOrderReceivedListener() {
+            @Override
+            public void handle(Order order, List<OrderItem> orderItems) {
+                TheTownKitchenApplication.getOrder().setCurrentOrder(order);
+                getMeals(order);
+            }
+        });
     }
 
     private List<OrderItem> items = new ArrayList<>();

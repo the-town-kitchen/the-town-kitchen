@@ -18,18 +18,15 @@ import com.codepath.the_town_kitchen.FragmentNavigationDrawer;
 import com.codepath.the_town_kitchen.R;
 import com.codepath.the_town_kitchen.TheTownKitchenApplication;
 import com.codepath.the_town_kitchen.fragments.AboutFragment;
+import com.codepath.the_town_kitchen.fragments.MealListFragment;
 import com.codepath.the_town_kitchen.fragments.ProfileFragment;
 import com.codepath.the_town_kitchen.utilities.UIUtility;
-import com.codepath.the_town_kitchen.fragments.MealListFragment;
-import com.codepath.the_town_kitchen.models.Order;
-import com.codepath.the_town_kitchen.models.OrderItem;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.List;
 
 public class MealListActivity extends TheTownKitchenBaseActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, MealListFragment.ICountUpdateListener{
   
@@ -66,48 +63,7 @@ public class MealListActivity extends TheTownKitchenBaseActivity implements Date
         calendar = Calendar.getInstance();
         datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
         timePickerDialog = TimePickerDialog.newInstance(this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false, false);
-        setupOrderCounts();
-    }
 
-    private void setupOrderCounts(){
-        Order.getLastOrderByDate(tvCalendar.getText().toString(),
-                new Order.IOrderReceivedListener() {
-                    @Override
-                    public void handle(Order order, List<OrderItem> orderItems) {
-                        if (order != null) {
-                            if (!order.getIsPlaced()) {
-                                order.setOrderItems(orderItems);
-                                TheTownKitchenApplication.getOrder().setCurrentOrder(order);
-
-                                tvCount.setText(order.getQuantity() + "");
-                                fragment.getMeals(order);
-
-                            } else if (order.getIsDelivered() && order.getFeedbackRating() == 0) {
-                                createNewOrder();
-                                Intent i = new Intent(MealListActivity.this,
-                                        FeedbackActivity.class);
-                                i.putExtra("orderId", order.getObjectId());
-                                startActivity(i);
-                                overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                            } else {//order is placed but not delivered,TODO show the order
-                                createNewOrder();
-                            }
-                        } else {
-                            createNewOrder();
-                        }
-                    }
-                });
-
-    }
-
-    private void createNewOrder() {
-        Order.createNewOrder(new Order.IOrderReceivedListener() {
-            @Override
-            public void handle(Order order, List<OrderItem> orderItems) {
-                TheTownKitchenApplication.getOrder().setCurrentOrder(order);
-                fragment.getMeals(order);
-            }
-        });
     }
 
     private void setupToolbar() {
