@@ -105,8 +105,8 @@ public class UIUtility {
 
 
     public static void grow(final View v, final IAnimationEndListener animationEndListener) {
-        final ScaleAnimation growAnim = new ScaleAnimation(1.0f, 1.1f, 1.0f, 1.1f);
-        growAnim.setDuration(500);
+        final ScaleAnimation growAnim = new ScaleAnimation(1.0f, 1.25f, 1.0f, 1.25f);
+        growAnim.setDuration(200);
 
 
         growAnim.setAnimationListener(new Animation.AnimationListener()
@@ -127,8 +127,8 @@ public class UIUtility {
     }
 
     public static void shrink(final View v) {
-        final ScaleAnimation shrinkAnim = new ScaleAnimation(1.1f, 1.0f, 1.1f, 1.0f);
-        shrinkAnim.setDuration(500);
+        final ScaleAnimation shrinkAnim = new ScaleAnimation(1.25f, 1.0f, 1.25f, 1.0f);
+        shrinkAnim.setDuration(200);
 
         v.setAnimation(shrinkAnim);
         shrinkAnim.start();
