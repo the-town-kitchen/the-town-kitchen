@@ -8,13 +8,10 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
@@ -36,7 +33,7 @@ import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListe
 
 import java.util.Arrays;
 
-public class LoginActivity extends ActionBarActivity implements OnClickListener,
+public class LoginActivity extends TheTownKitchenBaseActivity implements OnClickListener,
         ConnectionCallbacks, OnConnectionFailedListener {
 
     private static final int RC_SIGN_IN = 0;
@@ -68,10 +65,6 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener,
         uiHelper = new UiLifecycleHelper(this, callback);
         uiHelper.onCreate(savedInstanceState);
 
-        Window window = this.getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.setStatusBarColor(this.getResources().getColor(R.color.dark_primary_red));
 
         /* video background */
         final Uri url = Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.cookingbackground);
@@ -283,6 +276,7 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener,
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
         }
     };
+    
     private void setCurrentUser(final User user) {
 
         User.getParseUser(user, new User.IUserLoadedListener() {

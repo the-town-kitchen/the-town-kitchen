@@ -9,141 +9,95 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.codepath.the_town_kitchen.R;
 import com.codepath.the_town_kitchen.TheTownKitchenApplication;
-import com.codepath.the_town_kitchen.adapters.MealAdapter;
-import com.codepath.the_town_kitchen.models.Meal;
+import com.codepath.the_town_kitchen.fragments.MealListFragment;
 import com.codepath.the_town_kitchen.models.Order;
 import com.codepath.the_town_kitchen.models.OrderItem;
-import com.facebook.widget.ProfilePictureView;
 import com.fourmob.datetimepicker.date.DatePickerDialog;
-import com.parse.ParseException;
-import com.parse.SaveCallback;
 import com.sleepbot.datetimepicker.time.RadialPickerLayout;
 import com.sleepbot.datetimepicker.time.TimePickerDialog;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class MealListActivity extends TheTownKitchenBaseActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener, MealAdapter.IActionClickListener {
-    private ProfilePictureView profilePictureView;
-    private ImageView ivProfile;
-    private TextView tvUserName, tvEmail;
-    private ListView lvList;
-    private MealAdapter mealAdapter;
+public class MealListActivity extends TheTownKitchenBaseActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+  
     private TextView tvCount;
-
     private TextView tvCalendar;
     private ImageView imgCalendar;
     private ImageView imgCart;
-    private ArrayList<com.codepath.the_town_kitchen.models.Meal> meals;
     private static String TAG = MealListActivity.class.getSimpleName();
 
     private Calendar calendar;
+    private MealListFragment fragment;
 
     public static final String DATEPICKER_TAG = "datepicker";
     public static final String TIMEPICKER_TAG = "timepicker";
     private DatePickerDialog datePickerDialog;
     private TimePickerDialog timePickerDialog;
 
-    private String orderId;
-
-    private Order orderToSave;
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meal_list);
         setupToolbar();
-//        setupProfile();
-
-        getSupportActionBar().setDisplayUseLogoEnabled(false);
-        Window window = this.getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.setStatusBarColor(this.getResources().getColor(R.color.dark_primary_red));
-
         setupOrderCounts();
+        getSupportActionBar().setDisplayUseLogoEnabled(false);
 
-        meals = new ArrayList<>();
-        mealAdapter = new MealAdapter(this, meals, this);
-        lvList = (ListView) findViewById(R.id.lvList);
-        lvList.setAdapter(mealAdapter);
+        fragment = new  MealListFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_placeholder, fragment)
+                .commit();
+
         calendar = Calendar.getInstance();
         datePickerDialog = DatePickerDialog.newInstance(this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH), false);
         timePickerDialog = TimePickerDialog.newInstance(this, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false, false);
 
     }
 
-
-    private List<OrderItem> items = new ArrayList<>();
     private void setupOrderCounts(){
         Order.getLastOrderByDate(tvCalendar.getText().toString(), new Order.IOrderReceivedListener() {
             @Override
             public void handle(Order order, List<OrderItem> orderItems) {
                 if (order != null) {
-                    Log.d(TAG, "order " + order.getObjectId());
-                    if (!order.getIsPlaced()) {
-                        tvCount.setText(order.getQuantity() + "");
-                        items = orderItems;
+                    if (!order.getIsPlaced()) { 
                         order.setOrderItems(orderItems);
                         TheTownKitchenApplication.getOrder().setCurrentOrder(order);
-                        orderToSave = order;
+
+                        tvCount.setText(order.getQuantity() + "");                    
+                        fragment.getMeals(order);
+                      
                     } else if (order.getIsDelivered() && order.getFeedbackRating() == 0) {
+                        createNewOrder();
                         Intent i = new Intent(MealListActivity.this, FeedbackActivity.class);
+                        i.putExtra("orderId", order.getObjectId());
                         startActivity(i);
                         overridePendingTransition(R.anim.right_in, R.anim.left_out);
-
                     }
                 } else {
-                    Order.createNewOrder(new Order.IOrderReceivedListener() {
-                        @Override
-                        public void handle(Order order, List<OrderItem> orderItems) {
-                            orderToSave = order;
-                        }
-                    });
+                    createNewOrder();
                 }
-                Meal.fromParse(mealsReceived);
             }
         });
 
     }
 
-    private Meal.IMealsReceivedListener mealsReceived = new Meal.IMealsReceivedListener() {
-        @Override
-        public void handle(List<Meal> parseMeals) {
-
-            Log.d(TAG,"get meal list");
-            meals.clear();
-
-            if(orderToSave == null || items == null || items.size() == 0){
-                for(Meal meal : parseMeals){
-                    meal.quantityOrdered = 0;
-                }
-            }else {
-                for (OrderItem item : items) {
-                    int index = parseMeals.indexOf(item.getMeal());
-
-                    if (index > -1) {
-                        Log.d(TAG, "this meal has orders " + index);
-                        Meal meal = parseMeals.get(index);
-                        meal.quantityOrdered = item.getQuantity();
-                    }
-                }
-               
+    private void createNewOrder() {
+        Order.createNewOrder(new Order.IOrderReceivedListener() {
+            @Override
+            public void handle(Order order, List<OrderItem> orderItems) {
+                TheTownKitchenApplication.getOrder().setCurrentOrder(order);
+                fragment.getMeals(order);
             }
-            meals.addAll(parseMeals);
-            mealAdapter.notifyDataSetChanged();
-        }
-    };
+        });
+    }
 
     private void setupToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -183,29 +137,6 @@ public class MealListActivity extends TheTownKitchenBaseActivity implements Date
         });
     }
 
-//    private void setupProfile() {
-//        ivProfile = (ImageView) findViewById(R.id.ivProfile);
-//        tvUserName = (TextView) findViewById(R.id.tvUserName);
-//        tvEmail = (TextView) findViewById(R.id.tvEmail);
-//        lvList = (ListView) findViewById(R.id.lvList);
-//        profilePictureView = (ProfilePictureView) findViewById(R.id.ivFacebookProfile);
-//
-//        User currentUser = TheTownKitchenApplication.getCurrentUser().getUser();
-//        if (currentUser != null) {
-//            if (currentUser.getProfileImageUrl() != null && !currentUser.getProfileImageUrl().isEmpty()) {
-//                Picasso.with(this).load(currentUser.getProfileImageUrl()).into(ivProfile);
-//            } else if (currentUser.getFacebookId() != null && !currentUser.getFacebookId().isEmpty()) {
-//
-//                profilePictureView.setCropped(true);
-//                profilePictureView.setProfileId(currentUser.getFacebookId());
-//                profilePictureView.setVisibility(View.VISIBLE);
-//
-//            }
-//            tvUserName.setText(currentUser.getName());
-//            tvEmail.setText(currentUser.getEmail());
-//        }
-//    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -235,50 +166,18 @@ public class MealListActivity extends TheTownKitchenBaseActivity implements Date
 
     @Override
     public void onTimeSet(RadialPickerLayout view, final int hourOfDay, final int minute) {
-        if( orderToSave != null) {
-            orderToSave.setTime(hourOfDay + ":" + minute);
-
-            orderToSave.saveInBackground(new SaveCallback() {
-                @Override
-                public void done(ParseException e) {
-                    orderId = orderToSave.getObjectId();
-                    startDeliveryLocationActivity(orderId);
-                }
-            });
-        }
-
+        fragment.setTime(hourOfDay, minute);
+        startDeliveryLocationActivity(TheTownKitchenApplication.getOrder().getCurrentOrder().getObjectId());
+       
     }
 
     private void startDeliveryLocationActivity(String orderId) {
         Intent i = new Intent(MealListActivity.this, DeliveryLocationActivity.class);
+        Log.d(TAG, "orderId " + orderId);
         i.putExtra("orderId", orderId);
         startActivity(i);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
     }
 
-    @Override
-    public void onActionClicked(int position, final int count) {
-        final Meal meal = meals.get(position);
-        meal.quantityOrdered = count;
-        if(orderToSave == null){
-           Order.createNewOrder(new Order.IOrderReceivedListener() {
-                @Override
-                public void handle(Order order, List<OrderItem> orderItems) {
-                    orderToSave = order;
-                    updateOrder(meal, count);
-                }
-            });
-        }
-
-       else {
-            updateOrder(meal, count);
-        }
-
-    }
-
-    private void updateOrder(Meal meal, int count) {
-        orderToSave.update(meal, count);
-        tvCount.setText(orderToSave.getQuantity()+"");
-    }
 
 }
