@@ -19,9 +19,20 @@
             android:text="Our vision is to create community through local food; a community where low-income Oakland youth can shine; a community where we will introduce under-served youth to talented chefs and start-up entrepreneurs so they have the skills and network to pursue their future."/>
 
 
+    <TextView
+        android:id="@+id/tvFounders"
+        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Founders"
+        android:layout_below="@+id/tvParagraph"
+        android:layout_marginBottom="@dimen/space_medium"
+        
+        android:layout_marginTop="@dimen/space_medium"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvContacts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/tvParagraph"/>
+        android:layout_below="@+id/tvFounders"/>
 </RelativeLayout>

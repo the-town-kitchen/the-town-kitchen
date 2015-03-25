@@ -19,14 +19,14 @@ public class Founder extends ParseObject{
     private String imageUrl;
 
 
-    public String getName() { return getString("Name"); }
+    public String getName() { return getString("name"); }
 
-    public String getRole() { return getString("Role"); }
+    public String getRole() { return getString("role"); }
     public String getImageUrl() { return getString("imageUrl"); }
 
-    public void setName(String name) { put("Name", name); }
+    public void setName(String name) { put("name", name); }
 
-    public void setRole(String role) { put("Role", role); }
+    public void setRole(String role) { put("role", role); }
 
     public void setImageUrl(String imageUrl) { put("imageUrl", imageUrl); }
 }
