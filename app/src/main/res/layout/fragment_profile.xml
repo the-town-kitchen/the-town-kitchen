@@ -1,47 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white">
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical" android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white">
 
-    <RelativeLayout
+    <LinearLayout
             android:id="@+id/rlProfile"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/activity_large_margin">
 
-        <com.facebook.widget.ProfilePictureView
-                android:id="@+id/ivFacebookProfile"
-                android:layout_width="@dimen/avatar_size"
-                android:layout_height="@dimen/avatar_size"
-                android:layout_marginRight="@dimen/activity_normal_margin" />
+        <RelativeLayout
+                android:gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp">
 
-        <ImageView
-                android:id="@+id/ivProfile"
-                android:layout_width="@dimen/avatar_size"
-                android:layout_height="@dimen/avatar_size"
-                android:layout_marginRight="@dimen/activity_normal_margin" />
+            <com.facebook.widget.ProfilePictureView
+                    android:id="@+id/ivFacebookProfile"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_marginRight="@dimen/activity_normal_margin" />
+
+            <ImageView
+                    android:id="@+id/ivProfile"
+                    android:gravity="center_horizontal"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_marginRight="@dimen/activity_normal_margin" />
+
+        </RelativeLayout>
 
         <TextView
                 android:id="@+id/tvUserName"
+                tools:text="My Username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/ivProfile"
-                android:layout_toRightOf="@+id/ivProfile"
                 android:fontFamily="sans-serif"
                 android:textColor="@color/secondary_darkest"
-                android:textSize="14sp"
+                android:textSize="@dimen/text_size_medium"
                 android:textStyle="bold" />
 
         <TextView
                 android:id="@+id/tvEmail"
+                tools:text="test@test.com"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tvUserName"
-                android:layout_toRightOf="@+id/ivProfile"
                 android:fontFamily="sans-serif"
                 android:textColor="@color/neutral"
-                android:textSize="12sp" />
-    </RelativeLayout>
+                android:textSize="@dimen/text_size_medium" />
+    </LinearLayout>
 
 </LinearLayout>

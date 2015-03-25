@@ -7,21 +7,36 @@
                 android:paddingLeft="@dimen/space_medium"
                 android:paddingRight="@dimen/space_medium">
 
+    <ImageView
+            android:id="@+id/ivLogo"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/thetownkitchenlogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"/>
+
     <TextView
         android:id="@+id/tvHeadline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="We believe in community"
-        android:textSize="30sp"/>
+        android:layout_below="@id/ivLogo"
+        android:layout_marginBottom="5dp"
+        android:gravity="center"
+        android:text="We deliver delicious lunch and employ urban youth."
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_size_large"/>
 
     <TextView
         android:id="@+id/tvParagraph"
+        android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tvHeadline"
+        android:textColor="@color/black"
         android:text="Our vision is to create community through local food; a community where low-income Oakland youth can shine; a community where we will introduce under-served youth to talented chefs and start-up entrepreneurs so they have the skills and network to pursue their future."
-        android:textSize="12sp"/>
-
+        android:textSize="@dimen/text_size_medium"/>
 
     <TextView
         android:id="@+id/tvFounders"
@@ -31,12 +46,16 @@
         android:layout_marginBottom="@dimen/space_medium"
         android:layout_marginTop="@dimen/space_medium"
         android:text="Founders"
-
-        android:textSize="16sp"/>
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_size_medium"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvContacts"
+        android:gravity="center"
+        android:textColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/tvFounders"/>
+
 </RelativeLayout>
