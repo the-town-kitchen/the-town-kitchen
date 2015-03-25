@@ -21,10 +21,9 @@ import com.stripe.android.model.Token;
 import com.stripe.exception.AuthenticationException;
 
 public class PaymentInfoActivity extends TheTownKitchenBaseActivity {
-    Button bSavePayment;
+    Button bSubmitPaymentInfo;
     EditText etCreditCardNum;
-    EditText etExpirationYear;
-    EditText etExpirationMonth;
+    EditText etExpirationMonthYear;
     EditText etCvc;
 
     @Override
@@ -35,7 +34,7 @@ public class PaymentInfoActivity extends TheTownKitchenBaseActivity {
 
         setStatusBar();
 
-        bSavePayment.setOnClickListener(new View.OnClickListener() {
+        bSubmitPaymentInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String creditCardNumber = etCreditCardNum.getText().toString();
@@ -56,16 +55,16 @@ public class PaymentInfoActivity extends TheTownKitchenBaseActivity {
                 String cvc = etCvc.getText().toString();
 
                 int cardExpMonth = 0;
-                if(!etExpirationMonth.getText().toString().matches("")) {
-                   cardExpMonth = Integer.parseInt(etExpirationMonth.getText().toString());
-                }
-
                 int cardExpYear = 0;
-                if(!etExpirationYear.getText().toString().matches("")) {
-                    cardExpYear = Integer.parseInt(etExpirationYear.getText().toString());
+                if(!etExpirationMonthYear.getText().toString().matches("")) {
+                    String[] monthYear = etExpirationMonthYear.getText().toString().split("/");
+                    if (!(monthYear.length < 2)) {
+                        cardExpMonth = Integer.parseInt(monthYear[0]);
+                        cardExpYear = Integer.parseInt(monthYear[1]);
+                    }
                 }
 
-                if(verifyCreditCard(creditCardNumber,cardExpMonth, cardExpYear, cvc)) {
+                if(verifyCreditCard(creditCardNumber,cardExpMonth,cardExpYear,cvc)) {
 
                     Intent i = new Intent(PaymentInfoActivity.this, OrderSummaryActivity.class);
                     startActivity(i);
@@ -77,10 +76,9 @@ public class PaymentInfoActivity extends TheTownKitchenBaseActivity {
     }
 
     private void setupViewComponents(){
-        bSavePayment = (Button) findViewById(R.id.bSavePayment);
+        bSubmitPaymentInfo = (Button) findViewById(R.id.bSubmitPaymentInfo);
         etCreditCardNum = (EditText) findViewById(R.id.etCreditCardNum);
-        etExpirationYear = (EditText) findViewById(R.id.etExpirationYear);
-        etExpirationMonth = (EditText) findViewById(R.id.etExpirationMonth);
+        etExpirationMonthYear = (EditText) findViewById(R.id.etExpirationMonthYear);
         etCvc = (EditText) findViewById(R.id.etCvc);
     }
 

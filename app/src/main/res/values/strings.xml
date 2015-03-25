@@ -16,7 +16,7 @@
     <string name="FACEBOOK_APP_ID">1621411151403659</string>
     <string name="title_activity_payment_info">PaymentInfoActivity</string>
     <string name="save_credit_card_info">Save my credit card info for future use</string>
-    <string name="save_payment">Save Payment Info</string>
+    <string name="submit_payment_info">Submit Payment Info</string>
     <string name="title_activity_order_summary">OrderSummaryActivity</string>
     <string name="submit_coupon">Apply</string>
     <string name="order_sub_total">Sub Total</string>

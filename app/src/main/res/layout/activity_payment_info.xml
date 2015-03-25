@@ -1,83 +1,84 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:background="@color/white"
-    tools:context="com.codepath.the_town_kitchen.activities.PaymentInfoActivity">
+                xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+                android:layout_height="match_parent"
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/etCreditCardNum"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:drawableLeft="@drawable/ic_credit_card"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:hint="1234 5678 9012 3456"
-        android:inputType="number"/>
+                android:background="@color/white"
+                tools:context="com.codepath.the_town_kitchen.activities.PaymentInfoActivity">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/etExpirationYear"
-        android:layout_below="@+id/etCreditCardNum"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:inputType="number"
-        android:hint="YY"/>
+    <RelativeLayout
+            android:id="@+id/rlCCInfoContainer"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tvSeparator"
-        android:layout_below="@+id/etCreditCardNum"
-        android:layout_toLeftOf="@+id/etExpirationYear"
-        android:layout_toStartOf="@+id/etExpirationYear"
-        android:text="/"
-        android:layout_alignBottom="@id/etExpirationYear"/>
+        <EditText
+                android:id="@+id/etCreditCardNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:drawableLeft="@drawable/ic_credit_card"
+                android:drawablePadding="8dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:hint="1234 5678 9012 3456"
+                android:maxLines="1"
+                android:maxLength="20"
+                android:textSize="@dimen/text_size_normal"
+                android:inputType="number"/>
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/etExpirationMonth"
-        android:layout_below="@+id/etCreditCardNum"
-        android:layout_toLeftOf="@+id/tvSeparator"
-        android:layout_toStartOf="@+id/tvSeparator"
-        android:inputType="number"
-        android:hint="MM"/>
+        <EditText
+                android:id="@+id/etExpirationMonthYear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/etCreditCardNum"
+                android:layout_alignParentRight="true"
+                android:inputType="number"
+                android:textSize="@dimen/text_size_normal"
+                android:maxLines="1"
+                android:maxLength="5"
+                android:hint="MM / YY"/>
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/etCvc"
-        android:layout_below="@+id/etExpirationYear"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:inputType="number"
-        android:hint="CVC"/>
+        <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/etCvc"
+                android:layout_below="@+id/etExpirationMonthYear"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
+                android:inputType="number"
+                android:textSize="@dimen/text_size_normal"
+                android:maxLines="1"
+                android:maxLength="3"
+                android:hint="CVC"/>
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/save_credit_card_info"
-        android:id="@+id/checkBox"
-        android:layout_below="@+id/etCvc"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="62dp" />
+        <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/save_credit_card_info"
+                android:id="@+id/checkBox"
+                android:layout_below="@+id/etCvc"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginTop="62dp" />
+
+    </RelativeLayout>
 
     <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/save_payment"
-        android:id="@+id/bSavePayment"
-        android:textColor="@color/white"
-        android:background="@color/accent_teal"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+            android:id="@+id/bSubmitPaymentInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/submit_payment_info"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_normal"
+            android:background="@color/accent_teal"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:padding="15dp"
+            android:drawableLeft="@drawable/ic_check"/>
 
 </RelativeLayout>
+
+
