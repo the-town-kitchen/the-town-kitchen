@@ -69,7 +69,7 @@ public class MealAdapter extends ArrayAdapter<Meal> {
         }
 
         viewHolder.tvDescription.setText(meal.getDescription());
-        viewHolder.tvPersonDescription.setText("Made with love by " + "Brian Zamora");
+        viewHolder.tvPersonDescription.setText("Made with love by " + meal.getMealPersonName());
         viewHolder.tvPrice.setText("$" + meal.getPrice());
 
         viewHolder.tvCounts.setText(meal.quantityOrdered + "");
@@ -109,8 +109,8 @@ public class MealAdapter extends ArrayAdapter<Meal> {
 
         int deviceWidth = UIUtility.getDisplayWidth(getContext());
         Picasso.with(getContext()).load(meal.getImageUrl()).resize(deviceWidth, 0).into(viewHolder.ivImage);
-        String person_url = "http://i59.tinypic.com/wv4vsy.jpg";
-        Picasso.with(getContext()).load(person_url).resize(deviceWidth, 0).into(viewHolder.ivImagePerson);
+
+        Picasso.with(getContext()).load(meal.getMealPersonImage()).resize(deviceWidth, 0).into(viewHolder.ivImagePerson);
         return convertView;
     }
 

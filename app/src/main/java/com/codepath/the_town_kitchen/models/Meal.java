@@ -30,6 +30,10 @@ public class Meal extends ParseObject {
 
     private String imageUrl;
 
+    private String mealPersonName;
+
+    private String mealPersonImage;
+
     private int quantity;
 
     private String date;
@@ -43,6 +47,13 @@ public class Meal extends ParseObject {
     public double getPrice() { return getDouble("price"); }
 
     public String getImageUrl() { return getString("imageUrl"); }
+
+    public String getMealPersonImage() {
+        return getString("mealPersonImage");
+    }
+    public String getMealPersonName() {
+        return getString("mealPersonName");
+    }
 
     public int getQuantity() { return getInt("quantity"); }
 
