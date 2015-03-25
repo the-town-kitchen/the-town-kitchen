@@ -9,7 +9,7 @@
             android:id="@+id/tvMarkerTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/accent_teal"
+            android:textColor="@color/dark_primary_red"
             android:textStyle="bold"
             android:singleLine="true" />
 

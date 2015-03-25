@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -19,10 +21,9 @@ import com.stripe.android.model.Token;
 import com.stripe.exception.AuthenticationException;
 
 public class PaymentInfoActivity extends TheTownKitchenBaseActivity {
-    Button bSavePayment;
+    Button bSubmitPaymentInfo;
     EditText etCreditCardNum;
-    EditText etExpirationYear;
-    EditText etExpirationMonth;
+    EditText etExpirationMonthYear;
     EditText etCvc;
 
     @Override
@@ -31,7 +32,9 @@ public class PaymentInfoActivity extends TheTownKitchenBaseActivity {
         setContentView(R.layout.activity_payment_info);
         setupViewComponents();
 
-        bSavePayment.setOnClickListener(new View.OnClickListener() {
+        setStatusBar();
+
+        bSubmitPaymentInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String creditCardNumber = etCreditCardNum.getText().toString();
@@ -52,16 +55,16 @@ public class PaymentInfoActivity extends TheTownKitchenBaseActivity {
                 String cvc = etCvc.getText().toString();
 
                 int cardExpMonth = 0;
-                if(!etExpirationMonth.getText().toString().matches("")) {
-                   cardExpMonth = Integer.parseInt(etExpirationMonth.getText().toString());
-                }
-
                 int cardExpYear = 0;
-                if(!etExpirationYear.getText().toString().matches("")) {
-                    cardExpYear = Integer.parseInt(etExpirationYear.getText().toString());
+                if(!etExpirationMonthYear.getText().toString().matches("")) {
+                    String[] monthYear = etExpirationMonthYear.getText().toString().split("/");
+                    if (!(monthYear.length < 2)) {
+                        cardExpMonth = Integer.parseInt(monthYear[0]);
+                        cardExpYear = Integer.parseInt(monthYear[1]);
+                    }
                 }
 
-                if(verifyCreditCard(creditCardNumber,cardExpMonth, cardExpYear, cvc)) {
+                if(verifyCreditCard(creditCardNumber,cardExpMonth,cardExpYear,cvc)) {
 
                     Intent i = new Intent(PaymentInfoActivity.this, OrderSummaryActivity.class);
                     startActivity(i);
@@ -73,10 +76,9 @@ public class PaymentInfoActivity extends TheTownKitchenBaseActivity {
     }
 
     private void setupViewComponents(){
-        bSavePayment = (Button) findViewById(R.id.bSavePayment);
+        bSubmitPaymentInfo = (Button) findViewById(R.id.bSubmitPaymentInfo);
         etCreditCardNum = (EditText) findViewById(R.id.etCreditCardNum);
-        etExpirationYear = (EditText) findViewById(R.id.etExpirationYear);
-        etExpirationMonth = (EditText) findViewById(R.id.etExpirationMonth);
+        etExpirationMonthYear = (EditText) findViewById(R.id.etExpirationMonthYear);
         etCvc = (EditText) findViewById(R.id.etCvc);
     }
 
@@ -143,4 +145,11 @@ public class PaymentInfoActivity extends TheTownKitchenBaseActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setStatusBar() {
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(this.getResources().getColor(R.color.dark_primary_red));
+    }
 }
