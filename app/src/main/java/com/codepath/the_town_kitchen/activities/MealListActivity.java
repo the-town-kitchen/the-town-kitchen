@@ -50,17 +50,12 @@ public class MealListActivity extends TheTownKitchenBaseActivity implements Date
 
     private FragmentNavigationDrawer dlDrawer;
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meal_list);
         setupToolbar();
-
         setupNavDrawer();
-
-
-//        getSupportActionBar().setDisplayUseLogoEnabled(false);
 
         fragment = new  MealListFragment(new MealListFragment.ICountUpdateListener() {
             @Override
