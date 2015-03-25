@@ -29,6 +29,7 @@ public class MealAdapter extends ArrayAdapter<Meal> {
     private static class ViewHolder {
         public ImageView ivImage;
         public TextView tvDescription;
+        public TextView tvPersonDescription;
         public TextView tvPrice;
         public ImageButton ibMinus;
         public ImageButton ibPlus;
@@ -55,6 +56,7 @@ public class MealAdapter extends ArrayAdapter<Meal> {
             viewHolder.ivImage = (ImageView)convertView.findViewById(R.id.ivImage);
             viewHolder.ivImagePerson = (ImageView)convertView.findViewById(R.id.ivImagePerson);
             viewHolder.tvDescription = (TextView)convertView.findViewById(R.id.tvDescription);
+            viewHolder.tvPersonDescription = (TextView)convertView.findViewById(R.id.tvPersonDescription);
             viewHolder.tvPrice =  (TextView)convertView.findViewById(R.id.tvPrice);
             viewHolder.ibMinus = (ImageButton) convertView.findViewById(R.id.ibMinus);
             viewHolder.ibPlus = (ImageButton) convertView.findViewById(R.id.ibPlus);
@@ -67,6 +69,7 @@ public class MealAdapter extends ArrayAdapter<Meal> {
         }
 
         viewHolder.tvDescription.setText(meal.getDescription());
+        viewHolder.tvPersonDescription.setText("Made with love by " + "Brian Zamora");
         viewHolder.tvPrice.setText("$" + meal.getPrice());
 
         viewHolder.tvCounts.setText(meal.quantityOrdered + "");
