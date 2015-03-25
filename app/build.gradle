@@ -46,6 +46,6 @@ dependencies {
     compile fileTree(dir: 'libs', include: 'Parse-*.jar')
     compile 'com.stripe:stripe-android:+'
     compile 'com.android.support:cardview-v7:21.0.2'
-
     compile 'com.android.support:recyclerview-v7:21.0.2'
+    compile 'com.makeramen:roundedimageview:1.5.0'
 }
