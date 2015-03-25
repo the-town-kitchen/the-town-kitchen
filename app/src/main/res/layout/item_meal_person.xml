@@ -23,10 +23,25 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:background="#8888">
         <TextView
+            android:id="@+id/tvIntroText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:layout_marginRight="@dimen/activity_small_margin"
+            android:layout_marginLeft="@dimen/activity_small_margin"
+            android:paddingTop="@dimen/activity_normal_margin"
+            android:paddingBottom="@dimen/activity_normal_margin"
+            android:text="Prepared with "
+            android:drawableRight="@drawable/ic_love"/>
+
+        <TextView
             android:id="@+id/tvPersonDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif"
+            android:layout_toRightOf="@+id/tvIntroText"
             android:textColor="@color/white"
             android:textSize="16sp"
             android:layout_marginRight="@dimen/activity_small_margin"

@@ -69,7 +69,7 @@ public class MealAdapter extends ArrayAdapter<Meal> {
         }
 
         viewHolder.tvDescription.setText(meal.getDescription());
-        viewHolder.tvPersonDescription.setText("Made with love by " + meal.getMealPersonName());
+        viewHolder.tvPersonDescription.setText("by " + meal.getMealPersonName());
         viewHolder.tvPrice.setText("$" + meal.getPrice());
 
         viewHolder.tvCounts.setText(meal.quantityOrdered + "");
