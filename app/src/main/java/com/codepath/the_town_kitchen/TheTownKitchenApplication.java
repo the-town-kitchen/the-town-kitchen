@@ -3,6 +3,7 @@ package com.codepath.the_town_kitchen;
 import android.content.Context;
 
 import com.codepath.the_town_kitchen.models.Feedback;
+import com.codepath.the_town_kitchen.models.Founder;
 import com.codepath.the_town_kitchen.models.Meal;
 import com.codepath.the_town_kitchen.models.Order;
 import com.codepath.the_town_kitchen.models.OrderItem;
@@ -39,7 +40,7 @@ public class TheTownKitchenApplication extends com.activeandroid.app.Application
         ParseObject.registerSubclass(Meal.class);
         ParseObject.registerSubclass(User.class);
         ParseObject.registerSubclass(Feedback.class);
-
+        ParseObject.registerSubclass(Founder.class);
         Parse.enableLocalDatastore(this);
         Parse.initialize(this, YOUR_APPLICATION_ID, YOUR_CLIENT_KEY);
 
