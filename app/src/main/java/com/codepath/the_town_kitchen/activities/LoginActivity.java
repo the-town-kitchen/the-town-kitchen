@@ -73,26 +73,26 @@ public class LoginActivity extends ActionBarActivity implements OnClickListener,
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(this.getResources().getColor(R.color.dark_primary_red));
 
-        /* video background */
-        final Uri url = Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.cookingbackground);
-        final VideoView mVideoView = (VideoView) findViewById(R.id.video);
-        mVideoView.setVideoURI(url);
-        MediaController mediaController = new MediaController(this);
-        mediaController.setAnchorView(mVideoView);
-        mVideoView.setMediaController(mediaController);
-        mVideoView.requestFocus();
-        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            public void onPrepared(MediaPlayer mp) {
-                mp.setLooping(true);
-                mVideoView.start();
-            }
-        });
-        mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                mVideoView.resume();
-            }
-        });
+//        /* video background */
+//        final Uri url = Uri.parse("android.resource://" + this.getPackageName() + "/" + R.raw.cookingbackground);
+//        final VideoView mVideoView = (VideoView) findViewById(R.id.video);
+//        mVideoView.setVideoURI(url);
+//        MediaController mediaController = new MediaController(this);
+//        mediaController.setAnchorView(mVideoView);
+//        mVideoView.setMediaController(mediaController);
+//        mVideoView.requestFocus();
+//        mVideoView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//            public void onPrepared(MediaPlayer mp) {
+//                mp.setLooping(true);
+//                mVideoView.start();
+//            }
+//        });
+//        mVideoView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+//            @Override
+//            public void onCompletion(MediaPlayer mp) {
+//                mVideoView.resume();
+//            }
+//        });
 
         facebookLoginBtn = (LoginButton) findViewById(R.id.fb_login_button);
         facebookLoginBtn.setApplicationId(getResources().getString(R.string.FACEBOOK_APP_ID));

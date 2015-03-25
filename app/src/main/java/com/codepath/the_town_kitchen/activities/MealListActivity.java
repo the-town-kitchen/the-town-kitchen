@@ -65,11 +65,8 @@ public class MealListActivity extends TheTownKitchenBaseActivity implements Date
         setupToolbar();
 //        setupProfile();
 
+        setStatusBar();
         getSupportActionBar().setDisplayUseLogoEnabled(false);
-        Window window = this.getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.setStatusBarColor(this.getResources().getColor(R.color.dark_primary_red));
 
         setupOrderCounts();
 
@@ -279,6 +276,14 @@ public class MealListActivity extends TheTownKitchenBaseActivity implements Date
     private void updateOrder(Meal meal, int count) {
         orderToSave.update(meal, count);
         tvCount.setText(orderToSave.getQuantity()+"");
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setStatusBar() {
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(this.getResources().getColor(R.color.dark_primary_red));
     }
 
 }

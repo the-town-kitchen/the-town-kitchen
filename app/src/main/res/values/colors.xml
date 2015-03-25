@@ -14,5 +14,6 @@
     <color name="primary_red">#F34235</color>
     <color name="dark_primary_red">#D32F2F</color>
     <color name="secondary_gray">#727272</color>
+    <color name="divider_color">#B6B6B6</color>
     <color name="accent_teal">#009688</color>
 </resources>

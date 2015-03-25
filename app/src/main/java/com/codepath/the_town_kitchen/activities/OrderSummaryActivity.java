@@ -2,6 +2,7 @@ package com.codepath.the_town_kitchen.activities;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +14,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -26,12 +28,15 @@ import com.codepath.the_town_kitchen.models.Order;
 import com.codepath.the_town_kitchen.models.OrderItem;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class OrderSummaryActivity extends TheTownKitchenBaseActivity {
     Button bSubmitOrder;
-    Button bPaymentInfo;
+    ImageView ivEdit;
     ProgressBarDialog progressBarDialog;
 
     private ListView lvOrderItems;
@@ -46,16 +51,13 @@ public class OrderSummaryActivity extends TheTownKitchenBaseActivity {
     private Order orderToSave;
     private TextView tvDiscountlabel;
     private RelativeLayout llDiscount;
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_summary);
 
-        Window window = this.getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.setStatusBarColor(this.getResources().getColor(R.color.dark_primary_red));
+        setStatusBar();
 
         bSubmitOrder = (Button) findViewById(R.id.bSubmitOrder);
         bSubmitOrder.setOnClickListener(new View.OnClickListener() {
@@ -65,8 +67,8 @@ public class OrderSummaryActivity extends TheTownKitchenBaseActivity {
             }
         });
 
-        bPaymentInfo = (Button) findViewById(R.id.bPaymentInfo);
-        bPaymentInfo.setOnClickListener(new View.OnClickListener() {
+        ivEdit = (ImageView) findViewById(R.id.ivEdit);
+        ivEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(OrderSummaryActivity.this, PaymentInfoActivity.class);
@@ -89,7 +91,9 @@ public class OrderSummaryActivity extends TheTownKitchenBaseActivity {
             @Override
             public void handle(Order orderFromParse, List<OrderItem> orderItemsFromParse) {
                 if (orderFromParse != null) {
-                    tvDeliveryTime.setText(orderFromParse.getDate() + " " + orderFromParse.getTime());
+
+                    setFormattedDateTime(orderFromParse.getDate(), orderFromParse.getTime());
+
                     orderItems = orderItemsFromParse;
                     if (orderItems == null)
                         orderItems = new ArrayList<>();
@@ -100,8 +104,12 @@ public class OrderSummaryActivity extends TheTownKitchenBaseActivity {
                     tvSubTotal.setText("$" + subTotal);
                     tvTax.setText("$" + new DecimalFormat("##.##").format(tax));
                     tvOrderTotal.setText("$" + new DecimalFormat("##.##").format(subTotal + tax));
-                    tvAddress.setText(orderFromParse.getDeliveryLocation());
 
+                    String deliveryLocation = orderFromParse.getDeliveryLocation();
+                    if (orderFromParse.getDeliveryLocation().contains("USA")) {
+                        deliveryLocation = orderFromParse.getDeliveryLocation().replace("USA", "");
+                    }
+                    tvAddress.setText(deliveryLocation);
 
                     orderToSave = orderFromParse;
                 }
@@ -109,8 +117,6 @@ public class OrderSummaryActivity extends TheTownKitchenBaseActivity {
         });
 
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -176,5 +182,63 @@ public class OrderSummaryActivity extends TheTownKitchenBaseActivity {
         UIUtility.expand(llDiscount);
 
         etCouponCode.setText("");
+    }
+
+    private void setFormattedDateTime(String date, String time) {
+        try {
+            String[] datePieces = date.split("-");
+            String year = datePieces[0];
+            String month = datePieces[1];
+            String day = datePieces[2];
+            switch (month) {
+                case "01":
+                    month = "January";
+                    break;
+                case "02":
+                    month = "February";
+                    break;
+                case "03":
+                    month = "March";
+                    break;
+                case "04":
+                    month = "April";
+                    break;
+                case "05":
+                    month = "May";
+                    break;
+                case "06":
+                    month = "June";
+                    break;
+                case "07":
+                    month = "July";
+                    break;
+                case "08":
+                    month = "August";
+                    break;
+                case "09":
+                    month = "September";
+                    break;
+                case "10":
+                    month = "October";
+                    break;
+                case "11":
+                    month = "November";
+                    break;
+                case "12":
+                    month = "December";
+                    break;
+            }
+            tvDeliveryTime.setText(month + " " + day + ", " + year + " at " + time);
+        } catch (IndexOutOfBoundsException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setStatusBar() {
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(this.getResources().getColor(R.color.dark_primary_red));
     }
 }

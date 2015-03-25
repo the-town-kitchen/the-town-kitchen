@@ -18,16 +18,12 @@ import java.util.List;
 public class FeedbackActivity extends TheTownKitchenBaseActivity {
     RatingBar rbFeedback;
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback);
 
-        Window window = this.getWindow();
-        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.setStatusBarColor(this.getResources().getColor(R.color.dark_primary_red));
+        setStatusBar();
         
         rbFeedback = (RatingBar) findViewById(R.id.rbFeedback);
         rbFeedback.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -84,5 +80,13 @@ public class FeedbackActivity extends TheTownKitchenBaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    private void setStatusBar() {
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(this.getResources().getColor(R.color.dark_primary_red));
     }
 }
