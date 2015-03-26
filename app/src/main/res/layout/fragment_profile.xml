@@ -64,14 +64,16 @@
                 android:fontFamily="sans-serif"
                 android:textColor="@color/neutral"
                 android:textSize="@dimen/text_size_medium" />
-
-        <Button
-            android:layout_width="wrap_content"
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/google_logout_button"
+            android:textSize="@dimen/text_size_small"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="100dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/btLogout"
-            android:text="@string/btn_logout_from_google"
-            android:layout_marginTop="@dimen/space_medium"
-            />
+            android:layout_gravity="bottom|center_horizontal"/>
+
         <com.facebook.widget.LoginButton
             android:visibility="gone"
             android:id="@+id/fb_logout_button"

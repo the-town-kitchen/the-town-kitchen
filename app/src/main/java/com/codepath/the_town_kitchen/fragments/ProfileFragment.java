@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.codepath.the_town_kitchen.R;
@@ -18,6 +17,7 @@ import com.codepath.the_town_kitchen.models.User;
 import com.codepath.the_town_kitchen.net.GoogleApi;
 import com.facebook.widget.ProfilePictureView;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.plus.Plus;
 import com.makeramen.RoundedImageView;
@@ -26,13 +26,15 @@ import com.squareup.picasso.Picasso;
 /**
  * Created by pramos on 2/25/15.
  */
-public class ProfileFragment extends Fragment implements 
+public class ProfileFragment extends Fragment implements View.OnClickListener,
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener { 
 
     private ProfilePictureView profilePictureView;
     private RoundedImageView ivProfile;
     private TextView tvUserName, tvEmail;
-    private Button btLogout;
+
+    private SignInButton googleLoginBtn;
+
 
 
     @Override
@@ -56,20 +58,26 @@ public class ProfileFragment extends Fragment implements
         return view;
     }
 
+    /**
+     * Button on click listener
+     * */
+    @Override
+    public void onClick(View v) {
+        logoutClicked();
+
+    }
     private void setupProfile(View v) {
         ivProfile = (RoundedImageView) v.findViewById(R.id.ivProfile);
         tvUserName = (TextView) v.findViewById(R.id.tvUserName);
         tvEmail = (TextView) v.findViewById(R.id.tvEmail);
         profilePictureView = (ProfilePictureView) v.findViewById(R.id.ivFacebookProfile);
-        btLogout = (Button) v.findViewById(R.id.btLogout);
+        googleLoginBtn = (SignInButton) v.findViewById(R.id.google_logout_button);
+        setGooglePlusButtonText(googleLoginBtn);
+        googleLoginBtn.setOnClickListener(this);
+
         User currentUser = TheTownKitchenApplication.getCurrentUser().getUser();
         if (currentUser != null) {
-            btLogout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    logoutClicked();
-                }
-            });
+
             if (currentUser.getProfileImageUrl() != null && !currentUser.getProfileImageUrl().isEmpty()) {
                 Picasso.with(getActivity()).load(currentUser.getProfileImageUrl()).fit().into(ivProfile);
                 ivProfile.setVisibility(View.VISIBLE);
@@ -106,6 +114,18 @@ public class ProfileFragment extends Fragment implements
         logoutGooglePlus();
     }
 
+    protected void setGooglePlusButtonText(SignInButton signInButton) {
+        for (int i = 0; i < signInButton.getChildCount(); i++) {
+            View v = signInButton.getChildAt(i);
+
+            if (v instanceof TextView) {
+                TextView tv = (TextView) v;
+                tv.setText("LOG OUT WITH GOOGLE+");
+                tv.setTextSize(16);
+                return;
+            }
+        }
+    }
     private void logoutGooglePlus() {
         if (mGoogleApiClient.isConnected()) {
         Plus.AccountApi.clearDefaultAccount(mGoogleApiClient);
