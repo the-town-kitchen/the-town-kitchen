@@ -17,6 +17,7 @@ import com.codepath.the_town_kitchen.utilities.UIUtility;
 import com.codepath.the_town_kitchen.models.Meal;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class MealAdapter extends ArrayAdapter<Meal> {
@@ -70,7 +71,7 @@ public class MealAdapter extends ArrayAdapter<Meal> {
 
         viewHolder.tvDescription.setText(meal.getDescription());
         viewHolder.tvPersonDescription.setText("by " + meal.getMealPersonName());
-        viewHolder.tvPrice.setText("$" + meal.getPrice());
+        viewHolder.tvPrice.setText("$" + new DecimalFormat("##.##").format(meal.getPrice()));
 
         viewHolder.tvCounts.setText(meal.quantityOrdered + "");
 
