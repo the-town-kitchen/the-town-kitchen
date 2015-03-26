@@ -55,18 +55,6 @@
                     android:layout_below="@+id/tvFeedbackRequest"
                     android:layout_centerHorizontal="true" />
 
-            <Button
-                    android:id="@+id/bSubmitOrder"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/submit_feedback"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_medium"
-                    android:background="@color/accent_teal"
-                    android:layout_alignParentBottom="true"
-                    android:padding="15dp"
-                    android:drawableLeft="@drawable/ic_check"/>
-
         </RelativeLayout>
 
     </LinearLayout>

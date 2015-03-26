@@ -17,7 +17,7 @@
                 android:id="@+id/tvChooseDeliveryLocation"
                 android:text="@string/order_summary"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_small"
+                android:textSize="@dimen/text_size_medium"
                 android:gravity="center_horizontal"
                 android:layout_marginLeft="140dp"
                 android:layout_width="wrap_content"
@@ -41,7 +41,7 @@
                 android:divider="@null"
                 android:dividerHeight="0dp"
                 android:layout_width="match_parent"
-                android:layout_height="140dp"/>
+                android:layout_height="60dp"/>
 
         <View
                 android:id="@+id/vDivider"
