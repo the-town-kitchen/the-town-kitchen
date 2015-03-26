@@ -17,7 +17,7 @@
                 android:id="@+id/tvChooseDeliveryLocation"
                 android:text="@string/order_summary"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_medium"
+                android:textSize="@dimen/text_size_small"
                 android:gravity="center_horizontal"
                 android:layout_marginLeft="140dp"
                 android:layout_width="wrap_content"
@@ -30,13 +30,13 @@
             android:layout_below="@id/toolbar"
             android:paddingLeft="@dimen/space_small"
             android:paddingRight="@dimen/space_small"
-            android:paddingTop="@dimen/space_medium"
+            android:paddingTop="@dimen/space_small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
         <ListView
                 android:id="@+id/lvOrderItems"
-                android:textSize="@dimen/text_size_medium"
+                android:textSize="@dimen/text_size_small"
                 android:textColor="@color/black"
                 android:divider="@null"
                 android:dividerHeight="0dp"
@@ -48,8 +48,8 @@
                 android:layout_below="@id/lvOrderItems"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="6dp"
+                android:layout_marginBottom="6dp"
                 android:background="@color/divider_color"/>
 
         <TextView
@@ -57,7 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/order_sub_total"
-                android:textSize="@dimen/text_size_medium"
+                android:textSize="@dimen/text_size_small"
                 android:textColor="@color/secondary_gray"
                 android:layout_below="@+id/vDivider"
                 android:layout_alignParentLeft="true"
@@ -69,7 +69,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/secondary_gray"
-                android:textSize="@dimen/text_size_medium"
+                android:textSize="@dimen/text_size_small"
                 android:layout_alignBottom="@+id/tvSubTotalLabel"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="@dimen/activity_large_margin"/>
@@ -79,7 +79,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/tax"
-                android:textSize="@dimen/text_size_medium"
+                android:textSize="@dimen/text_size_small"
                 android:textColor="@color/secondary_gray"
                 android:layout_below="@+id/tvSubTotalLabel"
                 android:layout_alignParentLeft="true"
@@ -90,7 +90,7 @@
                 android:id="@+id/tvTax"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_medium"
+                android:textSize="@dimen/text_size_small"
                 android:textColor="@color/secondary_gray"
                 android:layout_alignBottom="@+id/tvTaxLabel"
                 android:layout_alignParentRight="true"
@@ -110,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/secondary_gray"
                     android:text="@string/discount"
-                    android:textSize="@dimen/text_size_medium"
+                    android:textSize="@dimen/text_size_small"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
                     />
@@ -120,7 +120,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/secondary_gray"
-                    android:textSize="@dimen/text_size_medium"
+                    android:textSize="@dimen/text_size_small"
                     android:layout_alignParentRight="true"
                     android:layout_alignBottom="@+id/tvDiscountlabel"
                     android:layout_alignParentEnd="false"/>
@@ -133,7 +133,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/order_total"
-                android:textSize="@dimen/text_size_medium"
+                android:textSize="@dimen/text_size_small"
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:layout_below="@+id/llDiscount"
@@ -148,7 +148,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textSize="@dimen/text_size_medium"
+                android:textSize="@dimen/text_size_small"
                 android:layout_alignBottom="@+id/tvTotalLabel"
                 android:layout_alignParentRight="true"
                 android:layout_marginTop="@dimen/activity_large_margin"/>
@@ -203,18 +203,18 @@
                     android:layout_toRightOf="@id/ivLocationIcon"
                     android:layout_alignBottom="@id/ivLocationIcon"
                     android:layout_marginRight="2dp"
-                    android:textSize="@dimen/text_size_medium"/>
+                    android:textSize="@dimen/text_size_small"/>
 
             <TextView
                     android:id="@+id/tvAddress"
                     tools:text="12345 Android Drive"
                     android:layout_marginLeft="32dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/tvDeliveringToLabel"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_medium"/>
+                    android:textSize="@dimen/text_size_small"/>
 
         </RelativeLayout>
 
@@ -228,7 +228,7 @@
             <ImageView
                     android:id="@+id/ivTimeIcon"
                     android:layout_marginRight="10dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="12dp"
                     android:background="@drawable/ic_access_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -240,7 +240,7 @@
                     android:text="On "
                     android:fontFamily="sans-serif"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_medium"
+                    android:textSize="@dimen/text_size_small"
                     android:layout_marginRight="2dp"
                     android:layout_toRightOf="@id/ivTimeIcon"
                     android:layout_alignBottom="@id/ivTimeIcon"/>
@@ -252,7 +252,7 @@
                     tools:text="March 25, 2015 at 3:00 PM"
                     android:fontFamily="sans-serif"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_medium"
+                    android:textSize="@dimen/text_size_small"
                     android:layout_marginRight="10dp"
                     android:layout_toRightOf="@+id/tvDeliveryTimeLabel"
                     android:layout_alignBottom="@id/tvDeliveryTimeLabel"/>
@@ -279,7 +279,7 @@
                     android:text="Pay with "
                     android:fontFamily="sans-serif"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_medium"
+                    android:textSize="@dimen/text_size_small"
                     android:layout_marginRight="2dp"
                     android:layout_toRightOf="@id/ivCreditCardIcon"
                     android:layout_alignBottom="@id/ivCreditCardIcon"/>
@@ -291,7 +291,7 @@
                     android:text="MC **** **** **** 1234"
                     android:fontFamily="sans-serif"
                     android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_medium"
+                    android:textSize="@dimen/text_size_small"
                     android:layout_toRightOf="@+id/tvPayWithLabel"
                     android:layout_alignBottom="@id/tvPayWithLabel"/>
 
@@ -314,7 +314,7 @@
             android:layout_height="wrap_content"
             android:text="@string/submit_order"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_size_medium"
+            android:textSize="@dimen/text_size_small"
             android:background="@color/accent_teal"
             android:layout_alignParentBottom="true"
             android:padding="15dp"
