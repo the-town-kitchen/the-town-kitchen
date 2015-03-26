@@ -96,14 +96,14 @@ public class MealAdapter extends ArrayAdapter<Meal> {
         viewHolder.ivImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AnimationFactory.flipTransition(viewHolder.viewAnimator, AnimationFactory.FlipDirection.LEFT_RIGHT);
+                AnimationFactory.flipTransition(viewHolder.viewAnimator, AnimationFactory.FlipDirection.BOTTOM_TOP);
             }
         });
 
         viewHolder.ivImagePerson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AnimationFactory.flipTransition(viewHolder.viewAnimator, AnimationFactory.FlipDirection.LEFT_RIGHT);
+                AnimationFactory.flipTransition(viewHolder.viewAnimator, AnimationFactory.FlipDirection.TOP_BOTTOM);
             }
         });
 
